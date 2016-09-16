@@ -1,1 +1,53 @@
-demo.yaml
+services:
+  vRA_service01:
+    ip: 192.168.91.6
+    port: 443
+    url: https://192.168.91.6/vcac/services/api/status
+    expected: REGISTERED
+    vmname: VRA01
+  vRA_service02:
+    ip: 192.168.91.7
+    port: 443
+    url: https://192.168.91.7/vcac/services/api/status
+    expected: REGISTERED
+    vmname: VRA02
+  vCenter:
+    ip: 192.168.85.2
+    port: 443
+    vmname: VC01
+  vCenter_SSO:
+    ip: 192.168.85.3
+    port: 9443
+    vmname: SSO01
+  vRA_management_01:
+    ip: 192.168.91.6
+    port: 5480
+    vmname: VRA01
+  vRA_management_02:
+    ip: 192.168.91.7
+    port: 5480
+    vmname: VRA02
+  vCO:
+    ip: 192.168.85.7
+    port: 80
+    vmname: VRO01
+  IaaS_Manager-DEM-O:
+    ip: 192.168.85.5
+    port: 80
+    vmname: DWVA1
+  IaaS_Web:
+    ip: 192.168.94.6
+    port: 443
+    url: https://192.168.94.5/WAPI/api/status
+    expected: iaas-service
+    vmname: WMM01
+  vIAPP:
+    ip: 192.168.26.211
+    port: 7444
+    url: https://192.168..26.211:7444/websso/HealthStatus
+    expected: GREEN
+    vmname: IAPP
+  vFabricPSQL01:
+    ip: 192.168.85.81
+    port: 5432
+    vmname: VFPSQL1
