@@ -29,6 +29,7 @@ def get_args():
     parser = argparse.ArgumentParser(description='Check vRA Status')
     
     parser.add_argument('-d', '--debug', dest='debug', required=False, action='store_true', help='debug')
+    parser.add_argument('-f', '--file', required=True, help='YAML file with vRA infra')
     args = parser.parse_args()
 
     return args
@@ -50,7 +51,7 @@ else:
 
 
 
-with open('infra.yaml', 'r') as f:
+with open(args.file, 'r') as f:
     cfg = yaml.load(f)
 
 
