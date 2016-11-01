@@ -5,10 +5,16 @@ def GetEdgesId():
 
 	session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 	edges_config = session.read('nsxEdges')
-	session.view_body_dict(edges_config['body'])
-	for i in range(len(edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'])):
-		r = edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'][i]
-		print r['id'] + " -- " + r['name']
+	#session.view_body_dict(edges_config['body'])
+
+	try:
+		for i in range(len(edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'])):
+			r = edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'][i]
+			print r['id'] + " -- " + r['name']
+			
+	except KeyError:
+		print "\n"
+		print 'ERROR! - There are no Edges created.'
 
 def main():
 

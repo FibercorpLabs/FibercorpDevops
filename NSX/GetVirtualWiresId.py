@@ -10,12 +10,20 @@ def GetVWiresId():
 
 	vwires = session.read('logicalSwitches',uri_parameters)
 	#session.view_body_dict(vwires['body'])
-	for i in range(len(vwires['body']['virtualWires']['dataPage']['virtualWire'])):
-		vw = vwires['body']['virtualWires']['dataPage']['virtualWire'][i]
-		print vw['name'] + " -- " + vw['objectId']
+	
+	try:
+		for i in range(len(vwires['body']['virtualWires']['dataPage']['virtualWire'])):
+			vw = vwires['body']['virtualWires']['dataPage']['virtualWire'][i]
+			print vw['name'] + " -- " + vw['objectId']
+
+	except KeyError:
+		print "\n"
+		print 'ERROR! - There are no VirtualWires created.'
 
 def main():
+
 	GetVWiresId()
+
 if __name__ == '__main__':
 	exit(main())
 
