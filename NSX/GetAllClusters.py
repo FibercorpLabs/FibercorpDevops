@@ -58,9 +58,9 @@ def main():
             atexit.register(Disconnect, si)
 
         content = si.RetrieveContent()
-        for dvs in get_vim_objects(content, vim.DistributedVirtualSwitch):
-            if not dvs.config == None:
-                print dvs._moId + ' -- ' + dvs.name
+        for dvs in get_vim_objects(content, vim.ClusterComputeResource):
+            #if not dvs.config == None:
+            print dvs._moId + " -- " + dvs.name
 
  
 
