@@ -5,10 +5,7 @@ def ReadEdge(edgeId):
 
 	session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
-	uri_parameters = {}
-	uri_parameters['edgeId'] = edgeId
-
-	edge_config = session.read('nsxEdge',uri_parameters)
+	edge_config = session.read('nsxEdge',uri_parameters={'edgeId': edgeId})
 	session.view_body_dict(edge_config['body'])
 
 

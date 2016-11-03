@@ -6,7 +6,7 @@ def GetVWiresId():
 	session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
 	uri_parameters = {}
-	uri_parameters = {'scopeId': 'vdnscope-1'}
+	uri_parameters = {'scopeId': 'vdnscope-2'}
 
 	vwires = session.read('logicalSwitches',uri_parameters)
 	#session.view_body_dict(vwires['body'])
@@ -17,8 +17,8 @@ def GetVWiresId():
 			print vw['name'] + " -- " + vw['objectId']
 
 	except KeyError:
-		print "\n"
-		print 'ERROR! - There are no VirtualWires created.'
+		vw = vwires['body']['virtualWires']['dataPage']['virtualWire']
+		print vw['name'] + " -- " + vw['objectId']
 
 def main():
 

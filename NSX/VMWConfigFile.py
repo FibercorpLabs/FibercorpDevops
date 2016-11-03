@@ -23,7 +23,8 @@ vc_settings["vcenter"] = "10.120.110.6"
 vc_settings["datacenter"] = "LAB"
 vc_settings["resource_pool"] = ""
 vc_settings["dvs"] = "LAB_dVS01"
-vc_settings["cluster"] = "VCPE-DCHornos-MGMT-01"
+#vc_settings["cluster"] = "VCPE-DCHornos-MGMT-01"
+vc_settings["cluster"] = "VCPE-HORNOS-HUB-01"
 
 rpool_settings = dict()
 rpool_settings["Interno"] = "RpoolInternoCambiame"   #ToDo: ChangeMe!!!

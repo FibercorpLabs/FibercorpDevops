@@ -10,8 +10,8 @@ from nsxramlclient.client import NsxClient
 
 """
 
-N_OF_EDGES = 4
-SUPERNET = '10.10.10.0/24'
+N_OF_EDGES = 2
+SUPERNET = '8.8.8.0/24'
 MTU = '9000'
 
 SUBNET_FLAG = 1
@@ -47,10 +47,10 @@ for i in range(6,N_OF_EDGES+6):
 	CreateEdge.Create('admin',
 		'F1b3rC*rp.2016!',
 		'datacenter-2',
-		'datastore-10',
-		'resgroup-33',
-		'host-9',
-		'dvportgroup-95',
+		'datastore-83',
+		'resgroup-152',
+		'host-82',
+		'dvportgroup-166',
 		ip,
 		str(network.netmask),
 		MTU,

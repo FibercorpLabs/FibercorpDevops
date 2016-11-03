@@ -26,9 +26,9 @@ def Create(transportZone,
 
 
 
-#def main():
+def main():
 
-#	Create('HORNOS-HUB-01','HYBRID-MODE','Test','Test-LS','Tenant2')
+	Create('HORNOS-HUB-01','HYBRID_MODE','Test','Test-LS','Tenant2')
 
-#if __name__ == '__main__':
-#	exit(main())
+if __name__ == '__main__':
+	exit(main())
