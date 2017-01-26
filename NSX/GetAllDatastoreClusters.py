@@ -1,3 +1,5 @@
+#GetAllVMWTemplates.py
+
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -55,13 +57,13 @@ def main():
 
         content = si.RetrieveContent()
 
-        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.Datastore],True)
-
-        ds_list = obj_view.view
+        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.StoragePod],True)
+        
+        ds_cluster_list = obj_view.view
         obj_view.Destroy()
 
-        for ds in ds_list:
-            print ds.name + ' --- ' + ds._moId
+        for ds_cluster in ds_cluster_list:
+            print ds_cluster.name + ' --- ' +ds_cluster._moId
         
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg

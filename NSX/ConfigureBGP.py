@@ -2,7 +2,7 @@ from conf import *
 from nsxramlclient.client import NsxClient
 
 
-def BGP(edgeId, localAS, remoteAS, ip, routerId):
+def BGP(edgeId, localAS, remoteAS, neighbourIP, routerId):
 
 	session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
@@ -16,9 +16,9 @@ def BGP(edgeId, localAS, remoteAS, ip, routerId):
 	bgp_template = routing_template['routing']['bgp']
 	
 	routingGlobal_template['routerId'] = routerId
-	bgp_template['enabled'] = 'True'
+	bgp_template['enabled'] = 'true'
 	bgp_template['localAS'] = localAS
-	bgp_template['bgpNeighbours']['bgpNeighbour']['ipAddress'] = ip
+	bgp_template['bgpNeighbours']['bgpNeighbour']['ipAddress'] = neighbourIP
 	bgp_template['bgpNeighbours']['bgpNeighbour']['remoteAS'] = remoteAS
 
 	bgp_template.pop('redistribution')
@@ -35,7 +35,8 @@ def BGP(edgeId, localAS, remoteAS, ip, routerId):
 	
 def main():
 
-	BGP('edge-36','55000','54000','8.8.8.1','1.1.1.2')
+	BGP('edge-1367','64000','64001','200.200.200.2','1.1.1.1')
+	BGP('edge-1368','64001','64000','200.200.200.1','1.1.1.2')
 
 if __name__ == '__main__':
 	exit(main())

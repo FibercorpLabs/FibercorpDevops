@@ -14,10 +14,7 @@ def DeleteEdge(edgeId):
 
 def main():
 
-	DeleteEdge('edge-25')
-	DeleteEdge('edge-26')
-	DeleteEdge('edge-27')
-	DeleteEdge('edge-28')
-
+	DeleteEdge('edge-1365')
+	
 if __name__ == '__main__':
 	exit(main())

@@ -1,6 +1,9 @@
 from conf import *
 from nsxramlclient.client import NsxClient
 
+
+""" Not functional """
+
 session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
 nwfabric = session.extract_resource_body_example('nwfabricConfig','create')
