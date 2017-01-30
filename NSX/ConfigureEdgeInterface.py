@@ -12,7 +12,7 @@ def get_args():
     parser.add_argument('-v','--vnic', help='vNIC index',type=int,required=True)
     parser.add_argument('-ip','--primaryIp', help='Primary IP',type=str,required=True)
     parser.add_argument('-pg','--portgroupId', help='Portgroup ID',type=str,required=True)
-    parser.add_argument('-pgn','--portgroupName', help='Portgroup name',type=str,required=True)
+    parser.add_argument('-pgn','--portgroupName', help='Portgroup name',type=str,required=False)
     parser.add_argument('-m','--mask', help='Network Mask',type=str,required=True)
     parser.add_argument('-p','--prefix', help='Network Prefix Length',type=str,required=True)
     parser.add_argument('-conn','--isConnected', help='Connect or not',type=str,required=True)
@@ -31,11 +31,17 @@ def ConfigureEdgeInterface(edgeId):
 	session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
 	edge_config = ReadEdge(edgeId)
+	nsx_template = session.extract_resource_body_example('nsxEdge','update')
+	session.view_body_dict(nsx_template)
 
-	session.view_body_dict(edge_config)
+`
+
 	
 	vnics = edge_config['body']['edge']['vnics']
 	vnic = vnics['vnic'][args.vnic]
+	nsx_template['edge']['id'] = edgeId
+	nsx_template['vnics'][vni]
+
 
 	
 	vnic['addressGroups'] = {'addressGroup': {'primaryAddress' : args.primaryIp, 'subnetMask' : args.mask, 'subnetPrefixLength' : args.prefix}}
@@ -45,12 +51,11 @@ def ConfigureEdgeInterface(edgeId):
 	vnic['type'] = args.type
 	vnic['portgroupId'] = args.portgroupId
 	vnic['portgroupName'] = args.portgroupName
-
 	session.view_body_dict(vnics)
-	response = session.update('nsxEdge',uri_parameters={'edgeId' : edgeId}, request_body_dict={'edge' : {'vnics' : {'vnic' : vnic}}})
+	response = session.update('nsxEdge',uri_parameters={'edgeId' : edgeId}, request_body_dict={'edge' : { 'id' : edgeId , 'vnics' : {'vnic' : vnic}}})
 	session.view_response(response)
-		
-		
+
+
 def main():
 
 	ConfigureEdgeInterface('edge-1368')

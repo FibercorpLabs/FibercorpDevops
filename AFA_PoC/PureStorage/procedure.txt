@@ -1,0 +1,9 @@
+On vdb-command VM run:
+
+./afa_prep -l 2 -n 8 -p vdb-0 --verbose
+
+./afa_poc -o AFA/PreFlighTest001 -t Pre1 --simulate
+
+./afa_poc -o AFA/PreFlighTest001 -t Pre1 --preflight
+
+

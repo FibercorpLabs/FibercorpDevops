@@ -1,0 +1,70 @@
+[root@vdb-command ~]# ./afa_prep -l 2 -n 8 -p vdb-0 --verbose
+**************************************************************
+***       Starting All-Flash Array PoC Preparations        ***
+**************************************************************
+Looking for load generators in /etc/hosts: Found 16
+**************************************************************
+Successfully pinged vdb-001
+Successfully pinged vdb-002
+Successfully pinged vdb-003
+Successfully pinged vdb-004
+Successfully pinged vdb-005
+Successfully pinged vdb-006
+Successfully pinged vdb-007
+Successfully pinged vdb-008
+**************************************************************
+Successfully accessed vdb-001 as root via SSH
+Successfully accessed vdb-002 as root via SSH
+Successfully accessed vdb-003 as root via SSH
+Successfully accessed vdb-004 as root via SSH
+Successfully accessed vdb-005 as root via SSH
+Successfully accessed vdb-006 as root via SSH
+Successfully accessed vdb-007 as root via SSH
+Successfully accessed vdb-008 as root via SSH
+**************************************************************
+Populating ~/vdbench from ~/tools/vdbench50406.zip
+**************************************************************
+  $java -client -Xmx1024m -Xms128m -cp $cp Vdb.SlaveJvm $*
+...patched to:
+  $java -d64    -Xmx896m  -Xms448m -cp $cp Vdb.SlaveJvm $*
+  $java -client -Xmx512m  -Xms64m  -cp $cp Vdb.Vdbmain $*
+...patched to:
+  $java -d64    -Xmx512m  -Xms64m  -cp $cp Vdb.Vdbmain $*
+Successfully patched vdbench memory settings.
+**************************************************************
+Successfully copied vdbench directory to vdb-001
+Successfully copied vdbench directory to vdb-002
+Successfully copied vdbench directory to vdb-003
+Successfully copied vdbench directory to vdb-004
+Successfully copied vdbench directory to vdb-005
+Successfully copied vdbench directory to vdb-006
+Successfully copied vdbench directory to vdb-007
+Successfully copied vdbench directory to vdb-008
+**************************************************************
+Found 2 LUNs on vdb-001 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-002 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-003 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-004 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-005 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-006 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-007 totaling 549.755813888 GB (base 10)
+Found 2 LUNs on vdb-008 totaling 549.755813888 GB (base 10)
+**************************************************************
+Successfully verified! Testing will be conducted on 16 LUNs totaling 4399 GB (base 10) across 8 Load Generators
+**************************************************************
+Preparing test files...
+Wrote discovered capacity into ~/discovered_capacity and discovered LUN count into ~/discovered_luns
+**************************************************************
+Preparing to create the phases file...
+Include snapshot testing phases (y/n)? n
+The phases.vdb file was created successfully
+**************************************************************
+Setting permissions
+Permissions set successfully
+**************************************************************
+Created Pre-flight hosts and LUNs specification in ~/AFA/pre-env.vdb
+Created PoC hosts and LUNs specification in ~/AFA/poc-env.vdb
+**************************************************************
+*** Successfully Completed All-Flash Array PoC Preparation ***
+**************************************************************
+[root@vdb-command ~]#

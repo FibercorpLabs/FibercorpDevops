@@ -1,0 +1,68 @@
+#################################################################################
+# AFA PoC Toolkit v3.0 Configuration Specification - Phase: Steady              #
+#################################################################################
+
+include=global_param.vdb
+
+#################################################################################
+# Data Reduction Ratio (DRR) Settings                                           #
+#################################################################################
+# Modifying the settings in the section below will result in setting the DRR    #
+# paramters for this phase of testing. Pay close attention to the value entered #
+# for dedupunit. Dedupunit should correspond to the dedup unit used by the      #
+# array. Also, all IO sizes must be a multiple of the defined dedupunit.        #
+#                                                                               #
+# For example: if setting dedupunit to 16k, all IO must be 16k or larger. It    #
+# must also be a multiple of 16k such as 32k, 48k, 64k, etc. Using 24k would    #
+# not be acceptable since 24 is not a multiple of 16. It is also important to   #
+# note that the percentages of each block size must add up to 100.              #
+#################################################################################
+
+#dedupratio=	
+#dedupunit=4k
+#dedupsets=25%
+#compratio=
+
+#################################################################################
+# Variable - ENV                                                                #
+#                                                                               #
+# This defines which environment will be used, pre-env.vdb or poc-env.vdb.      #
+# These files contain the number of JVMs, hosts and SDs to include in the run.  #
+# If pre-flight is selected, the pre-env.vdb file will be included which limits #
+# the SD size during pre-flight only. Without this option, it is impossible to  #
+# achieve accurate results during pre-flight. The hosts would read/write from   #
+# the entire SD and in many cases would be accessing blocks that have not been  #
+# pre-conditioned. This is only necessary during pre-flight. During all other   #
+# tests, poc-env.vdb will be used and does not constrain the SD size.           #
+#################################################################################
+
+include=!ENV
+
+#################################################################################
+# Workload definition (WD)                                                      #
+#################################################################################
+
+wd=wd_default,sd=*
+wd=wd_steady,sd=sd*,xfersize=(4k,9,8k,47,16k,21,32k,17,64k,6),rdpct=50,seekpct=100
+
+#################################################################################
+# Run definition (RD)                                                           #
+#################################################################################
+
+#################################################################################
+# Variables                                                                     #
+#                                                                               #
+# SEQN - Sequence number defined for the run in the phases.vdb file. This is    #
+#        used for reference and by the reporting functions.                     #
+#                                                                               #
+# TIME - Limits the run time to a maximum of 43200 seconds (12 hours). During   #
+#        pre-flight the run is limited to 300 seconds (5 minutes).              #
+#                                                                               #
+# THREAD - Threads are variable and are a calculation. This involves dividing   #
+#          the target queue depth (512) by the number of LUNs. This ensures     #
+#          the target queue depth is reached by assigning the correct number    #
+#          of threads per LUN.                                                  #
+#################################################################################
+
+rd=default
+rd=steady_!SEQN,wd=wd_steady,iorate=max,interval=1,elapsed=!TIME,forthreads=!THREAD

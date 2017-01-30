@@ -1,0 +1,13 @@
+#!/bin/bash
+
+pids=""
+host=`hostname -s`
+
+for b in `lsscsi -g | grep XtremIO | cut -c2-8`;
+do
+    echo Rescanning SCSI Device $b on $host
+    echo 1 >  /sys/class/scsi_device/${b}/device/rescan
+    d=`lsscsi -g | grep $b | awk '{print $6}'`
+    fdisk -lu $d | grep /dev/sd 
+done
+

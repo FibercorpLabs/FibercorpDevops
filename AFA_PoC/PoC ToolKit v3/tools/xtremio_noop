@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pids=""
+host=`hostname -s`
+
+for d in `lsscsi | grep XtremIO | awk '{print $6}' | cut -d/ -f3`;
+do
+    echo Changing scheduler to deadline for /dev/${d} on $host
+    echo noop >  /sys/block/${d}/queue/scheduler
+    cat /sys/block/${d}/queue/scheduler
+done
