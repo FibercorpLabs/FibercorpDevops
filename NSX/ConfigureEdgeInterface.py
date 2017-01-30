@@ -32,28 +32,25 @@ def ConfigureEdgeInterface(edgeId):
 
 	edge_config = ReadEdge(edgeId)
 	nsx_template = session.extract_resource_body_example('nsxEdge','update')
-	session.view_body_dict(nsx_template)
 
-`
+	#session.view_body_dict(edge_config['body'])
+	#session.view_body_dict(nsx_template)
 
+	vnics = nsx_template['edge']['vnics']
 	
-	vnics = edge_config['body']['edge']['vnics']
-	vnic = vnics['vnic'][args.vnic]
-	nsx_template['edge']['id'] = edgeId
-	nsx_template['vnics'][vni]
 
+	vnics['vnic']['addressGroups'] = {'addressGroup': {'primaryAddress' : args.primaryIp, 'subnetMask' : args.mask, 'subnetPrefixLength' : args.prefix}}
+	vnics['vnic']['isConnected'] = args.isConnected
+	vnics['vnic']['mtu'] = args.mtu
+	vnics['vnic']['name'] = args.name
+	vnics['vnic']['type'] = args.type
+	vnics['vnic']['portgroupId'] = args.portgroupId
+	vnics['vnic']['portgroupName'] = args.portgroupName
+	vnics['vnic']['index'] = args.vnic
 
-	
-	vnic['addressGroups'] = {'addressGroup': {'primaryAddress' : args.primaryIp, 'subnetMask' : args.mask, 'subnetPrefixLength' : args.prefix}}
-	vnic['isConnected'] = args.isConnected
-	vnic['mtu'] = args.mtu
-	vnic['name'] = args.name
-	vnic['type'] = args.type
-	vnic['portgroupId'] = args.portgroupId
-	vnic['portgroupName'] = args.portgroupName
 	session.view_body_dict(vnics)
-	response = session.update('nsxEdge',uri_parameters={'edgeId' : edgeId}, request_body_dict={'edge' : { 'id' : edgeId , 'vnics' : {'vnic' : vnic}}})
-	session.view_response(response)
+	response = session.update('vnic',uri_parameters={'edgeId' : edgeId, 'index' : str(args.vnic)}, request_body_dict=vnics)
+	session.view_response(response)	
 
 
 def main():
