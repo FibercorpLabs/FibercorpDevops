@@ -27,10 +27,6 @@ def get_vim_objects(content, vim_type):
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
-
-
-
-
 def main():
 
     parser = argparse.ArgumentParser(description='Get All VMW portgroup on DVS')

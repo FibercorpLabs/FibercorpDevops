@@ -10,7 +10,7 @@ from nsxramlclient.client import NsxClient
 
 """
 
-N_OF_EDGES = 2
+N_OF_EDGES = 120
 SUPERNET = '8.8.8.0/24'
 MTU = '9000'
 
