@@ -1,5 +1,3 @@
-#GetAllVMWTemplates.py
-
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -19,17 +17,11 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
-
-
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
-
-
-
-
 
 def main():
 
@@ -71,8 +63,6 @@ def main():
     except Exception, e:
         print "Caught exception: %s" % str(e)
         return 1
-
-
 
 
 # Start program
