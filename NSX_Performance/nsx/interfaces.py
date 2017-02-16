@@ -2,7 +2,7 @@ import argparse
 
 from conf import *
 from nsxramlclient.client import NsxClient
-from ReadEdge import ReadEdge
+from CRUD import Edge
 
 
 def get_args():
@@ -53,9 +53,33 @@ def ConfigureEdgeInterface(edgeId):
 	session.view_response(response)	
 
 
-def main():
+class interfaces(object):
+	def __init__(self, session):
+		self.session = session
+		self.edge = Edge(self.session)
 
-	ConfigureEdgeInterface('edge-1368')
-	
-if __name__ == '__main__':
-	exit(main())
+	def add_vnic(self, **kwargs):
+		edge_config = self.edge.read(kwargs['edgeId'])
+		nsx_template = self.session.extract_resource_body_example('nsxEdge', 'update')
+
+		vnics = nsx_template['edge']['vnics']
+
+		vnics['vnic']['addressGroups'] = {'addressGroup': {'primaryAddress' : kwargs['primaryIp'],
+		 'subnetMask' : kwargs['mask'], 'subnetPrefixLength' : kwargs['prefix']}}
+		vnics['vnic']['isConnected'] = kwargs['isConnected']
+		vnics['vnic']['mtu'] = kwargs['mtu']
+		vnics['vnic']['name'] = kwargs['name']
+		vnics['vnic']['type'] = kwargs['type']
+		vnics['vnic']['portgroupId'] = kwargs['portgroupId']
+
+		try:
+			vnics['vnic']['portgroupName'] = kwargs['portgroupName']
+		except NameError:
+			pass
+
+		vnics['vnic']['index'] = kwargs['index']
+
+		#self.session.view_body_dict(vnics)
+		response = self.session.update('vnic',uri_parameters={'edgeId' : kwargs['edgeId'], 
+			'index' : kwargs['index']}, request_body_dict=vnics)
+		self.session.view_response(response)	

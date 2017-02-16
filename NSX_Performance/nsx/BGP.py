@@ -2,15 +2,15 @@ from nsxramlclient.client import NsxClient
 from CRUD import Edge
 
 class bgp(object):
-	def __init__(self, session, edgeId):
+	def __init__(self, session):
 		self.session = session
-		self.edgeId = edgeId
-
+		
 	def create(self, **kwargs):
 		uri_parameters = {}
-		uri_parameters = {'edgeId': self.edgeId}
+		uri_parameters = {'edgeId': kwargs['edgeId']}
 
-		routing_template = self.session.extract_resource_body_example('routingConfig','update')
+		routing_template = self.session.extract_resource_body_example('routingConfig',
+			'update')
 		self.session.view_body_dict(routing_template)
 
 		routingGlobal_template = routing_template['routing']['routingGlobalConfig']
@@ -20,7 +20,7 @@ class bgp(object):
 		bgp_template['enabled'] = 'true'
 		bgp_template['localAS'] = kwargs['localAS']
 		bgp_template['bgpNeighbours']['bgpNeighbour']['ipAddress'] = kwargs['remoteIP']
-		bgp_template['bgpNeighbours']['bgpNeighbour']['remoteAS'] = kwargs['remoteIP']
+		bgp_template['bgpNeighbours']['bgpNeighbour']['remoteAS'] = kwargs['remoteAS']
 
 		bgp_template.pop('redistribution')
 		bgp_template['bgpNeighbours']['bgpNeighbour'].pop('bgpFilters')
@@ -30,12 +30,15 @@ class bgp(object):
 		self.session.view_body_dict(bgp_template)
 		self.session.view_body_dict(routingGlobal_template)
 
-		response = self.session.update('routingConfig', uri_parameters, request_body_dict={'routing': {'bgp': bgp_template, 'routingGlobalConfig': routingGlobal_template}})
+		response = self.session.update('routingConfig', uri_parameters,
+		 request_body_dict={'routing': {'bgp': bgp_template, 
+		 'routingGlobalConfig': routingGlobal_template}})
+
 		self.session.view_response(response)
 
 	def redistribute(self, **kwargs):
 		uri_parameters = {}
-		uri_parameters = {'edgeId': self.edgeId}
+		uri_parameters = {'edgeId': kwargs['edgeId']}
 
 		edge = Edge(self.session)
 		edge_config = edge.read(self.edgeId)
@@ -47,7 +50,8 @@ class bgp(object):
 		self.session.view_body_dict(routing)
 
 		routing['bgp']['redistribution']['enabled'] = 'true'
-		routing['bgp']['redistribution']['rules'] = {'rule' : {'action': kwargs['action'], 'from' : {kwargs['from'] : 'true'}, 'prefixName' : kwargs['prefix']}}
+		routing['bgp']['redistribution']['rules'] = {'rule' : {'action': kwargs['action'],
+		 'from' : {kwargs['frm'] : 'true'}, 'prefixName' : kwargs['prefix']}}
 		
 		self.session.view_body_dict(routing)
 

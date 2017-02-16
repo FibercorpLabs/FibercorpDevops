@@ -49,6 +49,7 @@ class Edge(object):
 
 		response = self.session.create('nsxEdges', request_body_dict=new_edge)
 		self.session.view_response(response)
+		return response
 
 	def read(self,edgeId):
 		edge_config = self.session.read('nsxEdge',uri_parameters={'edgeId': edgeId})
@@ -66,7 +67,7 @@ class Edge(object):
 #NSX Logical Switch
 
 class LogicalSwitch(object):
-	def __init__(session):
+	def __init__(self,session):
 		self.session = session
 
 	def create(self, **kwargs):
@@ -83,9 +84,8 @@ class LogicalSwitch(object):
 			if scopeId is not None:
 				break
 
-
-		lswitch_create_dict = session.extract_resource_body_example('logicalSwitches', 'create')
-		session.view_body_dict(lswitch_create_dict)
+		lswitch_create_dict = self.session.extract_resource_body_example('logicalSwitches', 'create')
+		self.session.view_body_dict(lswitch_create_dict)
 
 		lswitch_create_dict['virtualWireCreateSpec']['controlPlaneMode'] = kwargs['controlPlaneMode']
 		lswitch_create_dict['virtualWireCreateSpec']['description'] = kwargs['description']
@@ -98,7 +98,9 @@ class LogicalSwitch(object):
 
 		response = self.session.create('logicalSwitches', uri_parameters={'scopeId': scopeId},
 			request_body_dict=lswitch_create_dict)
+
 		self.session.view_response(response)
+		return response
 
 	def read(self, virtualwireId):
 		print virtualwireId
@@ -107,8 +109,6 @@ class LogicalSwitch(object):
 		response = self.session.delete('logicalSwitch', uri_parameters={'virtualWireID': virtualWireId})
 		self.session.view_response(response)
 
-
-
 class controller(object):
 	def __init__(self,session):
 		self.session = session
@@ -116,4 +116,6 @@ class controller(object):
 	def read(controllerId):
 		controller_config = self.session.read('nsxControllers',uri_parameters={'controllerId': controllerId})
 		self.session.view_body_dict(controller_config['body'])
+
+
 
