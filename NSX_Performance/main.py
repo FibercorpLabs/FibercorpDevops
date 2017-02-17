@@ -8,9 +8,7 @@ def main():
 
   edge = Edge(session)
   ls = LogicalSwitch(session)
-  interface = interfaces(session)
-  #bgp_ins = bgp(session)
-
+  
   N = 4								# Number of peers divided by two.
   host1 = 'host-2436'				# Host 1
   host2 = 'host-2443'				# Host 2
