@@ -1,66 +1,78 @@
-import argparse
-
-from conf import *
+from nsx.conf import *
 from nsxramlclient.client import NsxClient
-from CreateReadDelete import CreateLS, CreateEdge, ReadEdge
-
-
-def get_args():
-
-    """ Get arguments from CLI """
-    parser = argparse.ArgumentParser(description='Configure Edge Interfaces')
-    parser.add_argument('-h','--hub', help='HUB',type=str,required=True)
-    parser.add_argument('-cp','--controlPlane', help='Logical switch control plane mode.',type=str,required=True)
-  	parser.add_argument('-dcp','--description', help='Logical switch description.',type=str,required=False)
-  	parser.add_argument('-lsn','--logicalSwitchName', help='Logical switch name.',type=str,required=True)
-   	parser.add_argument('-tid','--tenantId', help='Openstack Tenant ID',type=str,required=False)
-
-   	parser.add_argument('-u','--username', help='Edge CLI username', type=str, required=True)
-   	parser.add_argument('-p','--password', help='Edge CLI password', type=str, required=True)
-   	parser.add_argument('-dc','--datacenterId', help='Datacenter object ID.',type=str,required=True)
-   	parser.add_argument('-ds','--datastoreId', help='Datastore object ID',type=str,required=True)
-   	parser.add_argument('-rp','--resourceId', help='Resource pool object ID',type=str,required=True)
-   	parser.add_argument('-ds','--datastoreId', help='Datastore object ID',type=str,required=True)
-   	parser.add_argument('-ho','--hosts',nargs='*',help='Hosts Object ID')
-   	#parser.add_argument('-upl','--uplink', help='Uplink IP.',type=str,required=True)
-   	#parser.add_argument('-i','--internal', help='Internal IP.',type=str,required=True)
-   	#parser.add_argument('-unet','--uplink', help='Uplink netmask.',type=str,required=True)
-   	#parser.add_argument('-inet','--netmask', help='Internal netmask.',type=str,required=True)
-   	#parser.add_argument('-ui','--uplinkIndex', help='Uplink vnic index.',type=str,required=True)
-    #parser.add_argument('-un','--uplinkName', help='Uplink vnic name.',type=str,required=True)
-    parser.add_argument('-m','--mtu', help='MTU',type=str,required=True)
-   	parser.add_argument('-app','--applianceSize', help='Edge appliance size.',type=str,required=True)
-   	parser.add_argument('-t','--edgeType', help='Edge type.',type=str,required=True)
-   	
-
-    for i in range(0,N/2):
-      CreateLS('SLO-HUB-01', args.controlPlane, args.description+('-%s' % i), args.logicalSwitchName,
-        None)
-      CreateEdge(args.username, args.password, args.datacenterId, args.datastoreId,
-        args.resourceId, args.hosts[0], , '100.0.0.1', '255.255.255.252', args.mtu, '0',
-         'Uplink-%s' %  i, 'Uplink', args.applianceSize, args.edgeType, 'Edge-%s' % i)
-
-    for i in range(N/2,N):
-      CreateLS('SLO-HUB-01', args.controlPlane, args.description+('-%s' % i), args.logicalSwitchName,
-        None)
-      
-      
-      CreateEdge(args.username, args.password, args.datacenterId, args.datastoreId,
-        args.resourceId, args.hosts[0], 'virtualwire-123' , '100.0.0.2', '255.255.255.252', args.mtu, '0',
-         'Uplink-%s' %  i, 'Uplink', args.applianceSize, args.edgeType, 'Edge-%s' % i)
-   	
-   	args = parser.parse_args()
-    
-    return args
+from nsx.CRUD import Edge, LogicalSwitch
+from nsx.interfaces import interfaces
+from nsx.BGP import bgp
 
 def main():
 
-	args = get_args()
-
   session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
 
+  edge = Edge(session)
+  ls = LogicalSwitch(session)
+  interface = interfaces(session)
+  #bgp_ins = bgp(session)
 
+  N = 1								# Number of peers divided by two.
+  host1 = 'host-2436'				# Host 1
+  host2 = 'host-2443'				# Host 2
 
+  for i in range(0,N):
 
-if __name__ = '__main__':
+  	# Create LS and Edge  	
+  	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
+	   description='VTEP-%s' % i, name='LS-%s' % i, tenantId='')
+	virtualwireId = response['body']
+
+	response = edge.create(datastoreId='datastore-2458', hostId=host1, resourcePoolId='resgroup-2473',
+		username='admin', password='F1b3rC*rp.2017', ip='10.10.10.1', netmask='255.255.255.252', index='0',
+	  	mtu='9000', name='Uplink', type='Uplink', portgroupId=virtualwireId, applianceSize='large',
+	  	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EdgeH1-%s' % i)
+	edgeId_h1 = response['objectId']
+
+	# Disable Edge firewall
+	edge.firewall(edgeId_h1)
+
+	# Create LS and Edge	 
+	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
+	   description='Tenant1', name='LS-Tenant1-%s' % i, tenantId='')
+	tenant_1_vw = response['body']
+
+	edge.add_vnic(edgeId=edgeId_h1,primaryIp='192.168.0.1', mask='255.255.255.0',
+	  	prefix='24', isConnected='True', mtu='9000', name='GW-Tenant-1', type='Internal',
+	  	portgroupId=tenant_1_vw, portgroupName='', index='1')
+	 
+	response = edge.create(datastoreId='datastore-2458', hostId=host2, resourcePoolId='resgroup-2473',
+	  	username='admin', password='F1b3rC*rp.2017', ip='10.10.10.2', netmask='255.255.255.252', index='0',
+	 	mtu='9000', name='Uplink', type='Uplink', portgroupId=virtualwireId, applianceSize='large',
+	 	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EdgeH2-%s' % i)
+	edgeId_h2 = response['objectId']
+
+	# Disable Edge firewall
+	edge.firewall(edgeId_h2)
+
+	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
+		description='Tenant2', name='LS-Tenant2-%s' % i, tenantId='')
+	tenant_2_vw = response['body']
+
+	edge.add_vnic(edgeId=edgeId_h2, primaryIp='192.168.1.1', mask='255.255.255.0',
+		prefix='24', isConnected='True', mtu='9000', name='GW-Tenant-2', type='Internal',
+		portgroupId=tenant_2_vw, portgroupName='', index='1')
+
+	# Configure BGP
+	edge.bgp(edgeId=edgeId_h1, routerId='1.1.1.1', localAS='65431',
+		remoteIP='10.10.10.2', remoteAS='65432')
+	edge.bgp(edgeId=edgeId_h2, routerId='2.2.2.2', localAS='65432',
+		remoteIP='10.10.10.1', remoteAS='65431')
+
+	edge.redistribute(edgeId=edgeId_h1, action='permit', frm='bgp', prefix='')
+	edge.redistribute(edgeId=edgeId_h2, action='permit', frm='bgp', prefix='')
+
+	# Configure DHCP
+	edge.dhcp(edgeId_h1, defaultGW='192.168.0.1', ipRange='192.168.0.2-192.168.0.250',
+		subnetMask='255.255.255.0')
+	edge.dhcp(edgeId_h2, defaultGW='192.168.1.1', ipRange='192.168.1.2-192.168.1.250',
+		subnetMask='255.255.255.0')
+
+if __name__ == '__main__':
 	exit(main())
