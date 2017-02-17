@@ -1,8 +1,6 @@
 from nsx.conf import *
 from nsxramlclient.client import NsxClient
 from nsx.CRUD import Edge, LogicalSwitch
-from nsx.interfaces import interfaces
-from nsx.BGP import bgp
 
 def main():
 
@@ -13,7 +11,7 @@ def main():
   interface = interfaces(session)
   #bgp_ins = bgp(session)
 
-  N = 1								# Number of peers divided by two.
+  N = 4								# Number of peers divided by two.
   host1 = 'host-2436'				# Host 1
   host2 = 'host-2443'				# Host 2
 
