@@ -22,7 +22,7 @@ vc_settings["datacenter"] = "DC Hornos"
 #vc_settings["resource_pool"] = ""
 #vc_settings["dvs"] = "vdSwitch-SLO-HUB-01"
 #vc_settings["cluster"] = "VCPE-DCHornos-MGMT-01"
-#vc_settings["cluster"] = "VCPE-SLO-HUB-01"
+vc_settings["cluster"] = "VCPE-SLO-HUB-01"
 
 rpool_settings = dict()
 rpool_settings["Interno"] = "RpoolInternoCambiame"   #ToDo: ChangeMe!!!

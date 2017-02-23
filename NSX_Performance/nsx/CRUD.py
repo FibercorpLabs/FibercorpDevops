@@ -8,8 +8,6 @@ class Edge(object):
 	def create(self,**kwargs):
 		edge_template = self.session.extract_resource_body_example('nsxEdges', 'create')
 
-		#session.view_body_dict(edge_template)
-
 		appliance_props = edge_template['edge']['appliances']['appliance'].copy()
 		appliance_props['datastoreId'] = kwargs['datastoreId']
 		appliance_props['resourcePoolId'] = kwargs['resourcePoolId']
@@ -49,7 +47,7 @@ class Edge(object):
 		                            'cliSettings' : cli_settings}})
 
 		response = self.session.create('nsxEdges', request_body_dict=new_edge)
-		self.session.view_response(response)
+		
 		return response
 
 	def read(self,edgeId):
@@ -78,11 +76,9 @@ class Edge(object):
 
 		vnics['vnic']['index'] = kwargs['index']
 
-		#self.session.view_body_dict(vnics)
 		response = self.session.update('vnic',uri_parameters={'edgeId' : kwargs['edgeId'], 
 			'index' : kwargs['index']}, request_body_dict=vnics)
-		self.session.view_response(response)
-
+		
 	def add_vnic(self, **kwargs):
 		edge = Edge(self.session)
 		edge_config = edge.read(kwargs['edgeId'])
@@ -105,11 +101,9 @@ class Edge(object):
 
 		vnics['vnic']['index'] = kwargs['index']
 
-		#self.session.view_body_dict(vnics)
 		response = self.session.update('vnic',uri_parameters={'edgeId' : kwargs['edgeId'], 
 			'index' : kwargs['index']}, request_body_dict=vnics)
-		self.session.view_response(response)
-
+		
 	def firewall(self, edgeId, **kwargs):
 		uri_parameters = {}
 		uri_parameters = {'edgeId': edgeId}
@@ -119,35 +113,30 @@ class Edge(object):
 		
 		response = self.session.update('nsxEdgeFirewallConfig', uri_parameters,
 		 request_body_dict={'firewall' : {'enabled' : 'false'}})
-		self.session.view_response(response)
-
+		
 	def dhcp(self, edgeId, **kwargs):
 		uri_parameters = {}
 		uri_parameters = {'edgeId': edgeId}
 
 		dhcp_template = self.session.extract_resource_body_example('dhcp',
 				'update')
-		#self.session.view_body_dict(dhcp_template)
-
+		
 		dhcp_template['dhcp']['enabled'] = 'True'
 		dhcp_template['dhcp']['ipPools']['ipPool'] = {'defaultGateway' : kwargs['defaultGW'],
 		'ipRange' : kwargs['ipRange'], 'subnetMask' : kwargs['subnetMask']}
 		
 		dhcp_template['dhcp'].pop('staticBindings')
-		self.session.view_body_dict(dhcp_template)
-
+		
 		response = self.session.update('dhcp', uri_parameters,
 		 request_body_dict=dhcp_template)
-		self.session.view_response(response)
-
+		
 	def bgp(self, **kwargs):
 		uri_parameters = {}
 		uri_parameters = {'edgeId': kwargs['edgeId']}
 
 		routing_template = self.session.extract_resource_body_example('routingConfig',
 			'update')
-		self.session.view_body_dict(routing_template)
-
+		
 		routingGlobal_template = routing_template['routing']['routingGlobalConfig']
 		bgp_template = routing_template['routing']['bgp']
 		
@@ -162,9 +151,6 @@ class Edge(object):
 		routingGlobal_template.pop('ipPrefixes')
 		routingGlobal_template.pop('logging')
 
-		self.session.view_body_dict(bgp_template)
-		self.session.view_body_dict(routingGlobal_template)
-
 		response = self.session.update('routingConfig', uri_parameters,
 		 request_body_dict={'routing': {'bgp': bgp_template, 
 		 'routingGlobalConfig': routingGlobal_template}})
@@ -176,30 +162,21 @@ class Edge(object):
 		edge = Edge(self.session)
 		edge_config = edge.read(kwargs['edgeId'])
 
-		self.session.view_body_dict(edge_config)
-
-		
 		routing = edge_config['edge']['features']['routing']
-		self.session.view_body_dict(routing)
-
+		
 		routing['bgp']['redistribution']['enabled'] = 'true'
 		routing['bgp']['redistribution']['rules'] = {'rule' : {'action': kwargs['action'],
 		 'from' : {'bgp' : 'true', 'static' : 'true', 'connected' : 'true'}}}#, 'prefixName' : kwargs['prefix']}}
 		
-		self.session.view_body_dict(routing)
-
 		response = self.session.update('routingConfig',uri_parameters=uri_parameters,request_body_dict={'routing' : routing})
-		self.session.view_response(response)
-
+		
 
 	def delete(self, edgeId):
 		uri_parameters = {}
 		uri_parameters['edgeId'] = edgeId
 
 		response = self.session.delete('nsxEdge',uri_parameters)
-		self.session.view_response(response)
-
-
+		
 #NSX Logical Switch
 
 class LogicalSwitch(object):
@@ -210,8 +187,7 @@ class LogicalSwitch(object):
 		vdn_scopes = self.session.read('vdnScopes','read')['body']
 
 		vdn_scope_dict_list = [scope_dict[1] for scope_dict in vdn_scopes['vdnScopes'].items()]
-		#session.view_body_dict(vdn_scope_dict_list)
-
+		
 		for scope in vdn_scope_dict_list:
 			for tz in scope:
 				if tz['name']  == kwargs['transportZone']:
@@ -221,8 +197,7 @@ class LogicalSwitch(object):
 				break
 
 		lswitch_create_dict = self.session.extract_resource_body_example('logicalSwitches', 'create')
-		self.session.view_body_dict(lswitch_create_dict)
-
+		
 		lswitch_create_dict['virtualWireCreateSpec']['controlPlaneMode'] = kwargs['controlPlaneMode']
 		lswitch_create_dict['virtualWireCreateSpec']['description'] = kwargs['description']
 		lswitch_create_dict['virtualWireCreateSpec']['name'] = kwargs['name']
@@ -235,7 +210,6 @@ class LogicalSwitch(object):
 		response = self.session.create('logicalSwitches', uri_parameters={'scopeId': scopeId},
 			request_body_dict=lswitch_create_dict)
 
-		self.session.view_response(response)
 		return response
 
 	def read(self, virtualwireId):
@@ -243,7 +217,7 @@ class LogicalSwitch(object):
 
 	def delete(self, virtualwireId):
 		response = self.session.delete('logicalSwitch', uri_parameters={'virtualWireID': virtualWireId})
-		self.session.view_response(response)
+		
 
 class controller(object):
 	def __init__(self,session):

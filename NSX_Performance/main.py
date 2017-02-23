@@ -1,6 +1,22 @@
 from nsx.conf import *
+from nsx.objects import *
 from nsxramlclient.client import NsxClient
 from nsx.CRUD import Edge, LogicalSwitch
+from vcenter.CreateVMWVMfromTemplate import *
+
+def portgroupName(session, vw_name):
+	search = getId(session)
+
+	response = search.readVW(vw_name)
+
+	dvs = response['virtualWire']['vdsContextWithBacking'][0]['switch']['objectId']
+	sid = response['virtualWire']['vdnId']
+	name = response['virtualWire']['name']
+
+	pgname = 'vxw-%s-%s-sid-%s-%s' % (dvs, vw_name, sid, name)
+
+	return pgname
+
 
 def main():
 
@@ -9,7 +25,7 @@ def main():
   edge = Edge(session)
   ls = LogicalSwitch(session)
   
-  N = 4								# Number of peers divided by two.
+  N = 1								# Number of peers divided by two.
   host1 = 'host-2436'				# Host 1
   host2 = 'host-2443'				# Host 2
 
@@ -69,6 +85,20 @@ def main():
 		subnetMask='255.255.255.0')
 	edge.dhcp(edgeId_h2, defaultGW='192.168.1.1', ipRange='192.168.1.2-192.168.1.250',
 		subnetMask='255.255.255.0')
+
+	tenant1_pg = portgroupName(session, tenant_1_vw)
+	tenant2_pg = portgroupName(session, tenant_2_vw)
+
+	# Creating tenants
+	VMfromTemplate(vm_name='vm_tenant%s' % str(i), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
+		user='administrator@vsphere.local', passw='F1b3rC*rp',cpus=1, mem=2, vm_folder='Tenants',
+		datastore=None, resource_pool=None,	power_on=True, iops=100, disk=None,
+		nic0=tenant1_pg, nic1=None, nic2=None)
+	VMfromTemplate(vm_name='vm_tenant%s' % str(i+1), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
+		user='administrator@vsphere.local', passw='F1b3rC*rp',cpus=1, mem=2, vm_folder='Tenants',
+		datastore=None, resource_pool=None,	power_on=True, iops=100, disk=None,
+		nic0=tenant2_pg, nic1=None, nic2=None)
+
 
 if __name__ == '__main__':
 	exit(main())

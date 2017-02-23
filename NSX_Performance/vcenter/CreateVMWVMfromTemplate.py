@@ -264,17 +264,14 @@ def clone_vm(
     #wait_for_task(task)
     print task.info.key
 
-
-def main():
-    args = get_args()
-
+def VMfromTemplate(**kwargs):
     try:
         si = None
         try:
             #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user=kwargs['user'],
+                                      pwd=kwargs['passw'],
                                       port=443,
                                       sslContext=context)
 
@@ -285,14 +282,18 @@ def main():
         content = si.RetrieveContent()
         template = None
 
-        template = get_obj(content, [vim.VirtualMachine], args.template)
+
+        template = get_obj(content, [vim.VirtualMachine], kwargs['template_name'])
 
         if template:
-        	clone_vm(content, template, args.vm_name, si,vc_settings["datacenter"], args.vm_folder,
-        		args.datastore, vc_settings["cluster"],args.resource_pool, args.power_on,
-                args.nic0, args.nic1, args.nic2, args.cpus, args.mem, args.iops, args.disk )
+            clone_vm(content, template, kwargs['vm_name'], si,vc_settings["datacenter"],
+                kwargs['vm_folder'], kwargs['datastore'], vc_settings["cluster"],
+                kwargs['resource_pool'], kwargs['power_on'], kwargs['nic0'], kwargs['nic1'],
+                kwargs['nic2'], kwargs['cpus'], kwargs['mem'],
+                kwargs['iops'], kwargs['disk'])
+
         else:
-    		print "template not found"
+            print "template not found"
 
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
@@ -301,8 +302,3 @@ def main():
     except Exception, e:
         print "Caught exception: %s" % str(e)
         return 1
-
-
-
-if __name__ == "__main__":
-    main()

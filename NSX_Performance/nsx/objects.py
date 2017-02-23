@@ -6,8 +6,7 @@ class getId(object):
 
 	def edges(self):
 		edges_config = self.session.read('nsxEdges')
-		self.session.view_body_dict(edges_config['body'])
-
+		
 		try:
 			for i in range(len(edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'])):
 				r = edges_config['body']['pagedEdgeList']['edgePage']['edgeSummary'][i]
@@ -18,18 +17,15 @@ class getId(object):
 
 	def vdnScopes(self):
 		vdnScopes = self.session.read('vdnScopes','read')
-		#session.view_body_dict(vdnScopes['body'])
-
-		print vdnScopes['body']['vdnScopes']['vdnScope']['name'] + ' -- '
-		 + vdnScopes['body']['vdnScopes']['vdnScope']['objectId']
+		
+		print vdnScopes['body']['vdnScopes']['vdnScope']['name'] + ' -- ' + vdnScopes['body']['vdnScopes']['vdnScope']['objectId']
 
 	def virtualWires(self):
 		uri_parameters = {}
 		uri_parameters = {'scopeId': 'vdnscope-2'}
 
 		vwires = self.session.read('logicalSwitches',uri_parameters)
-		self.session.view_body_dict(vwires['body'])
-		
+				
 		try:
 			for i in range(len(vwires['body']['virtualWires']['dataPage']['virtualWire'])):
 				vw = vwires['body']['virtualWires']['dataPage']['virtualWire'][i]
@@ -38,3 +34,10 @@ class getId(object):
 		except KeyError:
 			vw = vwires['body']['virtualWires']['dataPage']['virtualWire']
 			print vw['name'] + " -- " + vw['objectId']
+
+	def readVW(self, virtualWireID):
+		uri_parameters = {'virtualWireID': virtualWireID}
+
+		response = self.session.read('logicalSwitch', uri_parameters)
+		
+		return response['body']
