@@ -1,4 +1,4 @@
-from paramiko import SSHClient, 
+from paramiko import SSHClient
 
 
 def main():
