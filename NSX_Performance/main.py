@@ -3,21 +3,27 @@ from nsx.objects import *
 from nsxramlclient.client import NsxClient
 from nsx.CRUD import Edge, LogicalSwitch
 from vcenter.CreateVMWVMfromTemplate import *
+from paramiko import *
 
 def portgroupName(session, vw_name):
 	search = getId(session)
 
 	response = search.readVW(vw_name)
 
-	dvs = response['virtualWire']['vdsContextWithBacking'][0]['switch']['objectId']
+	session.view_body_dict(response)
+
+	for i in range(0,len(response['virtualWire']['vdsContextWithBacking'])):
+		if response['virtualWire']['vdsContextWithBacking'][i]['switch']['name'] == 'vdSwitch-SLO-HUB-01':
+			index = i
+			break
+
+	dvs = response['virtualWire']['vdsContextWithBacking'][index]['switch']['objectId']
 	sid = response['virtualWire']['vdnId']
 	name = response['virtualWire']['name']
 
 	pgname = 'vxw-%s-%s-sid-%s-%s' % (dvs, vw_name, sid, name)
 
 	return pgname
-
-
 def main():
 
   session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
@@ -98,7 +104,6 @@ def main():
 		user='administrator@vsphere.local', passw='F1b3rC*rp',cpus=1, mem=2, vm_folder='Tenants',
 		datastore=None, resource_pool=None,	power_on=True, iops=100, disk=None,
 		nic0=tenant2_pg, nic1=None, nic2=None)
-
 
 if __name__ == '__main__':
 	exit(main())
