@@ -1,21 +1,32 @@
 from paramiko import SSHClient, AutoAddPolicy
 
-
 def main():
+
+	N = 2
 	
 	client = SSHClient()
 	server = SSHClient()
 
-	client.set_missing_host_key_policy(AutoAddPolicy())
-	client.connect('200.0.0.2', username='tenant', password='tenant')
-	stdin, stdout, stderr = client.exec_command("sudo sed -i -e 's/hosthost/host1/g' /etc/collectd/collectd.conf", get_pty=True)
-	stdin.write('tenant\n')
-	stdin.flush()
+	for i in range(2,N+2):
+		
+		client.set_missing_host_key_policy(AutoAddPolicy())
+		client.connect('200.0.0.%s' % i, username='tenant', password='tenant')
+		stdin, stdout, stderr = client.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % i, get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
 
-	server.set_missing_host_key_policy(AutoAddPolicy())
-	server.connect('200.0.0.3', username='tenant', password='tenant')
-	stdin, stdout, stderr = server.exec_command("sudo sed -i -e 's/hosthost/host2/g' /etc/collectd/collectd.conf", get_pty=True)
-	stdin.write('tenant\n')
-	stdin.flush()
+		stdin, stdout, stderr = client.exec_command("sudo service collectd restart", get_pty=True)
+
+		server.set_missing_host_key_policy(AutoAddPolicy())
+		server.connect('200.0.0.%s' % (i+1), username='tenant', password='tenant')
+		stdin, stdout, stderr = server.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % (i+1), get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+
+		stdin, stdout, stderr = server.exec_command("sudo service collectd restart", get_pty=True)
+
+		i += 1
+
+
 if __name__ == '__main__':
 	exit(main())

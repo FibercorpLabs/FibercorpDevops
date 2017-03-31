@@ -124,7 +124,6 @@ class Edge(object):
 		dhcp_template['dhcp']['enabled'] = 'True'
 		dhcp_template['dhcp']['ipPools']['ipPool'] = {'defaultGateway' : kwargs['defaultGW'],
 		'ipRange' : kwargs['ipRange'], 'subnetMask' : kwargs['subnetMask']}
-		
 		dhcp_template['dhcp'].pop('staticBindings')
 		
 		response = self.session.update('dhcp', uri_parameters,

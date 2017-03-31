@@ -24,6 +24,7 @@ def portgroupName(session, vw_name):
 	pgname = 'vxw-%s-%s-sid-%s-%s' % (dvs, vw_name, sid, name)
 
 	return pgname
+
 def main():
 
   session = NsxClient(nsxraml_file, nsxmanager, nsx_username, nsx_password, debug=True)
@@ -31,7 +32,7 @@ def main():
   edge = Edge(session)
   ls = LogicalSwitch(session)
   
-  N = 1								# Number of peers divided by two.
+  N = 2								# Number of peers divided by two.
   host1 = 'host-2436'				# Host 1
   host2 = 'host-2443'				# Host 2
 
@@ -39,13 +40,13 @@ def main():
 
   	# Create LS and Edge  	
   	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
-	   description='VTEP-%s' % i, name='LS-%s' % i, tenantId='')
+	   description='VTEP-%s' % i, name='LS_UPLINK_%s' % i, tenantId='')
 	virtualwireId = response['body']
 
 	response = edge.create(datastoreId='datastore-2458', hostId=host1, resourcePoolId='resgroup-2473',
 		username='admin', password='F1b3rC*rp.2017', ip='10.10.10.1', netmask='255.255.255.252', index='0',
 	  	mtu='9000', name='Uplink', type='Uplink', portgroupId=virtualwireId, applianceSize='large',
-	  	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EdgeH1-%s' % i)
+	  	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EDGE_1_%s' % i)
 	edgeId_h1 = response['objectId']
 
 	# Disable Edge firewall
@@ -53,7 +54,7 @@ def main():
 
 	# Create LS and Edge	 
 	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
-	   description='Tenant1', name='LS-Tenant1-%s' % i, tenantId='')
+	   description='Tenant1', name='LS_1_%s' % i, tenantId='')
 	tenant_1_vw = response['body']
 
 	edge.add_vnic(edgeId=edgeId_h1,primaryIp='192.168.0.1', mask='255.255.255.0',
@@ -63,14 +64,14 @@ def main():
 	response = edge.create(datastoreId='datastore-2458', hostId=host2, resourcePoolId='resgroup-2473',
 	  	username='admin', password='F1b3rC*rp.2017', ip='10.10.10.2', netmask='255.255.255.252', index='0',
 	 	mtu='9000', name='Uplink', type='Uplink', portgroupId=virtualwireId, applianceSize='large',
-	 	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EdgeH2-%s' % i)
+	 	datacenterId='datacenter-2', edgeType='gatewayServices', edgeName='EDGE_2_%s' % i)
 	edgeId_h2 = response['objectId']
 
 	# Disable Edge firewall
 	edge.firewall(edgeId_h2)
 
 	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
-		description='Tenant2', name='LS-Tenant2-%s' % i, tenantId='')
+		description='Tenant2', name='LS_2_%s' % i, tenantId='')
 	tenant_2_vw = response['body']
 
 	edge.add_vnic(edgeId=edgeId_h2, primaryIp='192.168.1.1', mask='255.255.255.0',
@@ -96,11 +97,11 @@ def main():
 	tenant2_pg = portgroupName(session, tenant_2_vw)
 
 	# Creating tenants
-	VMfromTemplate(vm_name='vm_tenant%s' % str(i), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
+	VMfromTemplate(vm_name='VM_TENANT_1_%s' % str(i), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
 		user='administrator@vsphere.local', passw='F1b3rC*rp',cpus=1, mem=2, vm_folder='Tenants',
 		datastore=None, resource_pool=None,	power_on=True, iops=100, disk=None,
 		nic0=tenant1_pg, nic1=None, nic2=None)
-	VMfromTemplate(vm_name='vm_tenant%s' % str(i+1), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
+	VMfromTemplate(vm_name='VM_TENANT_2_%s' % str(i+1), template_name='Ubuntu Xenial Xerus 16.04.1 LTS Server',
 		user='administrator@vsphere.local', passw='F1b3rC*rp',cpus=1, mem=2, vm_folder='Tenants',
 		datastore=None, resource_pool=None,	power_on=True, iops=100, disk=None,
 		nic0=tenant2_pg, nic1=None, nic2=None)
