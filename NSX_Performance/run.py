@@ -2,13 +2,13 @@ from paramiko import SSHClient, AutoAddPolicy
 
 def main():
 
-	N = 2
+	N = 7
 	
 	client = SSHClient()
 	server = SSHClient()
 
-	for i in range(2,N+2):
-		
+	for i in range(7,N+3):
+
 		client.set_missing_host_key_policy(AutoAddPolicy())
 		client.connect('200.0.0.%s' % i, username='tenant', password='tenant')
 		stdin, stdout, stderr = client.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % i, get_pty=True)
