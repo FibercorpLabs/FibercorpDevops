@@ -16,6 +16,7 @@ def main():
 		stdin.flush()
 
 		stdin, stdout, stderr = client.exec_command("sudo service collectd restart", get_pty=True)
+		stdin, stdout, stderr = client.exec_command("nuttcp -S -p 6666", get_pty=True)
 
 		server.set_missing_host_key_policy(AutoAddPolicy())
 		server.connect('200.0.0.%s' % (i+1), username='tenant', password='tenant')
@@ -24,8 +25,11 @@ def main():
 		stdin.flush()
 
 		stdin, stdout, stderr = server.exec_command("sudo service collectd restart", get_pty=True)
+		stdin, stdout, stderr = client.exec_command("nuttcp -b -v -I ens192 -l8192 -N 1 -p 6666 -Ru -ws 8m -M 1500 -T 7200 200.0.0.%s" % i , get_pty=True)
 
 		i += 1
+
+
 
 
 if __name__ == '__main__':
