@@ -9,8 +9,8 @@ def main():
 
 	for i in range(7,N+3):
 
-		client.set_missing_host_key_policy(AutoAddPolicy())
-		client.connect('200.0.0.%s' % i, username='tenant', password='tenant')
+		tenant1.set_missing_host_key_policy(AutoAddPolicy())
+		tenant1.connect('200.0.0.%s' % i, username='tenant', password='tenant')
 		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % i, get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
