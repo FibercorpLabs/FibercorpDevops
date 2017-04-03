@@ -27,10 +27,10 @@ def main():
 		stdin, stdout, stderr = tenant2.exec_command("sudo service collectd restart", get_pty=True)
 		
 		stdin, stdout, stderr = tenant1.exec_command("nuttcp -S -p 6666")
-		stdin, stdout, stderr = tenant1.exec_command("nuttcp -S -p 6666")
+		stdin, stdout, stderr = tenant2.exec_command("nuttcp -S -p 6666")
 
-		stdin, stdout, stderr = tenant1.exec_command("nuttcp -b -v -I ens192 -l8192 -N 1 -p 6666 -Ru -ws 8m -M 1500 -T 7200 192.168.1.2")
-		stdin, stdout, stderr = tenant2.exec_command("nuttcp -b -v -I ens192 -l8192 -N 1 -p 6666 -Ru -ws 8m -M 1500 -T 7200 192.168.0.2")
+		stdin, stdout, stderr = tenant1.exec_command("nuttcp -b -v -I ens192 -l8192 -N 1 -p 6666 -Ru -ws 8m -M 1500 -T 20 192.168.1.2")
+		stdin, stdout, stderr = tenant2.exec_command("nuttcp -b -v -I ens192 -l8192 -N 1 -p 6666 -Ru -ws 8m -M 1500 -T 20 192.168.0.2")
 		
 
 		i += 1
