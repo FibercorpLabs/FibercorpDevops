@@ -16,9 +16,13 @@ def main():
 		stdin.flush()
 
 		stdin, stdout, stderr = tenant1.exec_command("sudo service collectd restart", get_pty=True)
+		print stdout.readlines()
+		print stderr.readlines()
 		stdin.write('tenant\n')
 		stdin.flush()
 		stdin, stdout, stderr = tenant1.exec_command("sudo route del default gw 200.0.0.1", get_pty=True)
+		print stdout.readlines()
+		print stderr.readlines()
 		stdin.write('tenant\n')
 		stdin.flush() 
 		stdin, stdout, stderr = tenant1.exec_command("sudo route add default gw 192.168.0.1")
