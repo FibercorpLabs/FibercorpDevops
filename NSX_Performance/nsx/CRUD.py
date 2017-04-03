@@ -215,7 +215,7 @@ class LogicalSwitch(object):
 		print virtualwireId
 
 	def delete(self, virtualwireId):
-		response = self.session.delete('logicalSwitch', uri_parameters={'virtualWireID': virtualWireId})
+		response = self.session.delete('logicalSwitch', uri_parameters={'virtualWireID': virtualwireId})
 		
 
 class controller(object):

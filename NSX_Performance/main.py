@@ -36,7 +36,7 @@ def main():
   host1 = 'host-2436'				# Host 1
   host2 = 'host-2443'				# Host 2
 
-  for i in range(1,N+1):
+  for i in range(1,N/2+1):
 
   	# Create LS and Edge  	
   	response = ls.create(transportZone='SLO-HUB-01', controlPlaneMode='HYBRID_MODE',
