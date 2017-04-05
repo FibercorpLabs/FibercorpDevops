@@ -46,8 +46,8 @@ def Destroy_VM(vmname):
 
         content = service_instance.RetrieveContent()
         vm = get_obj(content, [vim.VirtualMachine], vmname)
-        vm.PowerOffVM_Task()
-        vm.Destroy_Task()
+        vm.PowerOnVM_Task()
+        #vm.Destroy_Task()
 
     except vmodl.MethodFault as error:
         print("Caught vmodl fault : " + error.msg)
