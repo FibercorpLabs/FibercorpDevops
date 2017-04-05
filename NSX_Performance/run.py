@@ -5,7 +5,7 @@ def main():
 	tenant1 = SSHClient()
 	tenant2 = SSHClient()
 	i = 1
-	while Done is True:
+	while True:
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
 		tenant1.connect('1.1.1.%s' % str(i), username='tenant', password='tenant')
 		
