@@ -3,7 +3,7 @@ from paramiko import SSHClient, AutoAddPolicy
 def main():
 
 	
-
+		tenat1 = SSHClient()
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
 		tenant1.connect('1.1.1.2', username='tenant', password='tenant')
 		stdin, stdout, stderr = tenant1.exec_command("sudo echo 999", get_pty=True)
