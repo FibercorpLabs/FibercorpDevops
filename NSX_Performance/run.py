@@ -8,8 +8,8 @@ def main():
 	for i in range(2,122):
 
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
-		tenant1.connect('1.1.1.%s' % i, username='tenant', password='tenant')
-		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % i, get_pty=True)
+		tenant1.connect('1.1.1.%s' % str(i), username='tenant', password='tenant')
+		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
@@ -28,8 +28,8 @@ def main():
 		stdin.flush()
 
 		tenant2.set_missing_host_key_policy(AutoAddPolicy())
-		tenant2.connect('1.1.1.%s' % (i+1), username='tenant', password='tenant')
-		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % (i+1), get_pty=True)
+		tenant2.connect('1.1.1.%s' % str((i+1)), username='tenant', password='tenant')
+		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % str((i+1)), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
