@@ -14,6 +14,10 @@ def main():
 		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
+		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i+1), get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+
 		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
@@ -44,6 +48,9 @@ def main():
 		stdin.write('tenant\n')
 		stdin.flush()
 		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i-1), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
