@@ -2,12 +2,12 @@ from paramiko import SSHClient, AutoAddPolicy
 
 def main():
 
-	N = 120
+	N = 1
 	
 	tenant1 = SSHClient()
 	tenant2 = SSHClient()
 
-	for i in range(2,N+3):
+	for i in range(2,3):
 
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
 		tenant1.connect('1.1.1.%s' % i, username='tenant', password='tenant')
