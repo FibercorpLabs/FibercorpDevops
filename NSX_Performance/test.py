@@ -10,7 +10,11 @@ def main():
 		stdin.write('tenant\n')
 		stdin.flush()		
 
-		print stdout.readlines()
+		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/200.0.0.252/1.1.1.252/g' /etc/collectd/collectd.conf", get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+
+		print "Done"
 
 if __name__ == '__main__':
 	exit(main())
