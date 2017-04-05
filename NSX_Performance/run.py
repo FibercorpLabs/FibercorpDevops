@@ -70,7 +70,7 @@ def main():
 		#stdin, stdout, stderr = tenant2.exec_command("nuttcp -u -b -v -I ens192 -l8192 -N 1 -p 6667 -Ru -ws 8m -T 3600 192.168.0.2")
 		
 
-		i += 1
+		#i += 1
 
 if __name__ == '__main__':
 	exit(main())
