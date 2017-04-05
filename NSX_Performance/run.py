@@ -25,7 +25,10 @@ def main():
 		stdin.write('tenant\n')
 		stdin.flush()
 
-		stdin, stdout, stderr = tenant1.exec_command("sudo service collectd restart", get_pty=True)
+		stdin, stdout, stderr = tenant1.exec_command("sudo service collectd stop", get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+		stdin, stdout, stderr = tenant1.exec_command("sudo service collectd start", get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
@@ -55,7 +58,10 @@ def main():
 		stdin.flush()
 
 
-		stdin, stdout, stderr = tenant2.exec_command("sudo service collectd restart", get_pty=True)
+		stdin, stdout, stderr = tenant2.exec_command("sudo service collectd stop", get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
+		stdin, stdout, stderr = tenant2.exec_command("sudo service collectd start", get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
