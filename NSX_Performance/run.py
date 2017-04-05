@@ -4,7 +4,7 @@ def main():
 
 	tenant1 = SSHClient()
 	tenant2 = SSHClient()
-	i = 1
+	i = 2
 	while True:
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
 		tenant1.connect('1.1.1.%s' % str(i), username='tenant', password='tenant')
@@ -40,10 +40,10 @@ def main():
 		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/hosthost/host%s/g' /etc/collectd/collectd.conf" % str(i+1), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
-		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
+		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i+1), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
-		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i-1), get_pty=True)
+		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
 
@@ -71,7 +71,7 @@ def main():
 		#stdin, stdout, stderr = tenant2.exec_command("nuttcp -u -b -v -I ens192 -l8192 -N 1 -p 6667 -Ru -ws 8m -T 3600 192.168.0.2")
 		
 
-		i += 1
+		i += 2
 		if i == 122:
 			break
 
