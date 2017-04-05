@@ -5,7 +5,7 @@ def main():
 	tenant1 = SSHClient()
 	tenant2 = SSHClient()
 
-	for i in range(2,122):
+	for i in range(2,121):
 
 		tenant1.set_missing_host_key_policy(AutoAddPolicy())
 		tenant1.connect('1.1.1.%s' % str(i), username='tenant', password='tenant')
@@ -13,6 +13,9 @@ def main():
 		stdin.write('tenant\n')
 		stdin.flush()
 
+		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i), get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
 		stdin, stdout, stderr = tenant1.exec_command("sudo sed -i -e 's/200.0.0.252/1.1.1.252/g' /etc/collectd/collectd.conf", get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
@@ -33,6 +36,9 @@ def main():
 		stdin.write('tenant\n')
 		stdin.flush()
 
+		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/1.1.1.252%s/1.1.1.252/g' /etc/collectd/collectd.conf" % str(i+1), get_pty=True)
+		stdin.write('tenant\n')
+		stdin.flush()
 		stdin, stdout, stderr = tenant2.exec_command("sudo sed -i -e 's/200.0.0.252/1.1.1.252/g' /etc/collectd/collectd.conf", get_pty=True)
 		stdin.write('tenant\n')
 		stdin.flush()
