@@ -1,0 +1,210 @@
+<title>Vdbench profile_3/parmfile.html</title><pre>
+
+* Contents of parameter file: /root/AFA/profile_param.vdb
+
+#################################################################################
+# AFA PoC Toolkit v3.0 Configuration Specification - Phase: Profile             #
+#################################################################################
+
+include=global_param.vdb
+
+* Contents of include file: /root/AFA/global_param.vdb
+
+########################################################################
+# GLOBAL PARAMETERS FILE                                               #
+#                                                                      #
+# This file, global_param.vdb is included in EVERY parameter file used #
+# by each phase of the toolkit. Any change made here will propogate to #
+# all phases of the PoC.                                               #
+######################################################################## 
+histogram=(default,100u,200u,300u,400u,500u,600u,700u,800u,900u,1m,1100u,1200u,1300u,1400u,1500u,1600u,1700u,1800u,1900u,2m,2250u,2500u,2750u,3m,3250u,3500u,3750u,4m,4250u,4500u,4750u,5m,5250u,5500u,5750u,6m,6250u,6500u,6750u,7m,7250u,7500u,7750u,8m,8500u,9m,9500u,10m,10500u,11m,12m,13m,14m,15m,16m,17m,18m,19m,20m,30m,40m,50m)
+messagescan=no
+data_errors=1000000000
+
+* Continuing with original file: /root/AFA/profile_param.vdb
+
+
+#################################################################################
+# Data Reduction Ratio (DRR) Settings                                           #
+#################################################################################
+# Modifying the settings in the section below will result in setting the DRR    #
+# paramters for this phase of testing. Pay close attention to the value entered #
+# for dedupunit. Dedupunit should correspond to the dedup unit used by the      #
+# array. Also, all IO sizes must be a multiple of the defined dedupunit.        #
+#                                                                               #
+# For example: if setting dedupunit to 16k, all IO must be 16k or larger. It    #
+# must also be a multiple of 16k such as 32k, 48k, 64k, etc. Using 24k would    #
+# not be acceptable since 24 is not a multiple of 16. It is also important to   #
+# note that the percentages of each block size must add up to 100.              #
+#################################################################################
+
+#dedupratio=	
+#dedupunit=4k
+#dedupsets=25%
+#compratio=
+
+#################################################################################
+# Variables used by this script (see detailed explanations below)               #
+#                                                                               #
+# !ENV - defines environmental settings                                         #
+    variable substitution: # /root/AFA/poc-env.vdb - defines environmental settings                                         #
+# !SEQN - sequence number used in phases.vdb                                    #
+    variable substitution: # 3 - sequence number used in phases.vdb                                    #
+# !CAPACITY - total capacity of discovered volumes                              #
+    variable substitution: # 14019g - total capacity of discovered volumes                              #
+# !TIME - duration of test                                                      #
+    variable substitution: # 120 - duration of test                                                      #
+# !THREAD - number of threads per LUN                                           #
+# !CURVEPTS - used to generate latency curves during profiling                  #
+    variable substitution: # 10,20,30,40,50,60,70,80,90,92,94,96,98 - used to generate latency curves during profiling                  #
+# !READPCT - read percentages used during profiling                             #
+    variable substitution: # 0,35,50,80,100 - read percentages used during profiling                             #
+# !SM_THREAD - number of threads per LUN during small block profiling           #
+    variable substitution: # 16 - number of threads per LUN during small block profiling           #
+# !LG_THREAD - number of threads per LUN during large block profiling           #
+    variable substitution: # 8 - number of threads per LUN during large block profiling           #
+#                                                                               #
+# To override the default value specified for a variable, simply replace        #
+# the variable with an appropriate value. For example to modify the duration    #
+# of a run, replace elapsed=!TIME with elapsed=3600 (where 3600 is the          #
+    variable substitution: # of a run, replace elapsed=120 with elapsed=3600 (where 3600 is the          #
+# requested duration in seconds).                                               #
+#################################################################################
+
+#################################################################################
+# Variable                                                                      #
+#                                                                               #
+# !ENV - This defines which environment will be used, pre-env.vdb or            #
+    variable substitution: # /root/AFA/poc-env.vdb - This defines which environment will be used, pre-env.vdb or            #
+#        poc-env.vdb. These files contain the number of JVMs, hosts and SDs     #
+#        to include in the run. If pre-flight is selected, the pre-env.vdb      #
+#        file will be included which limits the SD size during pre-flight       #
+#        only. Without this option, it is impossible to achieve accurate        #
+#        results during pre-flight. The hosts would read/write from the         #
+#        entire SD and in many cases would be accessing blocks that have        #
+#        not been pre-conditioned. This is only necessary during pre-flight.    #
+#        During all other tests, poc-env.vdb will be used and does not          #
+#        constrain the SD size.                                                 #
+#################################################################################
+
+include=!ENV
+    variable substitution: include=/root/AFA/poc-env.vdb
+
+* Contents of include file: /root/AFA/poc-env.vdb
+
+hd=default,user=root,shell=ssh,jvms=4
+hd=vdb-001,system=vdb-001
+hd=vdb-002,system=vdb-002
+hd=vdb-003,system=vdb-003
+hd=vdb-004,system=vdb-004
+hd=vdb-005,system=vdb-005
+hd=vdb-006,system=vdb-006
+hd=vdb-007,system=vdb-007
+hd=vdb-008,system=vdb-008
+sd=default,openflags=directio
+sd=sd1_$host,host=$host,lun=/dev/sdb
+sd=sd2_$host,host=$host,lun=/dev/sdc
+sd=sd3_$host,host=$host,lun=/dev/sdd
+sd=sd4_$host,host=$host,lun=/dev/sde
+
+* Continuing with original file: /root/AFA/profile_param.vdb
+
+
+#################################################################################
+# Workload definition (WD)                                                      #
+#################################################################################
+
+wd=wd_default,sd=*
+
+#################################################################################
+# Run definition (RD)                                                           #
+#################################################################################
+
+#################################################################################
+# Variables                                                                     #
+#                                                                               #
+# !SEQN - Sequence number defined for the run in the phases.vdb file. This is   #
+    variable substitution: # 3 - Sequence number defined for the run in the phases.vdb file. This is   #
+#        used for reference and by the reporting functions.                     #
+#                                                                               #
+# Several variables are called during the run definition and are associate with #
+# pre-flight. These variables have 2 possible sets of values. These values      #
+# are direclty related to whether or not the pre-flight option was specified.   #
+# Please see below for a detailed explanation.                                  #
+#                                                                               #
+# Pre-Flight                W/O Pre-Flight                                      #
+# !TIME = 30 seconds        !TIME = 120 seconds                                 #
+    variable substitution: # 120 = 30 seconds        120 = 120 seconds                                 #
+# !CURVEPTS = 10,50,90      !CURVEPTS = 10,20,30,40,50,60,70,80,90,92,94,96,98  #    
+    variable substitution: # 10,20,30,40,50,60,70,80,90,92,94,96,98 = 10,50,90      10,20,30,40,50,60,70,80,90,92,94,96,98 = 10,20,30,40,50,60,70,80,90,92,94,96,98  #    
+# !READPCT = 0,50,100       !READPCT = 0,35,50,80,100                           #
+    variable substitution: # 0,35,50,80,100 = 0,50,100       0,35,50,80,100 = 0,35,50,80,100                           #
+#                                                                               #
+# Threads are variable and are a calculation. This involves dividing the target #
+# queue depth (512) by the number of LUNs. This ensures the target queue depth  #
+# is reached by assigning the correct number of threads per LUN.                #
+#                                                                               #
+# !SM_THREAD = (512/LUNs)*2     !LG_THREAD = 512/LUNs                           #                                                 
+    variable substitution: # 16 = (512/LUNs)*2     8 = 512/LUNs                           #                                                 
+#################################################################################
+
+rd=default,curve=(!CURVEPTS),iorate=curve,interval=1,warmup=5,elapsed=!TIME,pause=0,maxdata=10t
+    variable substitution: rd=default,curve=(10,20,30,40,50,60,70,80,90,92,94,96,98),iorate=curve,interval=1,warmup=5,elapsed=120,pause=0,maxdata=10t
+rd=small_!SEQN,wd=wd_default,forxfersize=(4k,8k,16k,32k),forrdpct=(!READPCT),forseekpct=100,forthreads=!SM_THREAD
+    variable substitution: rd=small_3,wd=wd_default,forxfersize=(4k,8k,16k,32k),forrdpct=(0,35,50,80,100),forseekpct=100,forthreads=16
+rd=large_!SEQN,wd=wd_default,forxfersize=(64k,128k,256k),forrdpct=(!READPCT),forseekpct=100,forthreads=!LG_THREAD
+    variable substitution: rd=large_3,wd=wd_default,forxfersize=(64k,128k,256k),forrdpct=(0,35,50,80,100),forseekpct=100,forthreads=8
+ 
+*
+* Parameters after $host and #host values were replaced:
+*
+ 
+histogram=(default,100u,200u,300u,400u,500u,600u,700u,800u,900u,1m,1100u,1200u,1300u,1400u,1500u,1600u,1700u,1800u,1900u,2m,2250u,2500u,2750u,3m,3250u,3500u,3750u,4m,4250u,4500u,4750u,5m,5250u,5500u,5750u,6m,6250u,6500u,6750u,7m,7250u,7500u,7750u,8m,8500u,9m,9500u,10m,10500u,11m,12m,13m,14m,15m,16m,17m,18m,19m,20m,30m,40m,50m)
+messagescan=no
+data_errors=1000000000
+hd=default,user=root,shell=ssh,jvms=4
+hd=vdb-001,system=vdb-001
+hd=vdb-002,system=vdb-002
+hd=vdb-003,system=vdb-003
+hd=vdb-004,system=vdb-004
+hd=vdb-005,system=vdb-005
+hd=vdb-006,system=vdb-006
+hd=vdb-007,system=vdb-007
+hd=vdb-008,system=vdb-008
+sd=default,openflags=directio
+sd=sd1_vdb-001,host=vdb-001,lun=/dev/sdb
+sd=sd1_vdb-002,host=vdb-002,lun=/dev/sdb
+sd=sd1_vdb-003,host=vdb-003,lun=/dev/sdb
+sd=sd1_vdb-004,host=vdb-004,lun=/dev/sdb
+sd=sd1_vdb-005,host=vdb-005,lun=/dev/sdb
+sd=sd1_vdb-006,host=vdb-006,lun=/dev/sdb
+sd=sd1_vdb-007,host=vdb-007,lun=/dev/sdb
+sd=sd1_vdb-008,host=vdb-008,lun=/dev/sdb
+sd=sd2_vdb-001,host=vdb-001,lun=/dev/sdc
+sd=sd2_vdb-002,host=vdb-002,lun=/dev/sdc
+sd=sd2_vdb-003,host=vdb-003,lun=/dev/sdc
+sd=sd2_vdb-004,host=vdb-004,lun=/dev/sdc
+sd=sd2_vdb-005,host=vdb-005,lun=/dev/sdc
+sd=sd2_vdb-006,host=vdb-006,lun=/dev/sdc
+sd=sd2_vdb-007,host=vdb-007,lun=/dev/sdc
+sd=sd2_vdb-008,host=vdb-008,lun=/dev/sdc
+sd=sd3_vdb-001,host=vdb-001,lun=/dev/sdd
+sd=sd3_vdb-002,host=vdb-002,lun=/dev/sdd
+sd=sd3_vdb-003,host=vdb-003,lun=/dev/sdd
+sd=sd3_vdb-004,host=vdb-004,lun=/dev/sdd
+sd=sd3_vdb-005,host=vdb-005,lun=/dev/sdd
+sd=sd3_vdb-006,host=vdb-006,lun=/dev/sdd
+sd=sd3_vdb-007,host=vdb-007,lun=/dev/sdd
+sd=sd3_vdb-008,host=vdb-008,lun=/dev/sdd
+sd=sd4_vdb-001,host=vdb-001,lun=/dev/sde
+sd=sd4_vdb-002,host=vdb-002,lun=/dev/sde
+sd=sd4_vdb-003,host=vdb-003,lun=/dev/sde
+sd=sd4_vdb-004,host=vdb-004,lun=/dev/sde
+sd=sd4_vdb-005,host=vdb-005,lun=/dev/sde
+sd=sd4_vdb-006,host=vdb-006,lun=/dev/sde
+sd=sd4_vdb-007,host=vdb-007,lun=/dev/sde
+sd=sd4_vdb-008,host=vdb-008,lun=/dev/sde
+wd=wd_default,sd=*
+rd=default,curve=(10,20,30,40,50,60,70,80,90,92,94,96,98),iorate=curve,interval=1,warmup=5,elapsed=120,pause=0,maxdata=10t
+rd=small_3,wd=wd_default,forxfersize=(4k,8k,16k,32k),forrdpct=(0,35,50,80,100),forseekpct=100,forthreads=16
+rd=large_3,wd=wd_default,forxfersize=(64k,128k,256k),forrdpct=(0,35,50,80,100),forseekpct=100,forthreads=8
