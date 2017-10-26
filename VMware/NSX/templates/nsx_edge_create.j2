@@ -32,36 +32,42 @@
       {% if vmFolderId is defined %}
       <vmFolderId> {{ vmFolderId }} </vmFolderId>
       {% endif %}
+      {% if customField is defined %}
       <customField>
-        {% if customFieldKey is defined %}
-        <key> {{ customFieldKey }} </key>
+        {% if customField.key is defined %}
+        <key> {{ customField.key }} </key>
         {% endif %}
-        {% if customFieldValue is defined %}
-        <value> {{ customFieldValue }} </value>
+        {% if customField.value is defined %}
+        <value> {{ customField.value }} </value>
         {% endif %}
       </customField>
+      {% endif %}
+      {% if cpuReservation is defined %}
       <cpuReservation>
-        {% if cpuLimit is defined %}
-        <limit> {{ cpuLimit }} </limit>
+        {% if cpuReservation.limit is defined %}
+        <limit> {{ cpuReservation.limit }} </limit>
         {% endif %}
-        {% if cpuReservation is defined %}
-        <reservation> {{ cpuReservation }} </reservation>
+        {% if reservation is defined %}
+        <reservation> {{ cpuReservation.reservation }} </reservation>
         {% endif %}
-        {% if cpuShares is defined %}
-        <shares> {{ cpuShares }} </shares>
+        {% if cpuReservation.shares is defined %}
+        <shares> {{ cpuReservation.shares }} </shares>
         {% endif %}
       </cpuReservation>
+      {% endif %}
+      {% if memoryReservation is defined %}
       <memoryReservation>
-        {% if memLimit is defined %}
-        <limit> {{ memLimit }} </limit>
+        {% if memoryReservation.limit is defined %}
+        <limit> {{ memoryReservation.limit }} </limit>
         {% endif %}
-        {% if memReservation is defined %}
-        <reservation> {{ memReservation }} </reservation>
+        {% if memoryReservation.reservation is defined %}
+        <reservation> {{ memoryReservation.reservation }} </reservation>
         {% endif %}
-        {% if memShares is defined %}
-        <shares> {{ memShares }} </shares>
+        {% if memoryReservation.shares is defined %}
+        <shares> {{ memoryReservation.shares }} </shares>
         {% endif %}
       </memoryReservation>
+      {% endif %}
     </appliance>
   </appliances>
   {% endif %}

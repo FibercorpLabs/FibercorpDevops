@@ -6,6 +6,7 @@ import jinja2
 
 from pprint import pprint
 
+
 #nsxGet('/api/2.0/services/vcconfig')
 
 #TODO RETURN LIST as json
@@ -122,13 +123,6 @@ def createEdge(datacenterMoid,
                 }
 
   dir = os.path.dirname(__file__)
-  nsx_edge_xml = os.path.join(dir, '../templates/nsx_edge.j2')
+  nsx_edge_xml = os.path.join(dir, '../templates/nsx_edge_create.j2')
 
-  print jinja2.render(nsx_edge_xml, jinja_vars)
-
-
-
-createEdge("data1", "some1", "descriptIOnN", "xL", "rs-1", "ds-1", "idx99", "vnicSome", "UPLINK",
-  "pg0101", "192.168.0.1", "255.255.255.0", "1500", "True", "user01", "jaja123", "True")
-
-
+  return nsx_edge_xml, jinja_vars
