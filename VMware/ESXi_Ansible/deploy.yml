@@ -1,0 +1,111 @@
+#!/usr/bin/env ansible-playbook
+---
+# This ansible playbook configures vSphere (ESX and vCenter) and deploys
+# S/W.
+# See https://gist.github.com/marktheunissen/2979474 for an detailed example.
+# See also: https://github.com/ansible/ansible-examples
+# This playbooks applies to set of hosts specified in the nodes variables.
+
+- name: Initializing Configuration
+  hosts: localhost
+  sudo: False
+  gather_facts: no
+  vars:
+      controller_vm_roles: ["storage", "storage", "compute", "cache", "all"]
+      ssh_pass: " {{ (lookup('file', json_config_file_vcenter)|from_json).esxPassword }}"
+  tasks:
+    - name: extract host info
+      add_host: name={{ item }} group=esx
+                ansible_user={{ esxUserName }}
+                ansible_ssh_pass={{ ssh_pass | b64decode }}
+                ansible_pass={{ ssh_pass | b64decode }}
+                deployment_role={{ controller_vm_roles[((lookup('file', json_config_file_vcenter)|from_json).nodes[item].role | default(1) )] }}
+      when: (lookup('file', json_config_file_vcenter)|from_json).nodes[item] is defined
+      with_items:
+          - "{{ (lookup('file', json_config_file_networking)|from_json).nodeIPSettings.keys() }}"
+      no_log: True
+
+    - name: Extract host info #Password not given for any groups other than ESX since ssh key authorization used
+      add_host: name={{ item }} group={{ controller_vm_roles[((lookup('file', json_config_file_vcenter)|from_json).nodes[item].role | default(1) )] }}
+                ansible_user={{ esxUserName }}
+                deployment_role={{ controller_vm_roles[((lookup('file', json_config_file_vcenter)|from_json).nodes[item].role | default(1) )] }}
+      when: (lookup('file', json_config_file_vcenter)|from_json).nodes[item] is defined
+      with_items:
+          - "{{ (lookup('file', json_config_file_networking)|from_json).nodeIPSettings.keys() }}"
+      no_log: True
+
+    - name: extract host info
+      add_host: name={{ item }} group=esx
+                ansible_user={{ esxUserName }}
+                ansible_ssh_pass={{ ssh_pass | b64decode }}
+                ansible_pass={{ ssh_pass | b64decode }}
+                deployment_role=storage
+      when: (lookup('file', json_config_file_vcenter)|from_json).nodes[item] is not defined
+      with_items:
+          - "{{ (lookup('file', json_config_file_networking)|from_json).nodeIPSettings.keys() }}"
+      no_log: True
+
+    - name: extract host info
+      add_host: name={{ item }} group=storage
+                ansible_user={{ esxUserName }}
+                deployment_role=storage
+      when: (lookup('file', json_config_file_vcenter)|from_json).nodes[item] is not defined
+      with_items:
+          - "{{ (lookup('file', json_config_file_networking)|from_json).nodeIPSettings.keys() }}"
+      no_log: True
+
+    - name: create storage group
+      add_host: name={{ item }} group=storage
+      with_items: groups['esx']
+      when: hostvars[item].deployment_role == 'UNSPECIFIED' or hostvars[item].deployment_role == 'STORAGE'
+      no_log: True
+
+    - name: create cache group
+      add_host: name={{ item }} group=cache
+      with_items: groups['esx']
+      when: hostvars[item].deployment_role == 'CACHE'
+      no_log: True
+
+    - name: create compute group
+      add_host: name={{ item }} group=compute
+      with_items: groups['esx']
+      when: hostvars[item].deployment_role == 'COMPUTE'
+      no_log: True
+
+- name: Preparing ESXi Host for Installation
+  hosts: esx
+  user: root
+  gather_facts: no
+  roles:
+    - plainesx
+
+- name: Configuring Hypervisor
+  hosts: compute
+  user: root
+  gather_facts: no
+  roles:
+    - compute
+
+- name: Deploying Storage Controller VM on ESXi Host
+  hosts: storage
+  sudo: False
+  user: springpath        # Ensure that springpath user is created.
+  gather_facts: no        # ESX/vCenter does not support gathering facts
+  roles:
+    - esx                # ESX roles is used to configure ESX and deploy Storage Controller VM
+
+- name: Configuring Storage Node
+  hosts: storage
+  sudo: False
+  user: springpath        # Ensure that springpath user is created.
+  gather_facts: no        # ESX/vCenter does not support gathering facts
+  roles:
+    - springpathvm        # Used to configure Storage Controller VM
+
+- name: Installing Software Packages on Storage Controller VM
+  sudo: False
+  hosts: springpathcontrollers
+  gather_facts: yes
+  roles:
+    - springpathcontroller # Used to configure Storage Controller
+  no_log: True
