@@ -100,7 +100,7 @@ def createEdge(datacenterMoid,
                user,
                password,
                remoteAccess):
-  
+ 
   jinja_vars = {"datacenterMoid" : datacenterMoid,
                 "name" : name,
                 "description" : description,
@@ -125,4 +125,6 @@ def createEdge(datacenterMoid,
   dir = os.path.dirname(__file__)
   nsx_edge_xml = os.path.join(dir, '../templates/nsx_edge_create.j2')
 
-  return nsx_edge_xml, jinja_vars
+  nsxPost("/api/4.0/edges", nsx_edge_xml)
+
+  #return nsx_edge_xml, jinja_vars
