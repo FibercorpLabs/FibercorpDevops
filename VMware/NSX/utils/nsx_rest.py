@@ -27,8 +27,6 @@ def nsxGet(url, fileName=None):
     with open(fileName, 'w') as newFile:
       print >> newFile, r.text
       return r.text
-  
-
 
 def nsxPost(url, data):
   rheaders = {'Content-Type': 'application/xml'}
