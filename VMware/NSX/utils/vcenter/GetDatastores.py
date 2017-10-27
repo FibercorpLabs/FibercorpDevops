@@ -1,5 +1,3 @@
-#GetAllVMWTemplates.py
-
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -28,28 +26,27 @@ def get_vim_objects(content, vim_type):
     ).view]
 
 
+def getDatastoreId(name):
+
+    ds_list = getAllDatastores()
+    print ds_list
+
+    for ds in ds_list:
+        if ds['name'] == name:
+            return ds['moId']
+
+    return ""
 
 
-
-def main():
-
-    parser = argparse.ArgumentParser(description='Retrieve all Resource Pools')
-    parser.add_argument('-u', '--user', help='VC User', required=True)
-    parser.add_argument('-p', '--passw', help='VC User Pass', required=True)
-
-
-    args = parser.parse_args()
+def getAllDatastores():
 
     try:
         si = None
         try:
             
-            # print "Trying to connect to VCENTER SERVER . . ."
-
-            #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="agaona@lab",
+                                      pwd="fibercorp",
                                       port=443,
                                       sslContext=context)
 
@@ -58,13 +55,17 @@ def main():
             atexit.register(Disconnect, si)
 
         content = si.RetrieveContent()
-        for rp in get_vim_objects(content, vim.ResourcePool):
-            if not rp.config == None:
-                if not rp.name == "Resources":
-                    print rp.name + " --- " + rp._moId
- 
- 
 
+        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.Datastore],True)
+
+        ds_list = obj_view.view
+        obj_view.Destroy()
+
+        datastores = []
+
+        for ds in ds_list:
+            datastores.append({'name' : ds.name, 'moId' : ds._moId})
+        
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
         return 1
@@ -73,9 +74,4 @@ def main():
         print "Caught exception: %s" % str(e)
         return 1
 
-
-
-
-# Start program
-if __name__ == "__main__":
-    main()
+    return datastores

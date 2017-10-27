@@ -27,16 +27,18 @@ def get_vim_objects(content, vim_type):
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
+def getResourcePoolId(name):
 
+    rpList = getAllResourcePools()
+    print rpList
 
-def main():
+    for rp in rpList:
+        if rp['name'] == name:
+            return rp['moId']
 
-    parser = argparse.ArgumentParser(description='Retrieve all Resource Pools')
-    parser.add_argument('-u', '--user', help='VC User', required=True)
-    parser.add_argument('-p', '--passw', help='VC User Pass', required=True)
+    return ""
 
-
-    args = parser.parse_args()
+def getAllResourcePools():
 
     try:
         si = None
@@ -46,8 +48,8 @@ def main():
 
             #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="agaona@lab",
+                                      pwd="fibercorp",
                                       port=443,
                                       sslContext=context)
 
@@ -55,16 +57,14 @@ def main():
             pass
             atexit.register(Disconnect, si)
 
+        resourcePools = []
+
         content = si.RetrieveContent()
+        for rp in get_vim_objects(content, vim.ResourcePool):
+            if not rp.config == None:
+                resourcePools.append({'name' : rp.name, 'moId' : rp._moId}) 
+ 
 
-        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.StoragePod],True)
-        
-        ds_cluster_list = obj_view.view
-        obj_view.Destroy()
-
-        for ds_cluster in ds_cluster_list:
-            print ds_cluster.name + ' --- ' +ds_cluster._moId
-        
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
         return 1
@@ -73,9 +73,4 @@ def main():
         print "Caught exception: %s" % str(e)
         return 1
 
-
-
-
-# Start program
-if __name__ == "__main__":
-    main()
+    return resourcePools

@@ -1,3 +1,5 @@
+#GetAllVMWTemplates.py
+
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -17,35 +19,32 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
-
-
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
+def getHostId(name):
 
+    hostList = getAllHostsId()
+    # print hostList
 
-def main():
+    for host in hostList:
+        if host['name'] == name:
+            return host['moId']
 
-    parser = argparse.ArgumentParser(description='Retrieve all Resource Pools')
-    parser.add_argument('-u', '--user', help='VC User', required=True)
-    parser.add_argument('-p', '--passw', help='VC User Pass', required=True)
+    return ""
 
-
-    args = parser.parse_args()
+def getAllHostsId():
 
     try:
         si = None
         try:
             
-            # print "Trying to connect to VCENTER SERVER . . ."
-
-            #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="agaona@lab",
+                                      pwd="fibercorp",
                                       port=443,
                                       sslContext=context)
 
@@ -53,16 +52,13 @@ def main():
             pass
             atexit.register(Disconnect, si)
 
+        hosts = []
+
         content = si.RetrieveContent()
+        for host in get_vim_objects(content, vim.HostSystem):
+            if not host.config == None:
+                hosts.append({'name' : host.name, 'moId' : host._moId})               
 
-        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.Datastore],True)
-
-        ds_list = obj_view.view
-        obj_view.Destroy()
-
-        for ds in ds_list:
-            print ds.name + ' --- ' + ds._moId
-        
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
         return 1
@@ -71,9 +67,4 @@ def main():
         print "Caught exception: %s" % str(e)
         return 1
 
-
-
-
-# Start program
-if __name__ == "__main__":
-    main()
+    return hosts

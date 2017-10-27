@@ -17,11 +17,11 @@ deploy_settings["port"]             = 443
 VCenter settings
 """
 vc_settings = dict()
-vc_settings["vcenter"] = "10.120.85.2"
+vc_settings["vcenter"] = "10.120.80.10"
 vc_settings["datacenter"] = "DC Hornos"
 #vc_settings["resource_pool"] = ""
 #vc_settings["dvs"] = "vdSwitch-SLO-HUB-01"
-vc_settings["cluster"] = "Cloud-DCHornos-Interno-01"
+#vc_settings["cluster"] = "Cloud-DCHornos-Interno-01"
 
 # rpool_settings = dict()
 # rpool_settings["Interno"] = "RpoolInternoCambiame"   #ToDo: ChangeMe!!!
