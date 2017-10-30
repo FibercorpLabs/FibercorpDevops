@@ -48,8 +48,8 @@ def getAllResourcePools():
 
             #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user="agaona@lab",
-                                      pwd="fibercorp",
+                                      user="",
+                                      pwd="",
                                       port=443,
                                       sslContext=context)
 

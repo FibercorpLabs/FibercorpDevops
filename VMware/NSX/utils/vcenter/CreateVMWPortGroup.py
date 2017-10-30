@@ -93,24 +93,8 @@ def add_dvPort_group(si, dv_switch, vlanId, name, bw):
     wait_for_task(task, si)
 
 
-
-
-
-
-# inputs = {'vcenter_ip': '15.22.18.10',
-#           'vcenter_password': 'Passw0rd123',
-#           'vcenter_user': 'Administrator',
-#           'datacenter' : 'Datacenter',
-#           'cluster': 'ReubenCluster',
-#           'dvs_name': 'TestDVS1',
-#           'dv_port_name': 'TestDVPortGroup1'
-#           }
-
 def CreateVMWPortGroup(si, vlanId, name, bw, dvs):
 
-        # print "Connected to VCENTER SERVER !"
-        
-        # get Datacenter
         content = si.RetrieveContent()
         datacenter = get_obj(content, [vim.Datacenter], vc_settings["datacenter"])
         
@@ -125,60 +109,60 @@ def CreateVMWPortGroup(si, vlanId, name, bw, dvs):
 	return 0
 
 
-def main(*args, **kwargs):
+# def main(*args, **kwargs):
 
-	parser = argparse.ArgumentParser(description='Create VMW portgroup on DVS')
-	parser.add_argument('-u', '--user', help='VC User', required=False)
-	parser.add_argument('-p', '--passw', help='VC User Pass', required=False)
-	# parser.add_argument('-d', '--dvs', help='DVS Name', required=False)
+# 	parser = argparse.ArgumentParser(description='Create VMW portgroup on DVS')
+# 	parser.add_argument('-u', '--user', help='VC User', required=False)
+# 	parser.add_argument('-p', '--passw', help='VC User Pass', required=False)
+# 	# parser.add_argument('-d', '--dvs', help='DVS Name', required=False)
 
-	args = parser.parse_args()
+# 	args = parser.parse_args()
 
-	if not args.user:
-		args.user = raw_input('User: ')
-	if not args.passw:
-		args.passw = getpass.getpass(prompt='Password:')
-	# if not args.dvs:
-	#     args.dvs = raw_input('DVS: ')
+# 	if not args.user:
+# 		args.user = raw_input('User: ')
+# 	if not args.passw:
+# 		args.passw = getpass.getpass(prompt='Password:')
+# 	# if not args.dvs:
+# 	#     args.dvs = raw_input('DVS: ')
 
-	try:
-		si = None
-		try:
+# 	try:
+# 		si = None
+# 		try:
 		
-		# print "Trying to connect to VCENTER SERVER . . ."
+# 		# print "Trying to connect to VCENTER SERVER . . ."
 
-		#si = Service Instance of vCenter
-			si = connect.SmartConnect(host=vc_settings["vcenter"],
-									user=args.user,
-									pwd=args.passw,
-									port=443,
-									sslContext=context)
-		except IOError, e:
-			pass
-			atexit.register(Disconnect, si)
+# 		#si = Service Instance of vCenter
+# 			si = connect.SmartConnect(host=vc_settings["vcenter"],
+# 									user=args.user,
+# 									pwd=args.passw,
+# 									port=443,
+# 									sslContext=context)
+# 		except IOError, e:
+# 			pass
+# 			atexit.register(Disconnect, si)
 
-		print "Connected to vCenter vSphere"
+# 		print "Connected to vCenter vSphere"
 
-		vlanIdRange = [1031, 1051]
+# 		vlanIdRange = [1031, 1051]
 
-		for i in range(vlanIdRange[0], vlanIdRange[1]):
-			exitCode = CreateVMWPortGroup(si, i, 'DCHornos-NW01-MPLS-VLAN%d' % i, None, 'vdSwitch-DCHornos-Networking-01')
-			if exitCode == 0:
-				print "--------- PORTGROUP %d --------- \n\n" % i
-				print "Vlan-ID: %d" % i
-				print "DVS: vdSwitch-DCHornos-Networking-01"
-			else:
-				break
-			time.sleep(2)
+# 		for i in range(vlanIdRange[0], vlanIdRange[1]):
+# 			exitCode = CreateVMWPortGroup(si, i, 'DCHornos-NW01-MPLS-VLAN%d' % i, None, 'vdSwitch-DCHornos-Networking-01')
+# 			if exitCode == 0:
+# 				print "--------- PORTGROUP %d --------- \n\n" % i
+# 				print "Vlan-ID: %d" % i
+# 				print "DVS: vdSwitch-DCHornos-Networking-01"
+# 			else:
+# 				break
+# 			time.sleep(2)
 
-	except vmodl.MethodFault, e:
-		print "Caught vmodl fault: %s" % e.msg
-		return 1
+# 	except vmodl.MethodFault, e:
+# 		print "Caught vmodl fault: %s" % e.msg
+# 		return 1
 
-	except Exception, e:
-		print "Caught exception: %s" % str(e)
-		return 1
+# 	except Exception, e:
+# 		print "Caught exception: %s" % str(e)
+# 		return 1
 
 
-if __name__ == '__main__':
-    exit(main())
+# if __name__ == '__main__':
+#     exit(main())

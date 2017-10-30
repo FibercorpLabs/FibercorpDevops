@@ -27,9 +27,16 @@ def get_vim_objects(content, vim_type):
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
+def getDVSId(name):
 
+    dvs_list = getAllDVS()
+    print dvs_list
 
+    for dvs in dvs_list:
+        if dvs['name'] == name:
+            return dvs['moId']
 
+    return ""
 
 def getAllDVS():
 
@@ -37,12 +44,9 @@ def getAllDVS():
         si = None
         try:
             
-            # print "Trying to connect to VCENTER SERVER . . ."
-
-            #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="",
+                                      pwd="",
                                       port=443,
                                       sslContext=context)
 

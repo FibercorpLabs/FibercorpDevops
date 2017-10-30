@@ -1,5 +1,3 @@
-#GetAllVMWTemplates.py
-
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -11,7 +9,6 @@ import requests
 import argparse
 import time
 
-
 # Disabling urllib3 ssl warnings
 requests.packages.urllib3.disable_warnings()
  
@@ -19,37 +16,32 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
-
-
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
+def getClusterId(name):
 
+    cl_list = getAllClusters()
+    print cl_list
 
+    for cl in cl_list:
+        if cl['name'] == name:
+            return cl['moId']
 
+    return ""
 
-def main():
-
-    parser = argparse.ArgumentParser(description='Create VMW portgroup on DVS')
-    parser.add_argument('-u', '--user', help='VC User', required=True)
-    parser.add_argument('-p', '--passw', help='VC User Pass', required=True)
-    parser.add_argument('-f', '--folder', help='VC User Pass', required=False)
-
-    args = parser.parse_args()
+def getAllClusters():
 
     try:
         si = None
         try:
             
-            # print "Trying to connect to VCENTER SERVER . . ."
-
-            #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="",
+                                      pwd="",
                                       port=443,
                                       sslContext=context)
 
@@ -57,13 +49,12 @@ def main():
             pass
             atexit.register(Disconnect, si)
 
-        content = si.RetrieveContent()
-        for vm in get_vim_objects(content, vim.VirtualMachine):
-        	if not vm.config == None:
-        	    if not vm.config.template:
-        		    print "VM Name    : ", vm._moId + " -- " + vm.name
+        clusters = []
 
- 
+        content = si.RetrieveContent()
+        for cl in get_vim_objects(content, vim.ClusterComputeResource):
+            
+            clusters.append({'name' : cl.name, 'id' : cl._moId}) 
 
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
@@ -73,9 +64,4 @@ def main():
         print "Caught exception: %s" % str(e)
         return 1
 
-
-
-
-# Start program
-if __name__ == "__main__":
-    main()
+    return clusters

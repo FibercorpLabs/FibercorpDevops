@@ -1,3 +1,5 @@
+#GetAllVMWTemplates.py
+
 from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
@@ -17,31 +19,34 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
+
+
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
-def main():
+def getVmId(name):
 
-    parser = argparse.ArgumentParser(description='Retrieve all Resource Pools')
-    parser.add_argument('-u', '--user', help='VC User', required=True)
-    parser.add_argument('-p', '--passw', help='VC User Pass', required=True)
+    vm_list = getAllVMs()
+    print vm_list
 
+    for vm in vm_list:
+        if vm['name'] == name:
+            return vm['moId']
 
-    args = parser.parse_args()
+    return ""
+
+def getAllVMs():
 
     try:
         si = None
         try:
             
-            # print "Trying to connect to VCENTER SERVER . . ."
-
-            #si = Service Instance of vCenter
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user=args.user,
-                                      pwd=args.passw,
+                                      user="",
+                                      pwd="",
                                       port=443,
                                       sslContext=context)
 
@@ -49,10 +54,13 @@ def main():
             pass
             atexit.register(Disconnect, si)
 
+        vms = []
+
         content = si.RetrieveContent()
-        for dvs in get_vim_objects(content, vim.ClusterComputeResource):
-            #if not dvs.config == None:
-            print dvs._moId + " -- " + dvs.name
+        for vm in get_vim_objects(content, vim.VirtualMachine):
+        	if not vm.config == None:
+        	    if not vm.config.template:
+        		    vms.append({'name' : vm.name, 'moId' : vm._moId})
 
  
 
@@ -64,7 +72,4 @@ def main():
         print "Caught exception: %s" % str(e)
         return 1
 
-
-# Start program
-if __name__ == "__main__":
-    main()
+    return vms

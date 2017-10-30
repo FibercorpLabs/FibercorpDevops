@@ -32,9 +32,9 @@ def Destroy_VM(vmname):
     context.verify_mode = ssl.CERT_NONE
 
     try:
-        service_instance = SmartConnect(host='10.120.110.6',
-                                        user='administrator@vsphere.local',
-                                        pwd='F1b3rC*rp',
+        service_instance = SmartConnect(host="",
+                                        user="",
+                                        pwd="",
                                         port=443,
                                         sslContext=context)
         if not service_instance:
@@ -46,7 +46,7 @@ def Destroy_VM(vmname):
 
         content = service_instance.RetrieveContent()
         vm = get_obj(content, [vim.VirtualMachine], vmname)
-        vm.PowerOnVM_Task()
+        #vm.PowerOnVM_Task()
         #vm.Destroy_Task()
 
     except vmodl.MethodFault as error:
