@@ -1,6 +1,8 @@
 # tests/TestNsxLogicalSwitches.py
 import unittest
-
+import sys
+sys.path.append("../utils/")
+from nsx_crud import createLS
 
 
 class NsxLogicalSwitchesTestCase(unittest.TestCase):
