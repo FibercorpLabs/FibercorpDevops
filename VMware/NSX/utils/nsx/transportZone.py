@@ -5,7 +5,6 @@ import sys
 sys.path.append("../common/")
 from jinja import render
 
-
 # Done
 # Output : tzones_list w/ name & id
 def getAllTZ():
@@ -30,12 +29,10 @@ def getTZ(name):
   r = nsxGet("/api/2.0/vdn/scopes")
 
   r_dict = json.loads(r)
-  # # pprint(r_dict)
   
   allScopes = r_dict['allScopes']
   for elem in allScopes:
     if name ==elem['name']:
-        print  elem['id']
-        return  elem['id']
+        return  elem['name'], elem['id']
 
   return ""

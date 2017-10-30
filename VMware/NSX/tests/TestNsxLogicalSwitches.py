@@ -29,9 +29,6 @@ class NsxLogicalSwitchesTestCase(unittest.TestCase):
 
 
 
-
-
-
 if __name__ == '__main__':
     suite = unittest.TestSuite()
     suite = unittest.TestLoader().loadTestsFromTestCase(NsxLogicalSwitchesTestCase)
