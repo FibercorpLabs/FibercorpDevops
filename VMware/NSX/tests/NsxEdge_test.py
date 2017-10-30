@@ -1,9 +1,13 @@
 # tests/TestNsxEdges.py
 import unittest
-
+import sys
+sys.path.append("../utils/")
+from nsx_crud import createNsxEdge
 
 
 class NsxEdgeTestCase(unittest.TestCase):
+    def __init__(self):
+        self.edgeId = ""
 
 #todo create Edge
     def setUp(self):

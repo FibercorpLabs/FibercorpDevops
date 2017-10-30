@@ -4,27 +4,25 @@ import unittest
 
 
 class NsxLogicalSwitchesTestCase(unittest.TestCase):
+    def __init__(self):
+        self.lsId = ""
+
     def setUp(self):
-        #self.widget = Widget('The widget')
-        #create NSX Edge
         pass
 
     def tearDown(self):
-        # self.widget.dispose()
-        # self.widget = None
-        pass
-
-    def test_getLogicalSwitch(self):
-        #some
         pass
 
     def test_createLogicalSwitch(self):
         pass
 
-    def test_deleteLogicalSwitch(self):
+    def test_getLogicalSwitch(self):
         pass
 
     def test_updateLogicalSwitch(self):
+        pass
+    
+    def test_deleteLogicalSwitch(self):
         pass
 
 
