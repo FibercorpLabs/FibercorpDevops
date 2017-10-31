@@ -1,9 +1,11 @@
 <virtualWireCreateSpec>
-	<name> {{ name }} </name>
-	<description> {{ description }} </description>
-	<tenantId> {{ tenantId }} </tenantId>
+	<name>{{ name }}</name>
+	<description>{{ description }}</description>
+	<tenantId>{{ tenantId }}</tenantId>
 	{% if controlPlaneMode is defined %}
-	<controlPlaneMode> {{ controlPlaneMode }} </controlPlaneMode>
+	<controlPlaneMode>{{ controlPlaneMode }}</controlPlaneMode>
 	{% endif %}
-	<guestVlanAllowed> {{ guestVlanAllowed }} </guestVlanAllowed>
+	{% if guestVlanAllowed is defined %}
+	<guestVlanAllowed>{{ guestVlanAllowed }}</guestVlanAllowed>
+	{% endif %}
 </virtualWireCreateSpec>

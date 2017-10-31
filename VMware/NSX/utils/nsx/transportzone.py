@@ -5,6 +5,7 @@ import sys
 sys.path.append("../utils/common/")
 
 from jinja import render
+from commonfunctions import removeEmptyParams
 from pprint import pprint 
 
 def getAllTzId():
@@ -69,14 +70,7 @@ def updateTzByName(currName, clusters, newName=None, description=None, controlPl
   tzName, tzId = getTzIdByName(currName)
   jinja_vars['objectId'] = tzId
 
-  keysToBeRemoved = []
-
-  for key in jinja_vars:
-    if jinja_vars[key] is None:
-      keysToBeRemoved.append(key)
-
-  for key in keysToBeRemoved:
-    jinja_vars.pop(key)
+  jinja_vars = removeEmptyParams(jinja_vars)
 
   dir = os.path.dirname(__file__)
   nsx_tz_xml = os.path.join(dir, '../../templates/nsx_transportzone_update.j2')

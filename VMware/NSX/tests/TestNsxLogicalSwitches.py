@@ -1,30 +1,41 @@
 # tests/TestNsxLogicalSwitches.py
 import unittest
 import sys
-sys.path.append("../utils/")
-from nsx_crud import createLS
+sys.path.append("../utils/nsx/")
+from logicalswitch import *
 
 
 class NsxLogicalSwitchesTestCase(unittest.TestCase):
-    def __init__(self):
-        self.lsId = ""
-
     def setUp(self):
         pass
 
     def tearDown(self):
         pass
 
-    def test_createLogicalSwitch(self):
-        pass
+    def test_02_getLogicalSwitchIdByName(self):
+        ls_name = 
+        tzone = "GLOBAL-TZ-LAB"
+        vw_name, vw_id = getLogicalSwitchIdByName(ls_name, tzone)
 
-    def test_getLogicalSwitch(self):
-        pass
+        self.assertEqual(ls_name, vw_name)
+        self.asserTrue(vw_id is not None)
 
-    def test_updateLogicalSwitch(self):
+    def test_01_createLogicalSwitch(self):
+        tzone = "GLOBAL-TZ-LAB"
+        name = "LS-TEST"
+        controlPlaneMode = "HYBRID_MODE"
+
+        createLogicalSwitch(tzone, name, controlPlaneMode=controlPlaneMode)
+
+        vw_name, vw_id = getLogicalSwitchIdByName(name, tzone)
+
+        self.assertEqual(ls_name, vw_name)
+        self.asserTrue(vw_id is not None)
+
+    def test_03_updateLogicalSwitch(self):
         pass
     
-    def test_deleteLogicalSwitch(self):
+    def test_04_deleteLogicalSwitch(self):
         pass
 
 

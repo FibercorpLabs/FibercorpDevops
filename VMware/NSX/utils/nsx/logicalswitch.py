@@ -2,14 +2,13 @@ from nsx_rest import *
 import json
 import sys
 
-sys.path.append("../common/")
+sys.path.append("../utils/common/")
 from jinja import render
+from commonfunctions import removeEmptyParams
 
 
-
-# TODO: def createTZ(name)
 # Example: createLS("some","GLOBAL-TZ-LAB")
-def createLS(tzone, name, tenantId="", description="", controlPlaneMode="", guestVlanAllowed=False):
+def createLogicalSwitch(tzone, name, tenantId=None, description=None, controlPlaneMode=None, guestVlanAllowed=None):
 
   jinja_vars = {"name": name,
                 "tenantId" : tenantId,
@@ -17,40 +16,59 @@ def createLS(tzone, name, tenantId="", description="", controlPlaneMode="", gues
                 "controlPlaneMode" : controlPlaneMode,
                 "guestVlanAllowed" : guestVlanAllowed}
 
+  jinja_vars = removeOptionalParams(jinja_vars)
+
   dir = os.path.dirname(__file__)
   nsx_ls_xml = os.path.join(dir, '../templates/nsx_logicalswitch_create.j2')
 
   data = render(nsx_ls_xml, jinja_vars)
-  print type(data)
 
-  vdnScope = getTZ(tzone)
+  vdnScope = getTzIdByName(tzone)
 
   nsxPost("/api/2.0/vdn/scopes/" + vdnScope + "/virtualwires", data)
 
-# Done
-# Output : logicalswitch_id
-def getLS(name, tzone=None):
-  if tzone is None:
-    r = nsxGet("/api/2.0/vdn/virtualwires")
-    r_dict = json.loads(r)
+# TODO:
+def getLogicalSwitchById(virtualwireId):
+  pass
 
-    vws = r_dict['dataPage']['data']
-    virtualwires = []
+def getLogicalSwitchIdByName(name, tzone):
+  vdnScope = getTzIdByName(tzone)
+  r = nsxGet("/api/2.0/vdn/scopes/" + vdnScope + "/virtualwires")
 
-    for vw in vws:
-      virtualwires.append({'name' : vw['name'], 'id' : vw['objectId']})
+  r_dict = json.loads(r)
 
-    return virtualwires
+  vws = r_dict['dataPage']['data']
 
-  else:
-    vdnScope = getTZ(tzone)
-    r = nsxGet("/api/2.0/vdn/scopes/" + vdnScope + "/virtualwires")
+  for vw in vws:
+    if vw['name'] == name:
+      return vw['name'], vw['objectId']
 
-    r_dict = json.loads(r)
+  return None
 
-    vws = r_dict['dataPage']['data']
+def getAllLogicalSwitchesId():
+  r = nsxGet("/api/2.0/vdn/virtualwires")
+  r_dict = json.loads(r)
 
-    for vw in vws:
-      if vw['name'] == name:
-        return vw['objectId']
+  vws = r_dict['dataPage']['data']
+
+  virtualwires = []
+
+  for vw in vws:
+    virtualwires.append({'name' : vw['name'], 'id' : vw['objectId']})
+
+  return virtualwires
+
+
+def updateLogicalSwitchByName(name):
+  pass
+
+
+def deleteLogicalSwitchByName(name, tzone):
+  virtualwireId = getLogicalSwitchIdByName(name, tzone)
+  nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
+
+def deleteLogicalSwitchById(virtualwireId):
+  nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
+
+
 
