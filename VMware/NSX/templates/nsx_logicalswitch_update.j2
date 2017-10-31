@@ -1,0 +1,14 @@
+<virtualWire>
+	{% if name is defined %}
+	<name>{{ name }}</name>
+	{% endif %}
+	{% if description is defined %}
+	<description>{{ description }}</description>
+	{% endif %}
+	{% if tenantId is defined %}
+	<tenantId>{{ tenantId }}</tenantId>
+	{% endif %}
+	{% if controlPlaneMode is defined %}
+	<controlPlaneMode> {{ controlPlaneMode }}</controlPlaneMode>
+	{% endif %}
+</virtualWire>

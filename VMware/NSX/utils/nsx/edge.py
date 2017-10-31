@@ -78,15 +78,16 @@ def createNsxEdge(datacenterMoid,
                             "mtu" : mtu,
                             "isConnected" : isConnected
                            }],
-                "cliSettings" : {"user" : user,
+                "cliSettings" : {"userName" : user,
                                  "password" : password,
                                  "remoteAccess" : remoteAccess}
                 }
 
   dir = os.path.dirname(__file__)
-  nsx_edge_xml = os.path.join(dir, '../templates/nsx_edge_create.j2')
-
-  r = nsxPost("/api/4.0/edges", nsx_edge_xml)
+  nsx_edge_xml = os.path.join(dir, '../../templates/nsx_edge_create.j2')
+  data = render(nsx_edge_xml, jinja_vars) 
+  print(data)
+  r = nsxPost("/api/4.0/edges", data)
   return r
 
   #return nsx_edge_xml, jinja_vars
@@ -99,7 +100,7 @@ def createNsxEdge(datacenterMoid,
 
 
 datacenterMoid = "datacenter-2"
-name = "test-edge"
+name = "test-edge1"
 applianceSize = "xlarge"
 resourcePoolId = "resgroup-457"
 datastoreId = "datastore-16"
@@ -112,7 +113,7 @@ subnetMask = "255.255.255.0"
 mtu = "1500"
 isConnected = "true"
 user = "admin"
-password = "T3stC@s3NSx"
+password = "T3stC@s3NSx!"
 remoteAccess = "true"
 
 

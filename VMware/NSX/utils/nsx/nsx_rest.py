@@ -23,9 +23,9 @@ def nsxGet(url, fileName=None):
     #print r.text
     return r.text
   else:
-    print(('REST %s is in file %s.' % (url, fileName)))
+    #print(('REST %s is in file %s.' % (url, fileName)))
     with open(fileName, 'w') as newFile:
-      print(r.text, file=newFile)
+      #print(r.text, file=newFile)
       return r.text
 
 def nsxPost(url, data):
@@ -37,13 +37,13 @@ def nsxPost(url, data):
 def nsxPut(url, data):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.put(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
-  return r.text
+  return r
 
 
 def nsxDelete(url):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.delete(MANAGER + url, auth = (USER, PASS), verify = False, headers = rheaders)
-  return r.text
+  return r
 
 
 

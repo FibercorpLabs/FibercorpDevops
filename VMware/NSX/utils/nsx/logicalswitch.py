@@ -6,8 +6,9 @@ sys.path.append("../utils/common/")
 from jinja import render
 from commonfunctions import removeEmptyParams
 
+from transportzone import *
 
-# Example: createLS("some","GLOBAL-TZ-LAB")
+# Example: createLS("GLOBAL-TZ-LAB", "EDGE-NAME-01")
 def createLogicalSwitch(tzone, name, tenantId=None, description=None, controlPlaneMode=None, guestVlanAllowed=None):
 
   jinja_vars = {"name": name,
@@ -16,24 +17,25 @@ def createLogicalSwitch(tzone, name, tenantId=None, description=None, controlPla
                 "controlPlaneMode" : controlPlaneMode,
                 "guestVlanAllowed" : guestVlanAllowed}
 
-  jinja_vars = removeOptionalParams(jinja_vars)
+  jinja_vars = removeEmptyParams(jinja_vars)
 
   dir = os.path.dirname(__file__)
-  nsx_ls_xml = os.path.join(dir, '../templates/nsx_logicalswitch_create.j2')
+  nsx_ls_xml = os.path.join(dir, '../../templates/nsx_logicalswitch_create.j2')
 
   data = render(nsx_ls_xml, jinja_vars)
 
-  vdnScope = getTzIdByName(tzone)
+  vdnScopeName, vdnScopeId = getTzIdByName(tzone)
 
-  nsxPost("/api/2.0/vdn/scopes/" + vdnScope + "/virtualwires", data)
+  return nsxPost("/api/2.0/vdn/scopes/" + vdnScopeId + "/virtualwires", data)
+
 
 # TODO:
 def getLogicalSwitchById(virtualwireId):
   pass
 
 def getLogicalSwitchIdByName(name, tzone):
-  vdnScope = getTzIdByName(tzone)
-  r = nsxGet("/api/2.0/vdn/scopes/" + vdnScope + "/virtualwires")
+  tzName, tzId = getTzIdByName(tzone)
+  r = nsxGet("/api/2.0/vdn/scopes/" + tzId + "/virtualwires")
 
   r_dict = json.loads(r)
 
@@ -58,17 +60,30 @@ def getAllLogicalSwitchesId():
 
   return virtualwires
 
+def updateLogicalSwitchByName(name, tzone, newName=None, description=None, tenantId=None, controlPlaneMode=None):
+      
+  jinja_vars = {'name' : newName,
+                'description' : description,
+                'tenantId' : tenantId,
+                'controlPlaneMode' : controlPlaneMode}
 
-def updateLogicalSwitchByName(name):
-  pass
+  jinja_vars = removeEmptyParams(jinja_vars)
+
+  vw_name, vw_id = getLogicalSwitchIdByName(name, tzone)
+
+  dir = os.path.dirname(__file__)
+  nsx_tz_xml = os.path.join(dir, '../../templates/nsx_transportzone_update.j2')
+  data = render(nsx_tz_xml, jinja_vars)
+ 
+  nsxPut("/api/2.0/vdn/virtualwires/" + vw_id, data)
 
 
 def deleteLogicalSwitchByName(name, tzone):
-  virtualwireId = getLogicalSwitchIdByName(name, tzone)
-  nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
+  virtualwireName, virtualwireId = getLogicalSwitchIdByName(name, tzone)
+  return nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
 
 def deleteLogicalSwitchById(virtualwireId):
-  nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
+  return nsxDelete("/api/2.0/vdn/virtualwires/" + virtualwireId)
 
 
 

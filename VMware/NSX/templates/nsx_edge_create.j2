@@ -24,47 +24,47 @@
     <enableCoreDump>{{ appliances.enableCoreDump }}</enableCoreDump>
     {% endif %}
     <appliance>
-      <resourcePoolId>{{ resourcePoolId }}</resourcePoolId>
-      <datastoreId>{{ datastoreId }}</datastoreId>
+      <resourcePoolId>{{ appliances.appliance.resourcePoolId }}</resourcePoolId>
+      <datastoreId>{{ appliances.appliance.datastoreId }}</datastoreId>
       {% if hostId is defined %}
-      <hostId>{{ hostId }}</hostId>
+      <hostId>{{ appliances.appliance.hostId }}</hostId>
       {% endif %}
       {% if vmFolderId is defined %}
-      <vmFolderId>{{ vmFolderId }}</vmFolderId>
+      <vmFolderId>{{ appliances.appliance.vmFolderId }}</vmFolderId>
       {% endif %}
       {% if customField is defined %}
       <customField>
-        {% if customField.key is defined %}
+        {% if appliances.appliance.customField.key is defined %}
         <key>{{ customField.key }}</key>
         {% endif %}
-        {% if customField.value is defined %}
+        {% if appliances.appliance.customField.value is defined %}
         <value>{{ customField.value }}</value>
         {% endif %}
       </customField>
       {% endif %}
-      {% if cpuReservation is defined %}
+      {% if appliances.appliance.cpuReservation is defined %}
       <cpuReservation>
-        {% if cpuReservation.limit is defined %}
-        <limit>{{ cpuReservation.limit }}</limit>
+        {% if appliances.appliance.cpuReservation.limit is defined %}
+        <limit>{{ appliances.appliance.cpuReservation.limit }}</limit>
         {% endif %}
-        {% if reservation is defined %}
-        <reservation>{{ cpuReservation.reservation }}</reservation>
+        {% if appliances.appliance.reservation is defined %}
+        <reservation>{{ appliances.appliance.cpuReservation.reservation }}</reservation>
         {% endif %}
-        {% if cpuReservation.shares is defined %}
-        <shares>{{ cpuReservation.shares }}</shares>
+        {% if appliances.appliance.cpuReservation.shares is defined %}
+        <shares>{{ appliances.appliance.cpuReservation.shares }}</shares>
         {% endif %}
       </cpuReservation>
       {% endif %}
-      {% if memoryReservation is defined %}
+      {% if appliances.appliance.memoryReservation is defined %}
       <memoryReservation>
-        {% if memoryReservation.limit is defined %}
-        <limit>{{ memoryReservation.limit }}</limit>
+        {% if appliances.appliance.memoryReservation.limit is defined %}
+        <limit>{{ appliances.appliance.memoryReservation.limit }}</limit>
         {% endif %}
-        {% if memoryReservation.reservation is defined %}
-        <reservation>{{ memoryReservation.reservation }}</reservation>
+        {% if appliances.appliance.memoryReservation.reservation is defined %}
+        <reservation>{{ appliances.appliance.memoryReservation.reservation }}</reservation>
         {% endif %}
-        {% if memoryReservation.shares is defined %}
-        <shares>{{ memoryReservation.shares }}</shares>
+        {% if appliances.appliance.memoryReservation.shares is defined %}
+        <shares>{{ appliances.appliance.memoryReservation.shares }}</shares>
         {% endif %}
       </memoryReservation>
       {% endif %}
