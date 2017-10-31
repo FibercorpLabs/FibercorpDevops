@@ -1,7 +1,10 @@
 <vdnScope>
+	<objectId>{{ objectId }}</objectId>
+	{% if name is defined %}
 	<name>{{ name }}</name>
+	{% endif %}
 	{% if description is defined %}
-	<description>{{ description}}</description>
+	<description>{{ description }}</description>
 	{% endif %}
 	<clusters>
 		<cluster>
