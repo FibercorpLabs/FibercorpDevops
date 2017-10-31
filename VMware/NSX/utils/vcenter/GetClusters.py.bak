@@ -1,6 +1,4 @@
-#GetAllVMWTemplates.py
-
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -10,7 +8,6 @@ import ssl
 import requests
 import argparse
 import time
-
 
 # Disabling urllib3 ssl warnings
 requests.packages.urllib3.disable_warnings()
@@ -25,18 +22,18 @@ def get_vim_objects(content, vim_type):
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
-def getHostId(name):
+def getClusterId(name):
 
-    hostList = getAllHostsId()
-    # print hostList
+    cl_list = getAllClusters()
+    print cl_list
 
-    for host in hostList:
-        if host['name'] == name:
-            return host['moId']
+    for cl in cl_list:
+        if cl['name'] == name:
+            return cl['moId']
 
     return ""
 
-def getAllHostsId():
+def getAllClusters():
 
     try:
         si = None
@@ -48,23 +45,23 @@ def getAllHostsId():
                                       port=443,
                                       sslContext=context)
 
-        except IOError as e:
+        except IOError, e:
             pass
             atexit.register(Disconnect, si)
 
-        hosts = []
+        clusters = []
 
         content = si.RetrieveContent()
-        for host in get_vim_objects(content, vim.HostSystem):
-            if not host.config == None:
-                hosts.append({'name' : host.name, 'moId' : host._moId})               
+        for cl in get_vim_objects(content, vim.ClusterComputeResource):
+            
+            clusters.append({'name' : cl.name, 'id' : cl._moId}) 
 
-    except vmodl.MethodFault as e:
-        print("Caught vmodl fault: %s" % e.msg)
+    except vmodl.MethodFault, e:
+        print "Caught vmodl fault: %s" % e.msg
         return 1
 
-    except Exception as e:
-        print("Caught exception: %s" % str(e))
+    except Exception, e:
+        print "Caught exception: %s" % str(e)
         return 1
 
-    return hosts
+    return clusters

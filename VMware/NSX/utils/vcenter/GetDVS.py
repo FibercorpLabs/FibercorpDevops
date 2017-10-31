@@ -1,6 +1,6 @@
 #GetAllVMWTemplates.py
 
-from VMWConfigFile import *
+from .VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -30,7 +30,7 @@ def get_vim_objects(content, vim_type):
 def getDVSId(name):
 
     dvs_list = getAllDVS()
-    print dvs_list
+    print(dvs_list)
 
     for dvs in dvs_list:
         if dvs['name'] == name:
@@ -50,7 +50,7 @@ def getAllDVS():
                                       port=443,
                                       sslContext=context)
 
-        except IOError, e:
+        except IOError as e:
             pass
             atexit.register(Disconnect, si)
 
@@ -63,12 +63,12 @@ def getAllDVS():
                 distributed_vswtiches.append({'name' : dvs.name, 'moId' : dvs._moId})
 
 
-    except vmodl.MethodFault, e:
-        print "Caught vmodl fault: %s" % e.msg
+    except vmodl.MethodFault as e:
+        print("Caught vmodl fault: %s" % e.msg)
         return 1
 
-    except Exception, e:
-        print "Caught exception: %s" % str(e)
+    except Exception as e:
+        print("Caught exception: %s" % str(e))
         return 1
 
     return distributed_vswtiches

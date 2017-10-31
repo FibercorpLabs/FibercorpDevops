@@ -76,7 +76,7 @@ def updateTzByName(currName, clusters, newName=None, description=None, controlPl
   nsx_tz_xml = os.path.join(dir, '../../templates/nsx_transportzone_update.j2')
   data = render(nsx_tz_xml, jinja_vars)
 
-  print(data)
+  print data
  
   nsxPut("/api/2.0/vdn/scopes/" + tzId + "/attributes", data)
 

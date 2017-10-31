@@ -1,5 +1,5 @@
 #GetAllVMWPortgroups.py
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -48,7 +48,7 @@ def getAllPortgroups():
 									  port=443,
 									  sslContext=context)
 
-		except IOError as e:
+		except IOError, e:
 			pass
 			atexit.register(Disconnect, si)
 
@@ -64,12 +64,12 @@ def getAllPortgroups():
 				portgroups.append({'name' : pg.name, 'moId' : pg._moId}) 
 
 
-	except vmodl.MethodFault as e:
-		print("Caught vmodl fault: %s" % e.msg)
+	except vmodl.MethodFault, e:
+		print "Caught vmodl fault: %s" % e.msg
 		return 1
 
-	except Exception as e:
-		print("Caught exception: %s" % str(e))
+	except Exception, e:
+		print "Caught exception: %s" % str(e)
 		return 1
 
 	return portgroups

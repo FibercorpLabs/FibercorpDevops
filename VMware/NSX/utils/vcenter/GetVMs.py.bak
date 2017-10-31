@@ -1,6 +1,6 @@
 #GetAllVMWTemplates.py
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -19,24 +19,26 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
+
+
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
-def getHostId(name):
+def getVmId(name):
 
-    hostList = getAllHostsId()
-    # print hostList
+    vm_list = getAllVMs()
+    print vm_list
 
-    for host in hostList:
-        if host['name'] == name:
-            return host['moId']
+    for vm in vm_list:
+        if vm['name'] == name:
+            return vm['moId']
 
     return ""
 
-def getAllHostsId():
+def getAllVMs():
 
     try:
         si = None
@@ -48,23 +50,26 @@ def getAllHostsId():
                                       port=443,
                                       sslContext=context)
 
-        except IOError as e:
+        except IOError, e:
             pass
             atexit.register(Disconnect, si)
 
-        hosts = []
+        vms = []
 
         content = si.RetrieveContent()
-        for host in get_vim_objects(content, vim.HostSystem):
-            if not host.config == None:
-                hosts.append({'name' : host.name, 'moId' : host._moId})               
+        for vm in get_vim_objects(content, vim.VirtualMachine):
+        	if not vm.config == None:
+        	    if not vm.config.template:
+        		    vms.append({'name' : vm.name, 'moId' : vm._moId})
 
-    except vmodl.MethodFault as e:
-        print("Caught vmodl fault: %s" % e.msg)
+ 
+
+    except vmodl.MethodFault, e:
+        print "Caught vmodl fault: %s" % e.msg
         return 1
 
-    except Exception as e:
-        print("Caught exception: %s" % str(e))
+    except Exception, e:
+        print "Caught exception: %s" % str(e)
         return 1
 
-    return hosts
+    return vms

@@ -1,4 +1,4 @@
-from VMWConfigFile import *
+from .VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -25,7 +25,7 @@ def get_vim_objects(content, vim_type):
 def getClusterId(name):
 
     cl_list = getAllClusters()
-    print cl_list
+    print(cl_list)
 
     for cl in cl_list:
         if cl['name'] == name:
@@ -45,7 +45,7 @@ def getAllClusters():
                                       port=443,
                                       sslContext=context)
 
-        except IOError, e:
+        except IOError as e:
             pass
             atexit.register(Disconnect, si)
 
@@ -56,12 +56,12 @@ def getAllClusters():
             
             clusters.append({'name' : cl.name, 'id' : cl._moId}) 
 
-    except vmodl.MethodFault, e:
-        print "Caught vmodl fault: %s" % e.msg
+    except vmodl.MethodFault as e:
+        print("Caught vmodl fault: %s" % e.msg)
         return 1
 
-    except Exception, e:
-        print "Caught exception: %s" % str(e)
+    except Exception as e:
+        print("Caught exception: %s" % str(e))
         return 1
 
     return clusters

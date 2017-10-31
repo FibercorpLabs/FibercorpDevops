@@ -1,6 +1,6 @@
 #GetAllVMWTemplates.py
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -19,24 +19,27 @@ requests.packages.urllib3.disable_warnings()
 context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
+
 def get_vim_objects(content, vim_type):
     '''Get vim objects of a given type.'''
     return [item for item in content.viewManager.CreateContainerView(
         content.rootFolder, [vim_type], recursive=True
     ).view]
 
-def getHostId(name):
+def getDatacenterId(name):
 
-    hostList = getAllHostsId()
-    # print hostList
+    dc_list = getAllDatacenters()
+    # print dc_list
 
-    for host in hostList:
-        if host['name'] == name:
-            return host['moId']
+    for dc in dc_list:
+        if dc['name'] == name:
+            return dc['moId']
 
     return ""
 
-def getAllHostsId():
+
+
+def getAllDatacenters():
 
     try:
         si = None
@@ -48,23 +51,28 @@ def getAllHostsId():
                                       port=443,
                                       sslContext=context)
 
-        except IOError as e:
+        except IOError, e:
             pass
             atexit.register(Disconnect, si)
 
-        hosts = []
-
         content = si.RetrieveContent()
-        for host in get_vim_objects(content, vim.HostSystem):
-            if not host.config == None:
-                hosts.append({'name' : host.name, 'moId' : host._moId})               
 
-    except vmodl.MethodFault as e:
-        print("Caught vmodl fault: %s" % e.msg)
+        obj_view = content.viewManager.CreateContainerView(content.rootFolder,[vim.Datacenter],True)
+        
+        dc_list = obj_view.view
+        obj_view.Destroy()
+
+        datacenters = []
+
+        for dc in dc_list:
+            datacenters.append({'name' : dc.name, 'moId' : dc._moId})
+        
+    except vmodl.MethodFault, e:
+        print "Caught vmodl fault: %s" % e.msg
         return 1
 
-    except Exception as e:
-        print("Caught exception: %s" % str(e))
+    except Exception, e:
+        print "Caught exception: %s" % str(e)
         return 1
 
-    return hosts
+    return datacenters

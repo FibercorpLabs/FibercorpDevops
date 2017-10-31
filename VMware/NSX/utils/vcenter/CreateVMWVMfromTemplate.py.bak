@@ -1,6 +1,6 @@
 #CreateVMWVMfromTemplate.py
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -88,11 +88,11 @@ def wait_for_task(task):
     task_done = False
     while not task_done:
         if task.info.state == 'success':
-            print("ok")
+            print "ok"
             return task.info.result
 
         if task.info.state == 'error':
-            print("error")
+            print "error"
             task_done = True
 
 
@@ -262,7 +262,7 @@ def clone_vm(
     #print "cloning VM..."
     task = template.Clone(folder=destfolder, name=vm_name, spec=clonespec)
     #wait_for_task(task)
-    print(task.info.key)
+    print task.info.key
 
 def VMfromTemplate(**kwargs):
     try:
@@ -276,7 +276,7 @@ def VMfromTemplate(**kwargs):
                                       sslContext=context)
 
 
-        except IOError as e:
+        except IOError, e:
             pass
             atexit.register(Disconnect, si)
         content = si.RetrieveContent()
@@ -293,12 +293,12 @@ def VMfromTemplate(**kwargs):
                 kwargs['iops'], kwargs['disk'])
 
         else:
-            print("template not found")
+            print "template not found"
 
-    except vmodl.MethodFault as e:
-        print("Caught vmodl fault: %s" % e.msg)
+    except vmodl.MethodFault, e:
+        print "Caught vmodl fault: %s" % e.msg
         return 1
 
-    except Exception as e:
-        print("Caught exception: %s" % str(e))
+    except Exception, e:
+        print "Caught exception: %s" % str(e)
         return 1

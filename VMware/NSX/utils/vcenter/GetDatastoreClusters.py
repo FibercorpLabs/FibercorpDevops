@@ -1,6 +1,6 @@
 #GetAllVMWTemplates.py
 
-from VMWConfigFile import *
+from .VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -51,7 +51,7 @@ def GetAllDatastoreClusters():
                                       port=443,
                                       sslContext=context)
 
-        except IOError, e:
+        except IOError as e:
             pass
             atexit.register(Disconnect, si)
 
@@ -65,15 +65,15 @@ def GetAllDatastoreClusters():
         datastore_clusters = []
 
         for ds_cluster in ds_cluster_list:
-            print ds_cluster.name
+            print(ds_cluster.name)
             datastore_clusters.append({'name' : ds_cluster.name, 'moId' : ds_cluster._moId})
         
-    except vmodl.MethodFault, e:
-        print "Caught vmodl fault: %s" % e.msg
+    except vmodl.MethodFault as e:
+        print("Caught vmodl fault: %s" % e.msg)
         return 1
 
-    except Exception, e:
-        print "Caught exception: %s" % str(e)
+    except Exception as e:
+        print("Caught exception: %s" % str(e))
         return 1
 
     return datastore_clusters
