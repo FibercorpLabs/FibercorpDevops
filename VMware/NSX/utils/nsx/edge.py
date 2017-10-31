@@ -86,13 +86,52 @@ def createNsxEdge(datacenterMoid,
   dir = os.path.dirname(__file__)
   nsx_edge_xml = os.path.join(dir, '../templates/nsx_edge_create.j2')
 
-  #nsxPost("/api/4.0/edges", nsx_edge_xml)
+  r = nsxPost("/api/4.0/edges", nsx_edge_xml)
+  return r
 
-  return nsx_edge_xml, jinja_vars
+  #return nsx_edge_xml, jinja_vars
 
-print(getAllPortgroups())
-print (getAllDatacenters())
-print (getAllResourcePools())
-print(getAllDatastores())
-print(getAllClusters())
+# print(getAllPortgroups())
+# print (getAllDatacenters())
+# print (getAllResourcePools())
+# print(getAllDatastores())
+# print(getAllClusters())
 
+
+datacenterMoid = "datacenter-2"
+name = "test-edge"
+applianceSize = "xlarge"
+resourcePoolId = "resgroup-457"
+datastoreId = "datastore-16"
+index = "0"
+vnicName = "uplink"
+vnicType = "Uplink"
+portgroupId = "dvportgroup-450"
+primaryAddress = "192.168.0.1"
+subnetMask = "255.255.255.0"
+mtu = "1500"
+isConnected = "true"
+user = "admin"
+password = "T3stC@s3NSx"
+remoteAccess = "true"
+
+
+r = createNsxEdge(datacenterMoid,
+       name,
+       "",
+       applianceSize,
+       resourcePoolId,
+       datastoreId,
+       index,
+       vnicName,
+       vnicType,
+       portgroupId,
+       primaryAddress,
+       subnetMask,
+       mtu,
+       isConnected,
+       user,
+       password,
+       remoteAccess)
+
+print (r)
