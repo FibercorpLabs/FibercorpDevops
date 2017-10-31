@@ -1,7 +1,7 @@
-from nsx_rest import *
 import json
 import sys
 
+from nsx_rest import * 
 sys.path.append("../utils/common/")
 
 from jinja import render

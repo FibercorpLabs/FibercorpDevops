@@ -22,7 +22,6 @@ class NsxTransportZoneTestCase(unittest.TestCase):
         tzName, tzId = getTzIdByName(name)
         self.assertEqual(name, tzName)
         self.assertTrue(tzId is not None)
-        print(tzName, tzId)
 
     @unittest.skip("")
     def test_03_getTransportZoneById(self):

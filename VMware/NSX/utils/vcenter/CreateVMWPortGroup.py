@@ -1,6 +1,6 @@
 #CreateVMWPortGroup.py
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl

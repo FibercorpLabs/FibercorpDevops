@@ -31,22 +31,34 @@ def nsxGet(url, fileName=None):
 def nsxPost(url, data):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.post(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
+<<<<<<< HEAD
   #print(r.text)
   return r
+=======
+  return r.text
+>>>>>>> 5f9f3b998bcefbc5287d282218cbed4bd8ce9a6f
 
 
 def nsxPut(url, data):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.put(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
+<<<<<<< HEAD
   #print(r.text)
   return r
+=======
+  return r.text
+>>>>>>> 5f9f3b998bcefbc5287d282218cbed4bd8ce9a6f
 
 
 def nsxDelete(url):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.delete(MANAGER + url, auth = (USER, PASS), verify = False, headers = rheaders)
+<<<<<<< HEAD
   #print(r.text)
   return r
+=======
+  return r.text
+>>>>>>> 5f9f3b998bcefbc5287d282218cbed4bd8ce9a6f
 
 
 
