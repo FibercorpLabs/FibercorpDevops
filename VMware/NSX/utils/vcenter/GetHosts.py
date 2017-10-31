@@ -1,6 +1,6 @@
 #GetAllVMWTemplates.py
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim import connect
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
@@ -43,8 +43,8 @@ def getAllHostsId():
         try:
             
             si = connect.SmartConnect(host=vc_settings["vcenter"],
-                                      user="",
-                                      pwd="",
+                                      user=vc_settings["user"],
+                                      pwd=vc_settings["password"],
                                       port=443,
                                       sslContext=context)
 

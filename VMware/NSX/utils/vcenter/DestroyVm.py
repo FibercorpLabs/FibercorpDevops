@@ -3,7 +3,7 @@
 vSphere Python SDK program for shutting down VMs
 """
 
-from .VMWConfigFile import *
+from VMWConfigFile import *
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
 
