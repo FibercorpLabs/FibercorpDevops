@@ -5,6 +5,9 @@ import sys
 sys.path.append("../common/")
 from jinja import render
 
+sys.path.append("../vcenter/")
+from GetPortgroups import *
+
 # Done
 # Output : list_of_edges w/ name & id  
 def getAllNsxEdges():
@@ -83,5 +86,5 @@ def createNsxEdge(datacenterMoid,
 
   return nsx_edge_xml, jinja_vars
 
-
+print(getAllPortgroups())
 

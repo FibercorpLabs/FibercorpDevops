@@ -19,6 +19,8 @@ VCenter settings
 vc_settings = dict()
 vc_settings["vcenter"] = "10.120.80.10"
 vc_settings["datacenter"] = "DC Hornos"
+vc_settings["user"] = "administrator@vsphere.local"
+vc_settings["password"] = "F1b3rc0rp!"
 #vc_settings["resource_pool"] = ""
 #vc_settings["dvs"] = "vdSwitch-SLO-HUB-01"
 #vc_settings["cluster"] = "Cloud-DCHornos-Interno-01"
