@@ -31,7 +31,7 @@ def nsxGet(url, fileName=None):
 def nsxPost(url, data):
   rheaders = {'Content-Type': 'application/xml'}
   r = requests.post(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
-  return r.text
+  return r
 
 
 def nsxPut(url, data):
