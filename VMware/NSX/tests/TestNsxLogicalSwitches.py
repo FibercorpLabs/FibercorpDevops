@@ -5,6 +5,14 @@ sys.path.append("../utils/nsx/")
 from logicalswitch import *
 
 
+class NsxLogicalSwitchCreateTestCase(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+
 class NsxLogicalSwitchesTestCase(unittest.TestCase):
     def setUp(self):
         pass
