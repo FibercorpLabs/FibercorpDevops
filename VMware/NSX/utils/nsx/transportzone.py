@@ -45,7 +45,7 @@ def getTzById(tzId):
 # EXAMPLE:
 # clusters is a list
 # clusters = [{'objectId' : 'domain-c123'}, {'objectId' : 'domain-c321'}]
-def createTZ(name, clusters, description="", controlPlaneMode="HYBRID_MODE"):
+def createTz(name, clusters, description="", controlPlaneMode="HYBRID_MODE"):
 
   jinja_vars = {'name' : name,
                 'description' : description,
@@ -56,7 +56,7 @@ def createTZ(name, clusters, description="", controlPlaneMode="HYBRID_MODE"):
   nsx_tz_xml = os.path.join(dir, '../../templates/nsx_transportzone_create.j2')
   data = render(nsx_tz_xml, jinja_vars)
 
-  nsxPost("/api/2.0/vdn/scopes", data)
+  return nsxPost("/api/2.0/vdn/scopes", data)
 
 
 def updateTzByName(currName, clusters, newName=None, description=None, controlPlaneMode=None):
@@ -82,7 +82,7 @@ def updateTzByName(currName, clusters, newName=None, description=None, controlPl
 
 def deleteTzByName(name):
   tzName, tzId = getTzIdByName(name)
-  nsxDelete("/api/2.0/vdn/scopes/" + tzId)
+  return nsxDelete("/api/2.0/vdn/scopes/" + tzId)
 
 def deleteTzById(tzId):
   nsxDelete("/api/2.0/vdn/scopes/" + tzId)

@@ -69,11 +69,15 @@ def updateLogicalSwitchByName(name, tzone, newName=None, description=None, tenan
 
   jinja_vars = removeEmptyParams(jinja_vars)
 
+
+
   vw_name, vw_id = getLogicalSwitchIdByName(name, tzone)
 
   dir = os.path.dirname(__file__)
-  nsx_tz_xml = os.path.join(dir, '../../templates/nsx_transportzone_update.j2')
+  nsx_tz_xml = os.path.join(dir, '../../templates/nsx_logicalswitch_update.j2')
   data = render(nsx_tz_xml, jinja_vars)
+
+  print(data)
  
   nsxPut("/api/2.0/vdn/virtualwires/" + vw_id, data)
 

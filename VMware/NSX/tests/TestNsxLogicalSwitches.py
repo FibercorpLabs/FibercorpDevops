@@ -40,7 +40,7 @@ class NsxLogicalSwitchesTestCase(unittest.TestCase):
         
     @classmethod
     def tearDownClass(cls):
-        name = "LS-TEST"
+        name = "LS-TEST-NEW"
         tzone = "GLOBAL-TZ-LAB"
         deleteLogicalSwitchByName(name, tzone)
 
