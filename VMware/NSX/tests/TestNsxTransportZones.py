@@ -70,8 +70,6 @@ class NsxTransportZoneTestCase(unittest.TestCase):
         self.assertEqual(tzName, newName)
 
   
-
-
 if __name__ == '__main__':
     suite = unittest.TestSuite()
     suite = unittest.TestLoader().loadTestsFromTestCase(NsxTransportZoneCreateDeleteTestCase)
