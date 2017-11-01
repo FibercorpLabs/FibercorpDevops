@@ -2,15 +2,11 @@ from nsx_rest import *
 import json
 import sys
 
-sys.path.append("../common/")
+sys.path.append("../utils/common/")
 from jinja import render
 
 sys.path.append("../vcenter/")
-from GetPortgroups import *
-from GetDatacenters import getAllDatacenters
-from GetRPools import getAllResourcePools
-from GetDatastores import getAllDatastores
-from GetClusters import getAllClusters
+
 
 # Done
 # Output : list_of_edges w/ name & id  
@@ -28,8 +24,7 @@ def getAllNsxEdges():
     return edges
 
 
-# Done
-# Output : edge_id  
+
 def getNsxEdge(name):
   r = nsxGet("/api/4.0/edges")
 
@@ -43,7 +38,7 @@ def getNsxEdge(name):
 
   return ""
 
-# TODO:
+
 def createNsxEdge(datacenterMoid,
                name,
                description,
@@ -86,53 +81,14 @@ def createNsxEdge(datacenterMoid,
   dir = os.path.dirname(__file__)
   nsx_edge_xml = os.path.join(dir, '../../templates/nsx_edge_create.j2')
   data = render(nsx_edge_xml, jinja_vars) 
-  print(data)
+  #print(data)
   r = nsxPost("/api/4.0/edges", data)
   return r
 
-  #return nsx_edge_xml, jinja_vars
-
-# print(getAllPortgroups())
-# print (getAllDatacenters())
-# print (getAllResourcePools())
-# print(getAllDatastores())
-# print(getAllClusters())
+def deleteNsxEdge(edgeId):
+  r = nsxDelete("/api/4.0/edges/" + edgeId)
+  return r
 
 
-datacenterMoid = "datacenter-2"
-name = "test-edge1"
-applianceSize = "xlarge"
-resourcePoolId = "resgroup-457"
-datastoreId = "datastore-16"
-index = "0"
-vnicName = "uplink"
-vnicType = "Uplink"
-portgroupId = "dvportgroup-450"
-primaryAddress = "192.168.0.1"
-subnetMask = "255.255.255.0"
-mtu = "1500"
-isConnected = "true"
-user = "admin"
-password = "T3stC@s3NSx!"
-remoteAccess = "true"
 
 
-r = createNsxEdge(datacenterMoid,
-       name,
-       "",
-       applianceSize,
-       resourcePoolId,
-       datastoreId,
-       index,
-       vnicName,
-       vnicType,
-       portgroupId,
-       primaryAddress,
-       subnetMask,
-       mtu,
-       isConnected,
-       user,
-       password,
-       remoteAccess)
-
-print (r)
