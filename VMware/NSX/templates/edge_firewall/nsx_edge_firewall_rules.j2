@@ -1,0 +1,76 @@
+<firewallRules>
+	{% for firewallRule in firewallRules %}
+	<firewallRule>
+		{% if firewallRule.ruleTag is defined %}
+		<ruleTag>{{ firewallRule.ruleTag }}</ruleTag>
+		{% endif %}
+		{% if firewallRule.name is defined %}
+		<name>{{ firewallRule.name }}</name>
+		{% endif %}
+		{% if firewallRule.source is defined %}
+		<source>
+			{% if firewallRule.source.ipAddress is defined %}
+			<ipAddress>{{ firewallRule.source.ipAddress }}</ipAddress>
+			{% endif %}
+			{% if firewallRule.source.groupingObjectId is defined %}
+			<groupingObjectId>{{ firewallRule.source.groupingObjectId }}</groupingObjectId>
+			{% endif %}
+			{% if firewallRule.source.vnicGroupId is defined %}
+			<vnicGroupId>{{ firewallRule.source.vnicGroupId }}</vnicGroupId>
+			{% endif %}
+		</source>
+		{% endif %}
+		{% if firewallRule.destination is defined %}
+		<destination>
+			{% if firewallRule.destination.ipAddress is defined %}
+			<ipAddress>{{ firewallRule.destination.ipAddress }}</ipAddress>
+			{% endif %}
+			{% if firewallRule.destination.groupingObjectId is defined %}
+			<groupingObjectId>{{ firewallRule.destination.groupingObjectId }}</groupingObjectId>
+			{% endif %}
+			{% if firewallRule.destination.vnicGroupId is defined %}
+			<vnicGroupId>{{ firewallRule.destination.vnicGroupId }}</vnicGroupId>
+			{% endif %}
+		</destination>
+		{% endif %}
+		{% if firewallRule.application is defined %}
+		<application>
+			{% if firewallRule.application.applicationId is defined %}
+			<applicationId>{{ firewallRule.applicationId.applicationId }}</applicationId>
+			{% endif %}
+			{% if firewallRule.application.service is defined %}
+			<service>
+				{% if firewallRule.application.service.protocol is defined %}
+				<protocol>{{ firewallRule.application.service.protocol }}</protocol>
+				{% endif %}
+				{% if firewallRule.application.service.port is defined %}
+				<port>{{ firewallRule.application.service.port }}</port>
+				{% endif %}
+				{% if firewallRule.application.service.sourcePort is defined %}
+				<sourcePort>{{ firewallRule.application.service.sourcePort }}</sourcePort>
+				{% endif %}
+			</service>
+			{% endif %}
+		</application>
+		{% endif %}
+		{% if firewallRule.matchTranslated is defined %}
+		<matchTranslated>{{ firewallRule.matchTranslated }}</matchTranslated>
+		{% endif %}
+		{% if firewallRule.direction is defined %}
+		<direction>{{ firewallRule.direction }}</direction>
+		{% endif %}
+		{% if firewallRule.action is defined %}
+		<action>{{ firewallRule.action }}</action>
+		{% endif %}
+		{% if firewallRule.enabled is defined %}
+		<enabled>{{ firewallRule.enabled }}</enabled>
+		{% endif %}
+		{% if firewallRule.loggingEnabled is defined %}
+		<loggingEnabled>{{ firewallRule.loggingEnabled }}</loggingEnabled>
+		{% endif %}
+		{% if firewallRule.description is defined %}
+		<description>{{ firewallRule.description }}</description>
+		{% endif %}
+	</firewallRule>
+	{% endfor %}
+</firewallRules>

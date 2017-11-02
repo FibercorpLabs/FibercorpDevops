@@ -1,0 +1,48 @@
+{% if globalConfig is defined %}
+<globalConfig>
+	{% if globalConfig.tcpPickOngoingConnections is defined %}
+	<tcpPickOngoingConnections>{{ globalConfig.tcpPickOngoingConnections }}</tcpPickOngoingConnections>
+	{% endif %}
+	{% if globalConfig.tcpAllowOutOfWindowPackets is defined %}
+	<tcpAllowOutOfWindowPackets>{{ globalConfig.tcpAllowOutOfWindowPackets }}</tcpAllowOutOfWindowPackets>
+	{% endif %}
+	{% if globalConfig.tcpSendResetForClosedVsePorts is defined %}
+	<tcpSendResetForClosedVsePorts>{{ globalConfig.tcpSendResetForClosedVsePorts }}</tcpSendResetForClosedVsePorts>
+	{% endif %}
+	{% if globalConfig.dropInvalidTraffic is defined %}
+	<dropInvalidTraffic>{{ globalConfig.dropInvalidTraffic }}</dropInvalidTraffic>
+	{% endif %}
+	{% if globalConfig.logInvalidTraffic is defined %}
+	<logInvalidTraffic>{{ globalConfig.logInvalidTraffic }}</logInvalidTraffic>
+	{% endif %}
+	{% if globalConfig.tcpTimeoutOpen is defined %}
+	<tcpTimeoutOpen>{{ globalConfig.tcpTimeoutOpen }}</tcpTimeoutOpen>
+	{% endif %}
+	{% if globalConfig.tcpTimeoutEstablished is defined %}
+	<tcpTimeoutEstablished>{{ globalConfig.tcpTimeoutEstablished }}</tcpTimeoutEstablished>
+	{% endif %}
+	{% if globalConfig.tcpTimeoutClose is defined %}
+	<tcpTimeoutClose>{{ globalConfig.tcpTimeoutClose }}</tcpTimeoutClose>
+	{% endif %}
+	{% if globalConfig.udpTimeout is defined %}
+	<udpTimeout>{{ globalConfig.udpTimeout }}</udpTimeout>
+	{% endif %}
+	{% if globalConfig.icmpTimeout is defined %}
+	<icmpTimeout>{{ globalConfig.icmpTimeout }}</icmpTimeout>
+	{% endif %}
+	{% if globalConfig.icmp6Timeout is defined %}
+	<icmp6Timeout>{{ globalConfig.icmp6Timeout }}</icmp6Timeout>
+	{% endif %}
+	{% if globalConfig.ipGenericTimeout is defined %}
+	<ipGenericTimeout>{{ globalConfig.ipGenericTimeout }}</ipGenericTimeout>
+	{% endif %}
+	{% if globalConfig.enableSynFloodProtection is defined %}
+	<enableSynFloodProtection>{{ globalConfig.enableSynFloodProtection }}</enableSynFloodProtection>
+	{% endif %}
+	{% if globalConfig.logIcmpErrors is defined %}
+	<logIcmpErrors>{{ globalConfig.logIcmpErrors }}</logIcmpErrors>
+	{% endif %}
+	{% if globalConfig.dropIcmpReplays is defined %}
+	<dropIcmpReplays>{{ globalConfig.dropIcmpReplays }}</dropIcmpReplays>
+</globalConfig>
+{% endif %}

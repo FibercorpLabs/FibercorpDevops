@@ -1,0 +1,72 @@
+<firewallRule>
+	{% if ruleTag is defined %}
+	<ruleTag>{{ ruleTag }}</ruleTag>
+	{% endif %}
+	{% if name is defined %}
+	<name>{{ name }}</name>
+	{% endif %}
+	{% if source is defined %}
+	<source>
+		{% if source.vnicGroupId is defined %}
+		<vnicGroupId>{{ source.vnicGroupId }}</vnicGroupId>
+		{% endif %}
+		{% if source.groupingObjectId is defined %}
+		<groupingObjectId>{{ source.groupingObjectId }}</groupingObjectId>
+		{% endif %}
+		{% if source.ipAddress is defined %}
+		<ipAddress>{{ source.ipAddress }}</ipAddress>
+		{% endif %}
+	</source>
+	{% endif %}
+	{% if destination is defined %}
+	<destination>
+		{% if destination.groupingObjectId is defined %}
+		<groupingObjectId>{{ destination.groupingObjectId }}</groupingObjectId>
+		{% endif %}
+		{% if destination.vnicGroupId is defined %}
+		<vnicGroupId>{{ destination.vnicGroupId }}</vnicGroupId>
+		{% endif %}
+		{% if destination.ipAddress is defined %}
+		<ipAddress>{{ destination.ipAddress }}</ipAddress>
+		{% endif %}
+	</destination>
+	{% endif %}
+	{% if application is defined %}
+	<application>
+		{% if application.applicationId is defined %}
+		<applicationId>{{ application.applicationId }}</applicationId>
+		{% endif %}
+		{% if application.service is defined %}
+		<service>
+			{% if application.service.protocol is defined %}
+			<protocol>{{ application.service.protocol }}</protocol>
+			{% endif %}
+			{% if application.service.port is defined %}
+			<port>{{ application.service.port }}</port>
+			{% endif %}
+			{% if application.service.sourcePort is defined %}
+			<sourcePort>{{ application.service.sourcePort }}</sourcePort>
+			{% endif %}
+		</service>
+		{% endif %}
+	</application>
+	{% endif %}
+	{% if matchTranslated is defined %}
+	<matchTranslated>{{ matchTranslated }}</matchTranslated>
+	{% endif %}
+	{% if direction is defined %}
+	<direction>{{ direction }}</direction>
+	{% endif %}
+	{% if action is defined %}
+	<action>{{ action }}</action>
+	{% endif %}
+	{% if enabled is defined %}
+	<enabled>{{ enabled }}</enabled>
+	{% endif %}
+	{% if loggingEnabled is defined %}
+	<loggingEnabled>{{ loggingEnabled }}</loggingEnabled>
+	{% endif %}
+	{% if description is defined %}
+	<description>{{ description }}</description>
+	{% endif %}
+</firewallRule>

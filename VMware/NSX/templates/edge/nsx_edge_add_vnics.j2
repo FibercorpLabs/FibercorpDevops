@@ -1,0 +1,93 @@
+<edge>
+	{% if vnics is defined %}
+	<vnics>
+		{% for vnic in vnics %}
+		<vnic>
+			{% if vnic.index is defined %}
+			<index>{{ vnic.index }}</index>
+			{% endif %}
+			{% if vnic.name is defined %}
+			<name>{{ vnic.name }}</name>
+			{% endif %}
+			{% if vnic.type is defined %}
+			<type>{{ vnic.type }}</type>
+			{% endif %}
+			{% if vnic.portgroupId is defined %}
+			<portgroupId>{{ vnic.portgroupId }}</portgroupId>
+			{% endif %}
+			{% if vnic.addressGroups is defined %}
+			<addressGroups>
+				{% if vnic.addressGroups.addressGroup is defined %}
+				<addressGroup>
+					{% if vnic.addressGroups.addressGroup.primaryAddress is defined %}
+					<primaryAddress>{{ vnic.addressGroups.addressGroup.primaryAddress }}</primaryAddress>
+					{% endif %}
+					{% if vnic.addressGroups.addressGroup.secondaryAddresses is defined %}
+					<secondaryAddresses>
+						{% for ipAddress in  vnic.addressGroups.addressGroup.secondaryAddresses %}
+						<ipAddress>{{ ipAddress }}</ipAddress>
+						{% endfor %}
+					</secondaryAddresses>
+					{% endif %}
+					{% if vnic.addressGroups.addressGroup.subnetMask is defined %}
+					<subnetMask>{{ vnic.addressGroups.addressGroup.subnetMask }}</subnetMask>
+					{% endif %}
+				</addressGroup>
+				{% endif %}
+			</addressGroups>
+			{% endif %}
+			{% if vnic.mtu is defined %}
+			<mtu>{{ vnic.mtu }}</mtu>
+			{% endif %}
+			{% if vnic.enableProxyArp is defined %}
+			<enableProxyArp>{{ vnic.enableProxyArp }}</enableProxyArp>
+			{% endif %}
+			{% if vnic.enableSendRedirects is defined %}
+			<enableSendRedirects>{{ vnic.enableSendRedirects }}</enableSendRedirects>
+			{% endif %}
+			{% if vnic.isConnected is defined %}
+			<isConnected>{{ vnic.isConnected }}</isConnected>
+			{% endif %}
+			{% if vnic.inShapingPolicy is defined %}
+			<inShapingPolicy>
+				{% if vnic.inShapingPolicy.averageBandwidth is defined %}
+				<averageBandwidth>{{ vnic.inShapingPolicy.averageBandwidth }}</averageBandwidth>
+				{% endif %} 
+				{% if vnic.inShapingPolicy.peakBandwidth is defined %}
+				<peakBandwidth>{{ vnic.inShapingPolicy.peakBandwidth }}</peakBandwidth>
+				{% endif %} 
+				{% if vnic.inShapingPolicy.burstSize is defined %}
+				<burstSize>{{ vnic.inShapingPolicy.burstSize }}</burstSize> 
+				{% endif %}
+				{% if vnic.inShapingPolicy.enabled is defined %}
+				<enabled>{{ vnic.inShapingPolicy.enabled }}</enabled>
+				{% endif %}
+				{% if vnic.inShapingPolicy.inherited is defined %}
+				<inherited>{{ vnic.inShapingPolicy.inherited }}</inherited>
+				{% endif %} 
+			</inShapingPolicy>
+			{% endif %}
+			{% if vnic.outShapingPolicy is defined %} 
+			<outShapingPolicy>
+				{% if vnic.outShapingPolicy.averageBandwidth is defined %} 
+				<averageBandwidth>{{ vnic.outShapingPolicy.averageBandwidth }}</averageBandwidth> 
+				{% endif %}
+				{% if vnic.outShapingPolicy.peakBandwidth is defined %} 
+				<peakBandwidth>{{ vnic.outShapingPolicy.peakBandwidth }}</peakBandwidth>
+				{% endif %}
+				{% if vnic.outShapingPolicy.burstSize is defined %} 
+				<burstSize>{{ vnic.outShapingPolicy.burstSize }}</burstSize> 
+				{% endif %}
+				{% if vnic.outShapingPolicy.enabled is defined %} 
+				<enabled>{{ vnic.outShapingPolicy.enabled }}</enabled> 
+				{% endif %}
+				{% if vnic.outShapingPolicy.inherited is defined %} 
+				<inherited>{{ vnic.outShapingPolicy.inherited }}</inherited> 
+				{% endif %}
+			</outShapingPolicy>
+			{% endif %}
+		</vnic> 
+		{% endfor %}
+	</vnics>
+	{% endif %}
+</edge>

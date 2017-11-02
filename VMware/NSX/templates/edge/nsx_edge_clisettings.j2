@@ -1,0 +1,17 @@
+<cliSettings>
+	{% if userName is defined %}
+	<userName>>{{ userName }}</userName>
+	{% endif %}
+	{% if password is defined %}
+	<password>>{{ password }}</password>
+	{% endif %}
+	{% if remoteAccess is defined %}
+	<remoteAccess>>{{ remoteAccess }}</remoteAccess>
+	{% endif %}
+	{% if passwordExpiry is defined %}
+	<passwordExpiry>>{{ passwordExpiry }}</passwordExpiry>
+	{% endif %}
+	{% if sshLoginBannerText is defined %}
+	<sshLoginBannerText>>{{ sshLoginBannerText }}</sshLoginBannerText>
+	{% endif %}
+</cliSettings>

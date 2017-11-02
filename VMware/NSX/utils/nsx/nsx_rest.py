@@ -20,7 +20,6 @@ def nsxGet(url, fileName=None):
   rheaders = {'Accept': 'application/json'}
   r = requests.get(MANAGER + url, auth = (USER, PASS), verify = False, headers = rheaders)
   if fileName == None:
-    #print r.text
     return r.text
   else:
     #print(('REST %s is in file %s.' % (url, fileName)))

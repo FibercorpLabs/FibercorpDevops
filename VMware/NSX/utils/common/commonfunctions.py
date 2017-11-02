@@ -9,3 +9,11 @@ def removeEmptyParams(params):
 		params.pop(key)
 
 	return params
+
+
+def createDictionaryFromParams(**kwargs):
+
+	for key, value in kwargs.items():
+		
+
+	return dictionary
