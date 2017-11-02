@@ -8,7 +8,6 @@ from edge import *
 
 class NsxEdgeCreateDeleteTestCase(unittest.TestCase):
     def test_createNsxEdge(self):
-        #todo save edgeId at class level 
         datacenterMoid = "datacenter-2"
         name = "test-create-edge"
         applianceSize = "xlarge"
@@ -49,9 +48,7 @@ class NsxEdgeCreateDeleteTestCase(unittest.TestCase):
 
     def test_deleteNsxEdge(self):
         name = "test-create-edge"
-        self.assertEqual(deleteNsxEdge(getNsxEdge(name)).status_code, 204)
-
-
+        self.assertEqual(deleteNsxEdge(getNsxEdgeIdByName(name)).status_code, 204)
 
 
 
@@ -94,12 +91,13 @@ class NsxEdgeTestCase(unittest.TestCase):
                password,
                remoteAccess)
 
-
-
+    @classmethod
+    def tearDownClass(cls):
+        name = "class-edge-00"
+        deleteNsxEdge(getNsxEdgeIdByName(name))
 
 
     def test_addNic(self):
-        #some
         pass
 
     def test_deleteNic(self):
@@ -121,7 +119,9 @@ class NsxEdgeTestCase(unittest.TestCase):
         pass
 
     def test_getNsxEdgeByName(self):
-        pass
+        name = "class-edge-00"
+        response = deleteNsxEdge(getNsxEdgeIdByName(name))
+        self.assertEqual(response.status_code, 200)
 
 
 

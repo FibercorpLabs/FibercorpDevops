@@ -25,7 +25,7 @@ def getAllNsxEdges():
 
 
 
-def getNsxEdge(name):
+def getNsxEdgeIdByName(name):
   r = nsxGet("/api/4.0/edges")
 
   r_dict = json.loads(r)
@@ -37,6 +37,11 @@ def getNsxEdge(name):
       return edge['id']
 
   return ""
+
+def getNsxEdge(edgeId):
+  r = nsxGet("/api/4.0/edges/" + edgeId)
+  r_dict = json.loads(r)
+  return r_dict
 
 
 def createNsxEdge(datacenterMoid,
@@ -88,6 +93,15 @@ def createNsxEdge(datacenterMoid,
 def deleteNsxEdge(edgeId):
   r = nsxDelete("/api/4.0/edges/" + edgeId)
   return r
+
+def getRemoteAcessStatus(edgeId):
+  r = getNsxEdge(edgeId)
+  return r["cliSettings"]["remoteAccess"]
+
+
+
+def enableRemoteAccess(edgeId):
+  pass
 
 
 
