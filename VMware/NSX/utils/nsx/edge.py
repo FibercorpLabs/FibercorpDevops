@@ -61,14 +61,17 @@ def deleteNsxEdgeByName(edge_name):
 def deleteNsxEdgeById(edgeId):
   return nsxDelete("/api/4.0/edges/" + edgeId)
 
+
 def getRemoteAcessStatus(edgeId):
   r = getNsxEdge(edgeId)
   return r["cliSettings"]["remoteAccess"]
 
 
-
 def enableRemoteAccess(edgeId):
-  pass
+  return nsxPost("/api/4.0/edges/" + edgeId + "cliSettings?enable=True")
+
+def disableRemoteAccess(edgeId):
+  return nsxPost("/api/4.0/edges/" + edgeId + "cliSettings?enable=False")
 
 
 
