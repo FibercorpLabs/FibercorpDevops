@@ -44,55 +44,22 @@ def getNsxEdge(edgeId):
   return r_dict
 
 
-def createNsxEdge(datacenterMoid,
-               name,
-               description,
-               applianceSize,
-               resourcePoolId,
-               datastoreId,
-               index,
-               vnicName,
-               vnicType,
-               portgroupId,
-               primaryAddress,
-               subnetMask,
-               mtu,
-               isConnected,
-               user,
-               password,
-               remoteAccess):
- 
-  jinja_vars = {"datacenterMoid" : datacenterMoid,
-                "name" : name,
-                "description" : description,
-                "appliances" : {"applianceSize" : applianceSize,
-                                "appliance" : {"resourcePoolId" : resourcePoolId,
-                                               "datastoreId" : datastoreId
-                                              }},
-                "vnics" : [{"index" : index,
-                            "name" : vnicName,
-                            "type" : vnicType,
-                            "portgroupId" : portgroupId,
-                            "primaryAddress" : primaryAddress,
-                            "subnetMask" : subnetMask,
-                            "mtu" : mtu,
-                            "isConnected" : isConnected
-                           }],
-                "cliSettings" : {"userName" : user,
-                                 "password" : password,
-                                 "remoteAccess" : remoteAccess}
-                }
+def createNsxEdge(jinja_vars):
 
   dir = os.path.dirname(__file__)
   nsx_edge_xml = os.path.join(dir, '../../templates/nsx_edge_create.j2')
   data = render(nsx_edge_xml, jinja_vars) 
-  #print(data)
-  r = nsxPost("/api/4.0/edges", data)
-  return r
+  
+  return nsxPost("/api/4.0/edges", data)
 
-def deleteNsxEdge(edgeId):
-  r = nsxDelete("/api/4.0/edges/" + edgeId)
-  return r
+
+def deleteNsxEdgeByName(edge_name):
+  edgeId = getNsxEdgeIdByName(edge_name)
+  return nsxDelete("/api/4.0/edges/" + edgeId)
+
+
+def deleteNsxEdgeById(edgeId):
+  return nsxDelete("/api/4.0/edges/" + edgeId)
 
 def getRemoteAcessStatus(edgeId):
   r = getNsxEdge(edgeId)

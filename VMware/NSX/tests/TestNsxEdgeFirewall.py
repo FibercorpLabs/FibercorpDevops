@@ -8,6 +8,35 @@ from edge_firewall import *
 
 
 class NsxEdgeCreateRuleTestCase(unittest.TestCase):
+  @classmethod
+  def setUpClass(cls):
+    jinja_vars = {"datacenterMoid" : 'datacenter-2',
+                  "name" : 'Edge-Test',
+                  "description" : None,
+                  "appliances" : {"applianceSize" : 'xlarge',
+                                  "appliance" : {"resourcePoolId" : "resgroup-457",
+                                                 "datastoreId" : "datastore-16"
+                                                }},
+                  "vnics" : [{"index" : "0",
+                              "name" : "uplink",
+                              "type" : "Uplink",
+                              "portgroupId" : "dvportgroup-450",
+                              "primaryAddress" : "192.168.0.1",
+                              "subnetMask" : "255.255.255.0",
+                              "mtu" : "1500",
+                              "isConnected" : "true"
+                             }],
+                  "cliSettings" : {"userName" : "admin",
+                                   "password" : "T3stC@s3NSx!",
+                                   "remoteAccess" : "true"}
+                  }
+
+    createNsxEdge(jinja_vars)
+
+  @classmethod
+  def tearDownClass(cls):
+    deleteNsxEdgeByName('Edge-Test')
+
   def test_createRule(self):
     jinja_vars = {'firewallRule': {'ruleTag' : '88',
                                    'name' : 'test-rule',
@@ -75,6 +104,11 @@ class NsxEdgeFirewallTestCase(unittest.TestCase):
   @classmethod
   def tearDownClass(cls):
     deleteRule('Edge-Test', 'test-rule')
+
+
+  def test_updateGlobalConfig(self):
+    
+
 
     
 if __name__ == '__main__':
