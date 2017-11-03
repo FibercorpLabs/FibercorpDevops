@@ -7,6 +7,8 @@ from jinja import render
 
 from edge import *
 
+from pprint import pprint
+
 
 def getFirewallConfig(edge_name):
   edgeId = getNsxEdgeIdByName(edge_name)
@@ -18,11 +20,11 @@ def getRuleIdByName(edge_name, rule_name):
 
   edgeConfig = getFirewallConfig(edge_name)
 
-  firewallRules = edgeConfig['firewallRules']
+  firewallRules = edgeConfig['firewallRules']['firewallRules']
 
   for firewallRule in firewallRules:
-    if firewallRule['name'] = rule_name:
-      return firewallRule['id']
+    if firewallRule['name'] == rule_name:
+      return firewallRule['ruleId']
 
   return None
 
@@ -34,7 +36,7 @@ def createRule(edge_name, jinja_vars):
   nsx_rules_xml = os.path.join(dir, '../../templates/edge_firewall/nsx_edge_firewall_rules.j2')
   data = render(nsx_rules_xml, jinja_vars) 
 
-  return nsxPost("/api/4.0/edges/" + edgeId +"/firewall/config/rules", data)
+  return nsxPost("/api/4.0/edges/" + edgeId +"/firewall/config/rules", data), data
 
 
 def updateGlobalConfig(edge_name, jinja_vars):
@@ -72,3 +74,7 @@ def deleteRule(edge_name, rule_name):
   ruleId = getRuleIdByName(edge_name, rule_name)
 
   return nsxDelete("/api/4.0/edges/"+ edgeId + "/firewall/config/rules/" + ruleId)
+
+
+# pprint(getFirewallConfig("PGW01"))
+# pprint(getRuleIdByName("PGW01", "firewall"))

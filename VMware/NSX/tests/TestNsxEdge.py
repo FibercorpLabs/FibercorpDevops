@@ -8,41 +8,28 @@ from edge import *
 
 class NsxEdgeCreateDeleteTestCase(unittest.TestCase):
     def test_createNsxEdge(self):
-        datacenterMoid = "datacenter-2"
-        name = "test-create-edge"
-        applianceSize = "xlarge"
-        resourcePoolId = "resgroup-457"
-        datastoreId = "datastore-16"
-        index = "0"
-        vnicName = "uplink"
-        vnicType = "Uplink"
-        portgroupId = "dvportgroup-450"
-        primaryAddress = "192.168.0.1"
-        subnetMask = "255.255.255.0"
-        mtu = "1500"
-        isConnected = "true"
-        user = "admin"
-        password = "T3stC@s3NSx!"
-        remoteAccess = "true"
+        jinja_vars = {  "datacenterMoid" : 'datacenter-2',
+                        "name" : 'Edge-Test',
+                        "description" : None,
+                        "appliances" : {    "applianceSize" : 'xlarge',
+                                            "appliance" : {"resourcePoolId" : "resgroup-457",
+                                                   "datastoreId" : "datastore-16"
+                                                  }},
+                    "vnics" : [{"index" : "0",
+                                "name" : "uplink",
+                                "type" : "Uplink",
+                                "portgroupId" : "dvportgroup-450",
+                                "primaryAddress" : "192.168.0.1",
+                                "subnetMask" : "255.255.255.0",
+                                "mtu" : "1500",
+                                "isConnected" : "true"
+                               }],
+                    "cliSettings" : {"userName" : "admin",
+                                     "password" : "T3stC@s3NSx!",
+                                     "remoteAccess" : "true"}
+                    }
 
-
-        response = createNsxEdge(datacenterMoid,
-               name,
-               "",
-               applianceSize,
-               resourcePoolId,
-               datastoreId,
-               index,
-               vnicName,
-               vnicType,
-               portgroupId,
-               primaryAddress,
-               subnetMask,
-               mtu,
-               isConnected,
-               user,
-               password,
-               remoteAccess)
+        response = createNsxEdge(jinja_vars)
 
         self.assertEqual(response.status_code, 201)
 
@@ -56,45 +43,33 @@ class NsxEdgeTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        datacenterMoid = "datacenter-2"
-        name = "class-edge-00"
-        applianceSize = "xlarge"
-        resourcePoolId = "resgroup-457"
-        datastoreId = "datastore-16"
-        index = "0"
-        vnicName = "uplink"
-        vnicType = "Uplink"
-        portgroupId = "dvportgroup-450"
-        primaryAddress = "192.168.0.1"
-        subnetMask = "255.255.255.0"
-        mtu = "1500"
-        isConnected = "true"
-        user = "admin"
-        password = "T3stC@s3NSx!"
-        remoteAccess = "true"
 
-        response = createNsxEdge(datacenterMoid,
-               name,
-               "",
-               applianceSize,
-               resourcePoolId,
-               datastoreId,
-               index,
-               vnicName,
-               vnicType,
-               portgroupId,
-               primaryAddress,
-               subnetMask,
-               mtu,
-               isConnected,
-               user,
-               password,
-               remoteAccess)
+        jinja_vars = {  "datacenterMoid" : 'datacenter-2',
+                "name" : 'Edge-Test',
+                "description" : None,
+                "appliances" : {    "applianceSize" : 'xlarge',
+                                    "appliance" : {"resourcePoolId" : "resgroup-457",
+                                           "datastoreId" : "datastore-16"
+                                          }},
+            "vnics" : [{"index" : "0",
+                        "name" : "uplink",
+                        "type" : "Uplink",
+                        "portgroupId" : "dvportgroup-450",
+                        "primaryAddress" : "192.168.0.1",
+                        "subnetMask" : "255.255.255.0",
+                        "mtu" : "1500",
+                        "isConnected" : "true"
+                       }],
+            "cliSettings" : {"userName" : "admin",
+                             "password" : "T3stC@s3NSx!",
+                             "remoteAccess" : "true"}
+            }
+
+        createNsxEdge(jinja_vars)
 
     @classmethod
     def tearDownClass(cls):
-        name = "class-edge-00"
-        deleteNsxEdge(getNsxEdgeIdByName(name))
+        deleteNsxEdge(getNsxEdgeIdByName("class-edge-00"))
 
 
     def test_addNic(self):

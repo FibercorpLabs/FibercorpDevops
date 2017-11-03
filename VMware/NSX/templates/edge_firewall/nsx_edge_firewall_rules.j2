@@ -36,7 +36,7 @@
 		{% if firewallRule.application is defined %}
 		<application>
 			{% if firewallRule.application.applicationId is defined %}
-			<applicationId>{{ firewallRule.applicationId.applicationId }}</applicationId>
+			<applicationId>{{ firewallRule.application.applicationId }}</applicationId>
 			{% endif %}
 			{% if firewallRule.application.service is defined %}
 			<service>

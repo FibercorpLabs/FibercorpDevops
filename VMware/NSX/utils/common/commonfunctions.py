@@ -11,9 +11,9 @@ def removeEmptyParams(params):
 	return params
 
 
-def createDictionaryFromParams(**kwargs):
+# def createDictionaryFromParams(**kwargs):
 
-	for key, value in kwargs.items():
+# 	for key, value in kwargs.items():
 		
 
-	return dictionary
+# 	return dictionary
