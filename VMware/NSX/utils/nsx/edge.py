@@ -34,6 +34,11 @@ def getNsxEdgeIdByName(name):
 
 	return ""
 
+def getNsxEdgeByName(edge_name):
+	edgeId = getNsxEdgeIdByName(edge_name)
+
+	return getNsxEdge(edgeId)
+
 def getNsxEdge(edgeId):
 	r = nsxGet("/api/4.0/edges/" + edgeId)
 	r_dict = json.loads(r)
@@ -143,6 +148,11 @@ def updateNsxEdgeNat(edgeId, jinja_vars):
 
 def deleteNsxEdgeNat(edgeId):
 	return nsxDelete("/api/4.0/edges/" + edgeId + "/nat/config")
+
+# TODO: 
+def createNatRule(edgeId):
+	jinja_vars = {}
+	return updateNsxEdgeNat(edgeId, jinja_vars)
 
 
 
