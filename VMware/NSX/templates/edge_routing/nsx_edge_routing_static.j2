@@ -1,11 +1,43 @@
+{% if staticRouting is defined %}
 <staticRouting>
+	{% if staticRouting.staticRoutes is defined %}
 	<staticRoutes>
+		{% if staticRouting.staticRoutes.route is defined %}
 		<route>
-			<description></description>
-			<vnic></vnic>
-			<network></network>
-			<nextHop></nextHop>
-			<mtu></mtu>
+			{% if staticRouting.staticRoutes.route.description is defined %}
+			<description>{{ staticRouting.staticRoutes.route.description }}</description>
+			{% endif %}
+			{% if staticRouting.staticRoutes.route.vnic is defined %}
+			<vnic>{{ staticRouting.staticRoutes.route.vnic }}</vnic>
+			{% endif %}
+			{% if staticRouting.staticRoutes.route.network is defined %}
+			<network>{{ staticRouting.staticRoutes.route.network }}</network>
+			{% endif %}
+			{% if staticRouting.staticRoutes.route.nextHop is defined %}
+			<nextHop>{{ staticRouting.staticRoutes.route.nextHop }}</nextHop>
+			{% endif %}
+			{% if staticRouting.staticRoutes.route.mtu is defined %}
+			<mtu>{{ staticRouting.staticRoutes.route.mtu }}</mtu>
+			{% endif %}
 		</route>
+		{% endif %}
 	</staticRoutes>
-<defaultRoute>
+	{% endif %}
+	{% if staticRouting.defaultRoute is defined %}
+	<defaultRoute>
+		{% if staticRouting.defaultRoute.description is defined %}
+		<description>{{ staticRouting.defaultRoute.description }}</description>
+		{% endif %}
+		{% if staticRouting.defaultRoute.vnic is defined %}
+		<vnic>{{ staticRouting.defaultRoute.vnic }}</vnic>
+		{% endif %}
+		{% if staticRouting.defaultRoute.gatewayAddress is defined %}
+		<gatewayAddress>{{ staticRouting.defaultRoute.gatewayAddress }}</gatewayAddress>
+		{% endif %}
+		{% if staticRouting.defaultRoute.mtu is defined %}
+		<mtu>{{ staticRouting.defaultRoute.mtu }}</mtu>
+		{% endif %}
+	</defaultRoute>
+	{% endif %}
+</staticRouting>
+{% endif %}

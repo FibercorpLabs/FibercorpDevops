@@ -1,0 +1,64 @@
+{% if edge is defined %}
+<edge>
+	{% if edge.id is defined %}
+	<id>{{ edge.id }}</id>
+	{% endif %}
+	{% if edge.description is defined %}
+	<description>{{ edge.description }}</description>
+	{% endif %}
+	{% if edge.datacenterMoid is defined %}
+	<datacenterMoid>{{ edge.datacenterMoid }}</datacenterMoid>
+	{% endif %}
+	{% if edge.name is defined %}
+	<name>{{ edge.name }}</name>
+	{% endif %}
+	{% if edge.type is defined %}
+	<type>{{ edge.type }}</type>
+	{% endif %}
+	{% if edge.fqdn is defined %}
+	<fqdn>{{ edge.fqdn }}</fqdn>
+	{% endif %}
+	{% if edge.enableAesni is defined %}
+	<enableAesni>{{ edge.enableAesni }}</enableAesni>
+	{% endif %}
+	{% if edge.enableFips is defined %}
+	<enableFips>{{ edge.enableFips }}</enableFips>
+	{% endif %}
+	{% if edge.vseLogLevel is defined %}
+	<vseLogLevel>{{ edge.vseLogLevel }}</vseLogLevel>
+	{% endif %}
+	{% if edge.appliances is defined %}
+	<appliances> 
+		{% if edge.appliances.applianceSize is defined %}
+		<applianceSize>{{ edge.appliances.applianceSize }}</applianceSize>
+		{% endif %}
+		{% if edge.appliances.appliance is defined %} 
+		<appliance> 
+			{% if edge.appliances.appliance.haAdminState is defined %}
+			<haAdminState>{{ edge.appliances.appliance.haAdminState }}</haAdminState> 
+			{% endif %}
+			{% if edge.appliances.appliance.resourcePoolId is defined %}
+			<resourcePoolId>{{ edge.appliances.appliance.resourcePoolId }}</resourcePoolId>
+			{% endif %}
+			{% if edge.appliances.appliance.datastoreId is defined %} 
+			<datastoreId>{{ edge.appliances.appliance.datastoreId }}</datastoreId>
+			{% endif %}
+			{% if edge.appliances.appliance.vmFolderId is defined %}
+			<vmFolderId>{{ edge.appliances.appliance.vmFolderId }}</vmFolderId> 
+			{% endif %}
+		</appliance>
+		{% endif %} 
+	</appliances>
+	{% endif %}
+	{% if edge.autoConfiguration is defined %} 
+	<autoConfiguration>
+		{% if edge.autoConfiguration.enabled is defined %} 
+		<enabled>{{ edge.autoConfiguration.enabled }}</enabled>
+		{% endif %}
+		{% if edge.autoConfiguration.rulePriority is defined %} 
+		<rulePriority>{{ edge.autoConfiguration.rulePriority }}</rulePriority>
+		{% endif %}
+	</autoConfiguration>
+	{% endif %}
+</edge>
+{% endif %}

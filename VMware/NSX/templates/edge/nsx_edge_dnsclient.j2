@@ -1,3 +1,4 @@
+{% if dnsClient is defined %}
 <dnsClient>
 	{% if primaryDns is defined %}
 	<primaryDns>{{ primaryDns }}</primaryDns>
@@ -9,3 +10,4 @@
 	{% endif %}
 	{% endif %}	
 </dnsClient>
+{% endif %}

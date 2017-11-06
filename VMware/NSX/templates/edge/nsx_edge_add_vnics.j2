@@ -1,7 +1,8 @@
+{% if edge is defined %}
 <edge>
-	{% if vnics is defined %}
+	{% if edge.vnics is defined %}
 	<vnics>
-		{% for vnic in vnics %}
+		{% for vnic in edge.vnics %}
 		<vnic>
 			{% if vnic.index is defined %}
 			<index>{{ vnic.index }}</index>
@@ -91,3 +92,4 @@
 	</vnics>
 	{% endif %}
 </edge>
+{% endif %}
