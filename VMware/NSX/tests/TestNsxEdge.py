@@ -67,7 +67,7 @@ class NsxEdgeTestCase(unittest.TestCase):
     def tearDownClass(cls):
         deleteNsxEdgeByName("Edge-Test")
 
-    @unittest.skip("OK!")
+    @unittest.skip("")
     def test_getNsxEdgeByName(self):
         name = "Edge-Test"
         r_config = getNsxEdgeByName(name)
@@ -75,44 +75,39 @@ class NsxEdgeTestCase(unittest.TestCase):
 
     def test_NsxEdgeRename(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = NsxEdgeRename(edgeId, "NewName")
-        self.assertEqual(r.status_code, 200)
+        r = NsxEdgeRename(edgeId, "Edge-Test-NewName")
+        self.assertEqual(r.status_code, 204)
         r = NsxEdgeRename(edgeId, "Edge-Test")
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
-    @unittest.skip("")
     def test_NsxEdgeResize(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = NsxEdgeResize(edgeId, "large")
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
     def test_changeUserAndPassword(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = changeUserAndPassword(edgeId, "josemaria", "T3stC@s3NSx!")
         self.assertEqual(r.status_code, 204)
 
-    @unittest.skip("")
     def test_updateSshLoginBannerText(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updateSshLoginBannerText(edgeId, "eeeeee banner")
         self.assertEqual(r.status_code, 200)
 
-    @unittest.skip("")
     def test_getRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = getRemoteAccessStatus(edgeId)
-        self.assertTrue(r == "True" or r == "False")
+        print(r)
 
-    @unittest.skip("")
-    def test_enableRemoteAccessStatus(self):
+    def test_enableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = enableRemoteAccessStatus(edgeId)
+        r = enableRemoteAccess(edgeId)
         self.assertEqual(r.status_code, 200)
 
-    @unittest.skip("")
-    def test_disableRemoteAccessStatus(self):
+    def test_disableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = disableRemoteAccessStatus(edgeId)
+        r = disableRemoteAccess(edgeId)
         self.assertEqual(r.status_code, 200)
 
     @unittest.skip("")

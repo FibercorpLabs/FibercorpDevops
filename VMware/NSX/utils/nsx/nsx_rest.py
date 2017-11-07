@@ -16,16 +16,11 @@ PASS = 'F1b3rc0rp'
 
 # NSX GET Operation - Example
 # nsxGet('/api/2.0/services/vcconfig')
-def nsxGet(url, fileName=None):
+def nsxGet(url):
   rheaders = {'Accept': 'application/json'}
   r = requests.get(MANAGER + url, auth = (USER, PASS), verify = False, headers = rheaders)
-  if fileName == None:
-    return r.text
-  else:
-    #print(('REST %s is in file %s.' % (url, fileName)))
-    with open(fileName, 'w') as newFile:
-      #print(r.text, file=newFile)
-      return r.text
+  return r.text
+
 
 def nsxPost(url, data):
   rheaders = {'Content-Type': 'application/xml'}
