@@ -67,6 +67,7 @@ class NsxEdgeTestCase(unittest.TestCase):
     def tearDownClass(cls):
         deleteNsxEdgeByName("Edge-Test")
 
+    @unittest.skip("OK!")
     def test_getNsxEdgeByName(self):
         name = "Edge-Test"
         r_config = getNsxEdgeByName(name)
@@ -74,11 +75,12 @@ class NsxEdgeTestCase(unittest.TestCase):
 
     def test_NsxEdgeRename(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = NsxEdgeRename(edgeId, "Edge-Test-Bis")
+        r = NsxEdgeRename(edgeId, "NewName")
         self.assertEqual(r.status_code, 200)
         r = NsxEdgeRename(edgeId, "Edge-Test")
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_NsxEdgeResize(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = NsxEdgeResize(edgeId, "large")
@@ -86,34 +88,40 @@ class NsxEdgeTestCase(unittest.TestCase):
 
     def test_changeUserAndPassword(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = changeUserAndPassword(edgeId, "josemaria", "b0st3r0sg1l3s!")
-        self.assertEqual(r.status_code, 200)
+        r = changeUserAndPassword(edgeId, "josemaria", "T3stC@s3NSx!")
+        self.assertEqual(r.status_code, 204)
 
+    @unittest.skip("")
     def test_updateSshLoginBannerText(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updateSshLoginBannerText(edgeId, "eeeeee banner")
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_getRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = getRemoteAccessStatus(edgeId)
         self.assertTrue(r == "True" or r == "False")
 
+    @unittest.skip("")
     def test_enableRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = enableRemoteAccessStatus(edgeId)
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_disableRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = disableRemoteAccessStatus(edgeId)
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_updatePrimaryDns(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updatePrimaryDns(edgeId, "8.8.8.8")
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_updateSecondaryDns(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updateSecondaryDns(edgeId, "8.8.4.4", "dns.google.com")
@@ -131,7 +139,7 @@ class NsxEdgeTestCase(unittest.TestCase):
     
 if __name__ == '__main__':
     suite = unittest.TestSuite()
-    suite = unittest.TestLoader().loadTestsFromTestCase(NsxEdgeCreateDeleteTestCase)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    # suite = unittest.TestLoader().loadTestsFromTestCase(NsxEdgeCreateDeleteTestCase)
+    # unittest.TextTestRunner(verbosity=2).run(suite)
     suite = unittest.TestLoader().loadTestsFromTestCase(NsxEdgeTestCase)
     unittest.TextTestRunner(verbosity=2).run(suite)

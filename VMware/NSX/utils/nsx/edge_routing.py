@@ -53,8 +53,26 @@ def updateNsxEdgeStatic(edgeId, jinja_vars):
 def deleteNsxEdgeStatic(edgeId):
 	return nsxDelete("/api/4.0/edges/" + edgeId + "/routing/config/static")
 
-def NsxEdgeAddStaticRoute(edgeId, description, vnic, network, nextHop, mtu):
-	jinja_vars = {}
+def NsxEdgeAddStaticRoute(edgeId,
+						  description,
+						  vnic,
+						  network,
+						  nextHop,
+						  mtu,
+						  defaultRouteDescription,
+						  defaultRouteVnic,
+						  gatewayAddress,
+						  defaultRouteMtu):
+
+	jinja_vars = {'staticRouting' : {'staticRoutes' : {'route' : {'description' : description,
+																  'vnic' : vnic,
+																  'network' : network,
+																  'nextHop' : nextHop,
+																  'mtu' : mtu}},
+									 'defaultRoute' : {'description': defaultRouteDescription,
+									 				   'vnic' : defaultRouteVnic,
+									 				   'gatewayAddress' : gatewayAddress,
+									 				   'mtu' : defaultRouteMtu}}}
 
 	return updateNsxEdgeStatic(edgeId, jinja_vars)
 

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../utils/common/")
+sys.path.append("../common/")
 
 from nsx_rest import *
 from jinja import render
@@ -30,7 +30,7 @@ def getNsxEdgeIdByName(name):
 
 	for edge in allEdges:
 		if edge['name'] == name:
-		return edge['id']
+			return edge['id']
 
 	return ""
 
@@ -64,12 +64,14 @@ def deleteNsxEdgeByName(edge_name):
 def updateNsxEdge(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_edge_xml = os.path.join(dir, '../../templates/edge/nsx_edge_update.j2')
-	data = render(nsx_edge_xml, jinja_vars) 
-  
-	return nsxPut("/api/4.0/edges" + edgeId, data)
+	data = render(nsx_edge_xml, jinja_vars)
+
+	print(data)
+	print("/api/4.0/edges/" + edgeId)
+	return nsxPut("/api/4.0/edges/" + edgeId, data)
 
 def NsxEdgeRename(edgeId, name):
-	jinja_vars = {'edge' : name}
+	jinja_vars = {'edge' : {'name' : name}}
 
 	return updateNsxEdge(edgeId, jinja_vars)
 
@@ -87,10 +89,10 @@ def NsxEdgeAddVnic(edgeId, index, type, portgroupId, primaryAddress, secondaryAd
 # CLI_SETTINGS
 def updateCliSettings(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
-	nsx_cli_xml = os.path.join(dir, '../../templates/edge_routing/nsx_edge_routing_clisettings.j2')
-	data = render(nsx_cli_xml, jinja_vars) 
+	nsx_cli_xml = os.path.join(dir, '../../templates/edge/nsx_edge_clisettings.j2')
+	data = render(nsx_cli_xml, jinja_vars)
 
-	return nsxPost("/api/4.0/edges/" + edgeId + "/clisettings", data)
+	return nsxPut("/api/4.0/edges/" + edgeId + "/clisettings", data)
 
 def changeUserAndPassword(edgeId, new_user, new_password):
 	jinja_vars = {'cliSettings' : {'userName' : new_user, 'password' : new_password}}
@@ -157,7 +159,9 @@ def createNatRule(edgeId):
 
 
 
+edgeId = getNsxEdgeIdByName("PGW01")
 
-
+print(edgeId)
+print(NsxEdgeRename(edgeId, "PGW02").status_code)
 
 

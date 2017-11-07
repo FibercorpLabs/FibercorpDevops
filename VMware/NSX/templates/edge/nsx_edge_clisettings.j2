@@ -1,19 +1,19 @@
 {% if cliSettings is defined %}
 <cliSettings>
 	{% if cliSettings.userName is defined %}
-	<userName>>{{ cliSettings.userName }}</userName>
+	<userName>{{ cliSettings.userName }}</userName>
 	{% endif %}
 	{% if cliSettings.password is defined %}
-	<password>>{{ cliSettings.password }}</password>
+	<password>{{ cliSettings.password }}</password>
 	{% endif %}
 	{% if cliSettings.remoteAccess is defined %}
-	<remoteAccess>>{{ cliSettings.remoteAccess }}</remoteAccess>
+	<remoteAccess>{{ cliSettings.remoteAccess }}</remoteAccess>
 	{% endif %}
 	{% if cliSettings.passwordExpiry is defined %}
-	<passwordExpiry>>{{ cliSettings.passwordExpiry }}</passwordExpiry>
+	<passwordExpiry>{{ cliSettings.passwordExpiry }}</passwordExpiry>
 	{% endif %}
 	{% if cliSettings.sshLoginBannerText is defined %}
-	<sshLoginBannerText>>{{ cliSettings.sshLoginBannerText }}</sshLoginBannerText>
+	<sshLoginBannerText>{{ cliSettings.sshLoginBannerText }}</sshLoginBannerText>
 	{% endif %}
 </cliSettings>
 {% endif %}
