@@ -38,6 +38,11 @@ def nsxPut(url, data):
   r = requests.put(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
   return r
 
+def nsxPutAsJson(url, data):
+  rheaders = {'Content-Type': 'application/json'}
+  r = requests.put(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
+  return r
+
 
 def nsxDelete(url):
   rheaders = {'Content-Type': 'application/xml'}

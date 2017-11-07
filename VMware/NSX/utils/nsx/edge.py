@@ -65,15 +65,13 @@ def updateNsxEdge(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_edge_xml = os.path.join(dir, '../../templates/edge/nsx_edge_update.j2')
 	data = render(nsx_edge_xml, jinja_vars)
-
-	print(data)
-	print("/api/4.0/edges/" + edgeId)
 	return nsxPut("/api/4.0/edges/" + edgeId, data)
 
 def NsxEdgeRename(edgeId, name):
-	jinja_vars = {'edge' : {'name' : name}}
-
-	return updateNsxEdge(edgeId, jinja_vars)
+	jinja_vars = getNsxEdge(edgeId)
+	jinja_vars['name'] = name
+	data = json.dumps(jinja_vars)
+	return nsxPutAsJson("/api/4.0/edges/" + edgeId, data)
 
 def NsxEdgeResize(edgeId, applianceSize):
 	jinja_vars = {'edge' : {'appliances' : applianceSize}}
@@ -159,9 +157,9 @@ def createNatRule(edgeId):
 
 
 
-edgeId = getNsxEdgeIdByName("PGW01")
+edgeId = getNsxEdgeIdByName("PGW02")
 
 print(edgeId)
-print(NsxEdgeRename(edgeId, "PGW02").status_code)
+
 
 
