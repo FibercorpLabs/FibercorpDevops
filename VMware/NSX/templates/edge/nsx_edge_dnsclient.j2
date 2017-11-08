@@ -1,12 +1,12 @@
 {% if dnsClient is defined %}
 <dnsClient>
-	{% if primaryDns is defined %}
-	<primaryDns>{{ primaryDns }}</primaryDns>
+	{% if dnsClient.primaryDns is defined %}
+	<primaryDns>{{ dnsClient.primaryDns }}</primaryDns>
 	{% endif %}
-	{% if secondaryDns is defined %}
-	<secondaryDns>>{{ secondaryDns }}</secondaryDns>
-	{% if domainName is defined %}
-	<domainName>>{{ domainName }}</domainName>
+	{% if dnsClient.secondaryDns is defined %}
+	<secondaryDns>{{ dnsClient.secondaryDns }}</secondaryDns>
+	{% if dnsClient.domainName is defined %}
+	<domainName>{{ dnsClient.domainName }}</domainName>
 	{% endif %}
 	{% endif %}	
 </dnsClient>
