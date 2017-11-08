@@ -108,12 +108,12 @@ class NsxEdgeTestCase(unittest.TestCase):
     def test_enableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = enableRemoteAccess(edgeId)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
     def test_disableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = disableRemoteAccess(edgeId)
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
     @unittest.skip("")
     def test_updatePrimaryDns(self):

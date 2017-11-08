@@ -116,11 +116,11 @@ def getRemoteAccessStatus(edgeId):
 
 
 def enableRemoteAccess(edgeId):
-	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess/?enable=True", "")
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=True","")
 
 
 def disableRemoteAccess(edgeId):
-	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess/?enable=False", "")
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=False", "")
 
 # DNS_CLIENT
 def getDnsClient(edgeId):
@@ -163,3 +163,4 @@ def deleteNsxEdgeNat(edgeId):
 def createNatRule(edgeId):
 	jinja_vars = {}
 	return updateNsxEdgeNat(edgeId, jinja_vars)
+

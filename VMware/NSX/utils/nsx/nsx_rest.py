@@ -27,6 +27,11 @@ def nsxPost(url, data):
   r = requests.post(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
   return r
 
+def nsxPostAsJson(url, data):
+  rheaders = {'Content-Type': 'application/json'}
+  r = requests.post(MANAGER + url, data = data, auth = (USER, PASS), verify = False, headers = rheaders)
+  return r
+
 
 def nsxPut(url, data):
   rheaders = {'Content-Type': 'application/xml'}
