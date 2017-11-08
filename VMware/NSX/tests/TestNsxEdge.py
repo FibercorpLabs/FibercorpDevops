@@ -73,6 +73,7 @@ class NsxEdgeTestCase(unittest.TestCase):
         r_config = getNsxEdgeByName(name)
         self.assertNotEqual(None, r_config)
 
+    @unittest.skip("")
     def test_NsxEdgeRename(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = NsxEdgeRename(edgeId, "Edge-Test-NewName")
@@ -80,21 +81,25 @@ class NsxEdgeTestCase(unittest.TestCase):
         r = NsxEdgeRename(edgeId, "Edge-Test")
         self.assertEqual(r.status_code, 204)
 
+    @unittest.skip("")
     def test_NsxEdgeResize(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = NsxEdgeResize(edgeId, "large")
         self.assertEqual(r.status_code, 204)
 
+    @unittest.skip("")
     def test_changeUserAndPassword(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = changeUserAndPassword(edgeId, "josemaria", "T3stC@s3NSx!")
         self.assertEqual(r.status_code, 204)
 
+    @unittest.skip("")
     def test_updateSshLoginBannerText(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updateSshLoginBannerText(edgeId, "eeeeee banner")
         self.assertEqual(r.status_code, 200)
 
+    @unittest.skip("")
     def test_getRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = getRemoteAccessStatus(edgeId)

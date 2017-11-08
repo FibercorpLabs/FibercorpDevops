@@ -48,7 +48,6 @@ def getNsxEdge(edgeId):
 	return r_dict
 
 # NSX_EDGE_CREATION_DELETION
-
 def createNsxEdge(jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_edge_xml = os.path.join(dir, '../../templates/edge/nsx_edge_create.j2')
@@ -111,24 +110,17 @@ def updateSshLoginBannerText(edgeId, banner):
 	return updateCliSettings(edgeId, query_params)
 
 def getRemoteAccessStatus(edgeId):
-	query_params = getCliSettings(edgeId)
+	clisettings = getCliSettings(edgeId)
 		
-	return query_params['remoteAccess']
+	return clisettings['remoteAccess']
 
 
 def enableRemoteAccess(edgeId):
-	query_params = getCliSettings(edgeId)
-	query_params['remoteAccess'] = 'True'
-	
-	return updateCliSettings(edgeId, query_params)
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess/?enable=True", "")
 
 
 def disableRemoteAccess(edgeId):
-	query_params = getCliSettings(edgeId)
-	query_params['remoteAccess'] = 'False'
-	
-	return updateCliSettings(edgeId, query_params)
-
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess/?enable=False", "")
 
 # DNS_CLIENT
 def getDnsClient(edgeId):
