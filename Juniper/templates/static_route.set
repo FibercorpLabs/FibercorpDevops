@@ -1,0 +1,1 @@
+set routing-instances INTERNET routing-options static route {{ public-prefix }} next-hop {{ nexthop-vcpe }} tag 1
