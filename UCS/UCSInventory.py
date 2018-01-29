@@ -122,11 +122,13 @@ total_hor_num_of_cores = 0
 
 inventory = get_inventory(handle, component="cpu")
 
+# pprint(inventory)
+
 cpu_list = inventory[hostname]['cpu']
 
 for cpu in cpu_list:
-	# print(cpu['cores'])
-	total_hor_num_of_cores += int(cpu['cores'])
+	if(int(cpu['cores'] != 'unspecified')):
+		total_hor_num_of_cores += int(cpu['cores'])
 
 handle.logout()
 
