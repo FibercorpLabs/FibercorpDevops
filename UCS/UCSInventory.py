@@ -39,11 +39,10 @@ for blade in blades:
 				  'num_of_cpus' : blade.num_of_cpus,
 				  'slot_id' : blade.slot_id,
 				  'chassis_id' : blade.chassis_id,
-				  'usr_lbl' : blade.usr_lbl}
+				  'usr_lbl' : blade.usr_lbl,
+				  'association' : blade.association}
 
 	slo_old_blades.append(blade_dict)
-
-	del blade_dict
 
 	total_slo_old_memory += int(blade.total_memory)
 	total_slo_old_num_of_cpus += int(blade.num_of_cpus)
@@ -85,12 +84,11 @@ for blade in blades:
 				  'num_of_cpus' : blade.num_of_cpus,
 				  'slot_id' : blade.slot_id,
 				  'chassis_id' : blade.chassis_id,
-				  'usr_lbl' : blade.usr_lbl}
+				  'usr_lbl' : blade.usr_lbl,
+				  'association' : blade.association}
 
 	slo_new_blades.append(blade_dict)
 	
-	del blade_dict
-
 	total_slo_new_memory += int(blade.total_memory)
 	total_slo_new_num_of_cpus += int(blade.num_of_cpus)
 
@@ -138,11 +136,10 @@ for blade in blades:
 				  'num_of_cpus' : blade.num_of_cpus,
 				  'slot_id' : blade.slot_id,
 				  'chassis_id' : blade.chassis_id,
-				  'usr_lbl' : blade.usr_lbl}
+				  'usr_lbl' : blade.usr_lbl,
+				  'association' : blade.association}
 
 	hor_old_blades.append(blade_dict)
-
-	del blade_dict
 
 	total_hor_old_memory += int(blade.total_memory)
 	total_hor_old_num_of_cpus += int(blade.num_of_cpus)
@@ -186,11 +183,10 @@ for blade in blades:
 				  'num_of_cpus' : blade.num_of_cpus,
 				  'slot_id' : blade.slot_id,
 				  'chassis_id' : blade.chassis_id,
-				  'usr_lbl' : blade.usr_lbl}
+				  'usr_lbl' : blade.usr_lbl,
+				  'association' : blade.association}
 
 	hor_new_blades.append(blade_dict)
-
-	del blade_dict
 
 	total_hor_new_memory += int(blade.total_memory)
 	total_hor_new_num_of_cpus += int(blade.num_of_cpus)
@@ -221,6 +217,7 @@ ucs_inventory = {'san_lorenzo' : {'num_of_blades' : total_slo_num_of_blades,
 							 'hor_old_isle' : {'blades' : hor_old_blades},
 							 'hor_new_isle' : {'blades' : hor_new_blades}}}
 
-ucs_inventory_json = json.dumps(ucs_inventory,sort_keys=True, indent=4)
+# ucs_inventory_json = json.dumps(ucs_inventory,sort_keys=True, indent=4)
+ucs_inventory_json = json.dumps(ucs_inventory)
 
 pprint(ucs_inventory_json)
