@@ -55,10 +55,11 @@ cpu_list = inventory[hostname]['cpu']
 
 for cpu in cpu_list:
 	total_slo_num_of_cores += int(cpu['cores'])
-
 handle.logout()
 
-""" SLO ISLA NUEVA """
+
+
+# """ SLO ISLA NUEVA """
 
 host = "ucs_slo_new"
 
@@ -149,6 +150,8 @@ total_hor_num_of_cores = 0
 inventory = get_inventory(handle, component="cpu")
 
 cpu_list = inventory[hostname]['cpu']
+
+pprint(cpu_list)
 
 for cpu in cpu_list:
 	if(int(cpu['cores'] != 'unspecified')):
