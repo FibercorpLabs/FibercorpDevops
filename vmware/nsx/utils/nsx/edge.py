@@ -92,22 +92,25 @@ def getCliSettings(edgeId):
 	r = getNsxEdge(edgeId)
 	return r['cliSettings']
 
-def updateCliSettings(edgeId, query_params):
-	data = json.dumps(query_params)
-	return nsxPutAsJson("/api/4.0/edges/" + edgeId + "/clisettings", data)
+def updateCliSettings(edgeId, jinja_vars):
+	dir = os.path.dirname(__file__)
+	nsx_cli_xml = os.path.join(dir, '../../templates/edge/nsx_edge_clisettings.j2')
+	data = render(nsx_cli_xml, jinja_vars)
 
+	print(data)
+
+	return nsxPut("/api/4.0/edges/" + edgeId + "/clisettings", data)
+	
 def changeUserAndPassword(edgeId, new_user, new_password):
-	query_params = getCliSettings(edgeId)
-	query_params['userName'] = new_user
-	query_params['password'] = new_password
+	jinja_vars = {'cliSettings' : {'userName' : new_user, 'password' : new_password}}
 
-	return updateCliSettings(edgeId, query_params)
+	return updateCliSettings(edgeId, jinja_vars)
 
 def updateSshLoginBannerText(edgeId, banner):
-	query_params = getCliSettings(edgeId)
-	query_params['sshLoginBannerText'] = banner
+	jinja_vars = {'cliSettings' : {'userName' : 'josemaria', 'password' : 'T3stC@s3NSx!', 'sshLoginBannerText' : banner}}
+	# jinja_vars = {'cliSettings' : {'sshLoginBannerText' : banner}}
 	
-	return updateCliSettings(edgeId, query_params)
+	return updateCliSettings(edgeId, jinja_vars)
 
 def getRemoteAccessStatus(edgeId):
 	clisettings = getCliSettings(edgeId)
@@ -130,9 +133,11 @@ def getDnsClient(edgeId):
 def updateDnsClient(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_dns_xml = os.path.join(dir, '../../templates/edge/nsx_edge_dnsclient.j2')
-	data = render(nsx_dns_xml, jinja_vars) 
+	data = render(nsx_dns_xml, jinja_vars)
 
-	return nsxPost("/api/4.0/edges/" + edgeId + "/dnsclient", data)
+	print(data)
+
+	return nsxPut("/api/4.0/edges/" + edgeId + "/dnsclient", data)
 
 def updatePrimaryDns(edgeId, primaryDns):
 	jinja_vars = {'dnsClient' : {'primaryDns' : primaryDns}}
@@ -164,3 +169,5 @@ def createNatRule(edgeId):
 	jinja_vars = {}
 	return updateNsxEdgeNat(edgeId, jinja_vars)
 
+
+# print(getCliSettings("edge-1"))

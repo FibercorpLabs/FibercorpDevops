@@ -87,29 +87,31 @@ class NsxEdgeTestCase(unittest.TestCase):
         r = NsxEdgeResize(edgeId, "large")
         self.assertEqual(r.status_code, 204)
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_changeUserAndPassword(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = changeUserAndPassword(edgeId, "josemaria", "T3stC@s3NSx!")
         self.assertEqual(r.status_code, 204)
 
-    @unittest.skip("")
+    # @unittest.skip("")
     def test_updateSshLoginBannerText(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
-        r = updateSshLoginBannerText(edgeId, "eeeeee banner")
-        self.assertEqual(r.status_code, 200)
+        r = updateSshLoginBannerText(edgeId, "\n***************************************************************************\nNOTICE TO USERS\n\n\nThis computer system is the private property of its owner, whether\nindividual, corporate or government.  It is for authorized use only.\nUsers (authorized or unauthorized) have no explicit or implicit\nexpectation of privacy.\n\nAny or all uses of this system and all files on this system may be\nintercepted, monitored, recorded, copied, audited, inspected, and\ndisclosed to your employer, to authorized site, government, and law\nenforcement personnel, as well as authorized officials of government\nagencies, both domestic and foreign.\n\nBy using this system, the user consents to such interception, monitoring,\nrecording, copying, auditing, inspection, and disclosure at the\ndiscretion of such personnel or officials.  Unauthorized or improper use\nof this system may result in civil and criminal penalties and\nadministrative or disciplinary action, as appropriate. By continuing to\nuse this system you indicate your awareness of and consent to these terms\nand conditions of use. LOG OFF IMMEDIATELY if you do not agree to the\nconditions stated in this warning.\n\n****************************************************************************")
+        self.assertEqual(r.status_code, 204)
 
     @unittest.skip("")
     def test_getRemoteAccessStatus(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = getRemoteAccessStatus(edgeId)
-        print(r)
+        self.assertEqual((r == True or r == False))
 
+    @unittest.skip("")
     def test_enableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = enableRemoteAccess(edgeId)
         self.assertEqual(r.status_code, 204)
 
+    @unittest.skip("")
     def test_disableRemoteAccess(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = disableRemoteAccess(edgeId)
@@ -119,13 +121,13 @@ class NsxEdgeTestCase(unittest.TestCase):
     def test_updatePrimaryDns(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updatePrimaryDns(edgeId, "8.8.8.8")
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
     @unittest.skip("")
     def test_updateSecondaryDns(self):
         edgeId = getNsxEdgeIdByName("Edge-Test")
         r = updateSecondaryDns(edgeId, "8.8.4.4", "dns.google.com")
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.status_code, 204)
 
     @unittest.skip("")
     def test_createNatRule(self):
