@@ -37,8 +37,6 @@ def main():
     # print('Done.')
 
 
-
-
     my_device = {
         'host': "10.120.80.56",
         'username': 'lab',
