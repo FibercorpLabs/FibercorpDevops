@@ -35,6 +35,7 @@ def main():
     trunk_native_config = ['switchport trunk native vlan 4000',
                            'switchport trunk allowed vlan add 4000',
                            'switchport trunk allowed vlan remove 1',
+                           'switchport trunk vlan tag native',
                            'exit']
 
     hybrid_native_config = ['switchport hybrid native vlan 4000',
@@ -67,6 +68,7 @@ def main():
             else:
                 config = ["interface " + interface_name,
                          "switchport trunk allowed vlan " + native_vlan,
+                         "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
@@ -100,6 +102,7 @@ def main():
             else:
                 config = ["interface " + interface_name,
                          "switchport trunk allowed vlan " + native_vlan,
+                         "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
