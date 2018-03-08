@@ -10,47 +10,117 @@ from netmiko import ConnectHandler
 
 import sys
 import os
+import argparse
+import getpass
 
 
 def main():
-    """Transition"""
-
-    # # Use the appropriate network driver to connect to the device:
-    # driver = napalm.get_network_driver('ios')
-
-    # # Connect:
-    # device = driver(hostname='10.120.80.56', username='lab',
-    #                 password='lab123', timeout=180, optional_args={'port': 22, 'keepalive': 45, 'global_delay_factor': 2,})
-
-    # #print('Opening ...')
-    # device.open()
-
-    # #print('sending dir')
-    # output = device._send_command("dir")
-
-    # # Note that the changes have not been applied yet. Before applying
-    # # the configuration you can check the changes:
-    # print( output )
-
-    # # close the session with the device.
-    # device.close()
-    # print('Done.')
-
+    parser = argparse.ArgumentParser(description='Configure Loop Protection')
+    parser.add_argument('-u', '--user', help='User', required=True)
+    parser.add_argument('-p', '--passw', help='User Pass', required=False)
+    parser.add_argument('-d', '--host', help='Host', required=True)
+    args = parser.parse_args()
+    if not args.passw:
+        args.passw = getpass.getpass(prompt='Enter password')
 
     my_device = {
-        'host': "10.120.80.56",
-        'username': 'lab',
-        'password': 'lab123',
+        'host': args.host,
+        'username': args.user,
+        'password': args.passw,
         'device_type': 'cisco_ios',
-        # Increase (essentially) all sleeps by a factor of 2
-        'global_delay_factor': 2,
     }
 
+    initial_config = open('initial_config.txt', 'r').read().splitlines()
+    
+    trunk_native_config = ['switchport trunk native vlan 4000',
+                           'switchport trunk allowed vlan add 4000',
+                           'switchport trunk allowed vlan remove 1',
+                           'exit']
+
+    hybrid_native_config = ['switchport hybrid native vlan 4000',
+                            'switchport hybrid allowed vlan remove',
+                            'switchport hybrid allowed vlan add 4000',
+                            'exit']
+
     net_connect = ConnectHandler(**my_device)
-    # Increase the sleeps for just send_command by a factor of 2
-    output = net_connect.send_command("dir")
-    print(output)
+
+    #Setting initial config
+    print("** Setting global config **")
+    output = net_connect.send_config_set(initial_config)
+    print (output)
+
+    #Setting GigabitEthernet ports config
+    print("** Setting GigabitEthernet ports config **")
+    for num in range(1,25):
+        interface_name = "GigabitEthernet 1/" + str(num)
+        command = "sh interface " + interface_name + " switchport"
+        output = net_connect.send_command(command)
+        lines = output.splitlines()
+        mode = lines[1].split("Administrative mode: ",1)[1]
+        native_vlan = ""
+        config = ""
+        if mode == "trunk":
+            native_vlan = lines[3].split("Trunk Native Mode VLAN: ", 1)[1]
+            if native_vlan == "1":
+                config = trunk_native_config.copy()
+                config.insert(0,"interface " + interface_name)
+            else:
+                config = ["interface " + interface_name,
+                         "switchport trunk allowed vlan " + native_vlan,
+                         'exit']
+            output = net_connect.send_config_set(config)
+            print (output)
+        if mode == "hybrid":
+            native_vlan = lines[12].split("Hybrid Native Mode VLAN: ", 1)[1]
+            if native_vlan == "1":
+                config = hybrid_native_config.copy()
+                config.insert(0,"interface " + interface_name)
+            else:
+                config = ["interface " + interface_name,
+                         "switchport hybrid allowed vlan " + native_vlan,
+                         'exit']
+            output = net_connect.send_config_set(config)
+            print (output)
+
+    print("** Setting 10GigabitEthernet ports config **")
+
+    for num in range(1,3):
+        interface_name = "10GigabitEthernet 1/" + str(num)
+        command = "sh interface " + interface_name + " switchport"
+        output = net_connect.send_command(command)
+        lines = output.splitlines()
+        mode = lines[1].split("Administrative mode: ",1)[1]
+        native_vlan = ""
+
+        if mode == "trunk":
+            native_vlan = lines[3].split("Trunk Native Mode VLAN: ", 1)[1]
+            if native_vlan == "1":
+                config = trunk_native_config.copy()
+                config.insert(0,"interface " + interface_name)
+            else:
+                config = ["interface " + interface_name,
+                         "switchport trunk allowed vlan " + native_vlan,
+                         'exit']
+            output = net_connect.send_config_set(config)
+            print (output)
+
+        if mode == "hybrid":
+            native_vlan = lines[12].split("Hybrid Native Mode VLAN: ", 1)[1]
+            if native_vlan == "1":
+                config = hybrid_native_config.copy()
+                config.insert(0,"interface " + interface_name)
+            else:
+                config = ["interface " + interface_name,
+                         "switchport hybrid allowed vlan " + native_vlan,
+                         'exit']
+            output = net_connect.send_config_set(config)
+            print (output)
+
+    print("** Closing connection **")
+
+    #Clossing connection    
     net_connect.disconnect()
+
 
 
 if __name__ == '__main__':
