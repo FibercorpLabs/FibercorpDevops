@@ -39,7 +39,7 @@ def main():
                            'exit']
 
     hybrid_native_config = ['switchport hybrid native vlan 4000',
-                            'switchport hybrid allowed vlan remove',
+                            'switchport hybrid allowed vlan remove 1',
                             'switchport hybrid allowed vlan add 4000',
                             'exit']
 
@@ -67,7 +67,7 @@ def main():
                 config.insert(0,"interface " + interface_name)
             else:
                 config = ["interface " + interface_name,
-                         "switchport trunk allowed vlan " + native_vlan,
+                         "switchport trunk allowed vlan add " + native_vlan,
                          "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
@@ -79,7 +79,7 @@ def main():
                 config.insert(0,"interface " + interface_name)
             else:
                 config = ["interface " + interface_name,
-                         "switchport hybrid allowed vlan " + native_vlan,
+                         "switchport hybrid allowed vlan add " + native_vlan,
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
@@ -101,7 +101,7 @@ def main():
                 config.insert(0,"interface " + interface_name)
             else:
                 config = ["interface " + interface_name,
-                         "switchport trunk allowed vlan " + native_vlan,
+                         "switchport trunk allowed vlan add" + native_vlan,
                          "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
@@ -114,7 +114,7 @@ def main():
                 config.insert(0,"interface " + interface_name)
             else:
                 config = ["interface " + interface_name,
-                         "switchport hybrid allowed vlan " + native_vlan,
+                         "switchport hybrid allowed vlan add" + native_vlan,
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
