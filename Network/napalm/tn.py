@@ -68,7 +68,6 @@ def main():
             else:
                 config = ["interface " + interface_name,
                          "switchport trunk allowed vlan add " + native_vlan,
-                         "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
@@ -102,7 +101,6 @@ def main():
             else:
                 config = ["interface " + interface_name,
                          "switchport trunk allowed vlan add" + native_vlan,
-                         "switchport trunk vlan tag native",
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
@@ -123,8 +121,6 @@ def main():
 
     #Clossing connection    
     net_connect.disconnect()
-
-
 
 if __name__ == '__main__':
     main()
