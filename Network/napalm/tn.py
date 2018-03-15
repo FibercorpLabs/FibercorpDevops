@@ -1,9 +1,3 @@
-# Sample script to demonstrate loading a config for a device.
-#
-# Note: this script is as simple as possible: it assumes that you have
-# followed the lab setup in the quickstart tutorial, and so hardcodes
-# the device IP and password.  You should also have the
-# 'new_good.conf' configuration saved to disk.
 from __future__ import print_function
 
 from netmiko import ConnectHandler
@@ -28,6 +22,7 @@ def main():
         'username': args.user,
         'password': args.passw,
         'device_type': 'cisco_ios',
+        'global_delay_factor': 2,
     }
 
     initial_config = open('initial_config.txt', 'r').read().splitlines()
@@ -35,7 +30,6 @@ def main():
     trunk_native_config = ['switchport trunk native vlan 4000',
                            'switchport trunk allowed vlan add 4000',
                            'switchport trunk allowed vlan remove 1',
-                           'switchport trunk vlan tag native',
                            'exit']
 
     hybrid_native_config = ['switchport hybrid native vlan 4000',
@@ -116,6 +110,9 @@ def main():
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
+
+    print("** Saving config **")
+    net_connect.send_command_expect("copy run start")
 
     print("** Closing connection **")
 
