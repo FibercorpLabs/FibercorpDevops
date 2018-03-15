@@ -6,6 +6,7 @@ import sys
 import os
 import argparse
 import getpass
+import time
 import texttable as tt
 
 
@@ -35,7 +36,9 @@ def main():
     output = net_connect.send_command("sh int * status")
 
     #Write output into file
-    file_output.write("IP:" + args.host + '\n' )
+    localtime = time.asctime( time.localtime(time.time()) )
+    file_output.write("IP:" + args.host + '\n')
+    file_output.write("Time:" + localtime + '\n')
     file_output.write(output + '\n')
     file_output.write('\n')
 
