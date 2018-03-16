@@ -7,7 +7,7 @@ import os
 import argparse
 import getpass
 import time
-import texttable as tt
+from texttable import Texttable
 
 
 def main():
@@ -74,7 +74,7 @@ def main():
     print("Interfaces up:" + str(interfaces_up))
     print("")
 
-    tab = tt.Texttable()
+    tab = Texttable()
     headings = ['VID','MAC Counting']
     tab.header(headings)
     vlans_ids = vlans.keys()
