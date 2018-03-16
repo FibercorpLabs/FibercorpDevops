@@ -6,6 +6,7 @@ import sys
 import os
 import argparse
 import getpass
+import time
 
 
 def main():
@@ -22,8 +23,15 @@ def main():
         'username': args.user,
         'password': args.passw,
         'device_type': 'cisco_ios',
-        'global_delay_factor': 2,
+        'global_delay_factor': 1,
     }
+
+    uplink_description = "FC-UPLINK-PORT"
+
+    try:
+        file_output = open("output.txt", 'a')
+    except IOError:
+        file_output = open("output.txt", 'w')
 
     initial_config = open('initial_config.txt', 'r').read().splitlines()
     
@@ -39,10 +47,17 @@ def main():
 
     net_connect = ConnectHandler(**my_device)
 
+    #Write output into file
+    localtime = time.asctime( time.localtime(time.time()) )
+    file_output.write("IP:" + args.host + '\n')
+    file_output.write("Time:" + localtime + '\n')
+
     #Setting initial config
     print("** Setting global config **")
     output = net_connect.send_config_set(initial_config)
     print (output)
+    file_output.write(output)
+
 
     #Setting GigabitEthernet ports config
     print("** Setting GigabitEthernet ports config **")
@@ -65,6 +80,7 @@ def main():
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
+            file_output.write(output)
         if mode == "hybrid":
             native_vlan = lines[12].split("Hybrid Native Mode VLAN: ", 1)[1]
             if native_vlan == "1":
@@ -76,43 +92,56 @@ def main():
                          'exit']
             output = net_connect.send_config_set(config)
             print (output)
+            file_output.write(output)
 
     print("** Setting 10GigabitEthernet ports config **")
 
     for num in range(1,3):
         interface_name = "10GigabitEthernet 1/" + str(num)
-        command = "sh interface " + interface_name + " switchport"
+        #Obtaining interface description
+        command = "sh run interface " + interface_name + " | include description"
         output = net_connect.send_command(command)
-        lines = output.splitlines()
-        mode = lines[1].split("Administrative mode: ",1)[1]
-        native_vlan = ""
+        description = output.split()[1]
 
-        if mode == "trunk":
-            native_vlan = lines[3].split("Trunk Native Mode VLAN: ", 1)[1]
-            if native_vlan == "1":
-                config = trunk_native_config.copy()
-                config.insert(0,"interface " + interface_name)
-            else:
-                config = ["interface " + interface_name,
-                         "switchport trunk allowed vlan add" + native_vlan,
-                         'exit']
-            output = net_connect.send_config_set(config)
-            print (output)
+        if description != uplink_description:
+            command = "sh interface " + interface_name + " switchport"
+            output = net_connect.send_command(command)
+            lines = output.splitlines()
+            mode = lines[1].split("Administrative mode: ",1)[1]
+            native_vlan = ""
 
-        if mode == "hybrid":
-            native_vlan = lines[12].split("Hybrid Native Mode VLAN: ", 1)[1]
-            if native_vlan == "1":
-                config = hybrid_native_config.copy()
-                config.insert(0,"interface " + interface_name)
-            else:
-                config = ["interface " + interface_name,
-                         "switchport hybrid allowed vlan add" + native_vlan,
-                         'exit']
-            output = net_connect.send_config_set(config)
-            print (output)
+            if mode == "trunk":
+                native_vlan = lines[3].split("Trunk Native Mode VLAN: ", 1)[1]
+                if native_vlan == "1":
+                    config = trunk_native_config.copy()
+                    config.insert(0,"interface " + interface_name)
+                else:
+                    config = ["interface " + interface_name,
+                             "switchport trunk allowed vlan add " + native_vlan,
+                             'exit']
+                output = net_connect.send_config_set(config)
+                print (output)
+                file_output.write(output)
+
+            if mode == "hybrid":
+                native_vlan = lines[12].split("Hybrid Native Mode VLAN: ", 1)[1]
+                if native_vlan == "1":
+                    config = hybrid_native_config.copy()
+                    config.insert(0,"interface " + interface_name)
+                else:
+                    config = ["interface " + interface_name,
+                             "switchport hybrid allowed vlan add " + native_vlan,
+                             'exit']
+                output = net_connect.send_config_set(config)
+                print (output)
+                file_output.write(output)
+        else:
+            print(interface_name + " is " + description)
 
     print("** Saving config **")
-    net_connect.send_command_expect("copy run start")
+    output = net_connect.send_command_expect("copy run start")
+    print(output)
+    file_output.write(output)
 
     print("** Closing connection **")
 
