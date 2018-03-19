@@ -18,11 +18,6 @@ no spanning-tree
 loop-protect
 loop-protect action log shutdown
 exit
-int 10GigabitEthernet 1/1-2
-no spanning-tree
-loop-protect
-loop-protect action log shutdown
-exit
 int 10GigabitEthernet 1/3-4
 no loop-protect
 no loop-protect action

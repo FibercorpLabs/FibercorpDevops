@@ -118,6 +118,9 @@ def main():
                 else:
                     config = ["interface " + interface_name,
                              "switchport trunk allowed vlan add " + native_vlan,
+                             "no spanning-tree",
+                             "loop-protect",
+                             "loop-protect action log shutdown",
                              'exit']
                 output = net_connect.send_config_set(config)
                 print (output)
@@ -131,6 +134,9 @@ def main():
                 else:
                     config = ["interface " + interface_name,
                              "switchport hybrid allowed vlan add " + native_vlan,
+                             "no spanning-tree",
+                             "loop-protect",
+                             "loop-protect action log shutdown",
                              'exit']
                 output = net_connect.send_config_set(config)
                 print (output)
