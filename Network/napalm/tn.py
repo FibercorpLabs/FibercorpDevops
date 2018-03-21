@@ -101,7 +101,10 @@ def main():
         #Obtaining interface description
         command = "sh run interface " + interface_name + " | include description"
         output = net_connect.send_command(command)
-        description = output.split()[1]
+        if output:
+            description = output.split()[1]
+        else:
+            description = ""
 
         if description != uplink_description:
             command = "sh interface " + interface_name + " switchport"
