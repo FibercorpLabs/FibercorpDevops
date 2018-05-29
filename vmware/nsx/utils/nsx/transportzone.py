@@ -1,8 +1,8 @@
 import json
 import sys
 
-from .nsx_rest import * 
-from ..common.jinja import *
+from nsx_rest import * 
+#from common.jinja import *
 
 def get_tz_all():
   r = nsxGet("/api/2.0/vdn/scopes", "json")
@@ -72,9 +72,9 @@ def updateTzByName(currName, clusters, newName=None, description=None, controlPl
  
   nsxPut("/api/2.0/vdn/scopes/" + tzId + "/attributes", data)
 
-def deleteTzByName(name):
+def delete_tz_by_name(name):
   tzName, tzId = getTzIdByName(name)
-  return nsxDelete("/api/2.0/vdn/scopes/" + tzId)
+  return nsxDelete("/api/2.0/vdn/scopes/" + tzId, "json")
 
-def deleteTzById(tzId):
-  nsxDelete("/api/2.0/vdn/scopes/" + tzId)
+def delete_tz_by_id(tzId):
+  return nsxDelete("/api/2.0/vdn/scopes/" + tzId, "json")

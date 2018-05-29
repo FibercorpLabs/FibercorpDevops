@@ -10,9 +10,9 @@ context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 context.verify_mode = ssl.CERT_NONE
 
 
-MANAGER = 'https://10.120.110.9'
+MANAGER = 'https://10.120.80.21'
 USER = 'admin'
-PASS = 'F1b3rC*rp'
+PASS = 'Nsx.2018!'
 
 # NSX GET Operation - Example
 # nsxGet('/api/2.0/services/vcconfig')
