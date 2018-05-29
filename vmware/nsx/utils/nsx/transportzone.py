@@ -1,30 +1,24 @@
 import json
 import sys
 
-from nsx_rest import * 
-sys.path.append("../utils/common/")
+from .nsx_rest import * 
+from ..common.jinja import *
 
-from jinja import render
-from commonfunctions import removeEmptyParams
-from pprint import pprint 
-
-def getAllTzId():
-  r = nsxGet("/api/2.0/vdn/scopes")
+def get_tz_all():
+  r = nsxGet("/api/2.0/vdn/scopes", "json")
 
   r_dict = json.loads(r)
   
-  tzones = []
+  tzones = {"transportzones" : []}
 
   scopes = r_dict['allScopes']
   for scope in scopes:
-    tzones.append({'name' : scope['name'], 'id' : scope['id']})
+    tzones["transportzones"].append({'name' : scope['name'], 'id' : scope['id']})
 
   return tzones
 
-
-# Example: getTZbyName("GLOBAL-TZ-LAB")
-def getTzIdByName(name):
-  r = nsxGet("/api/2.0/vdn/scopes")
+def get_tz_id_by_name(name):
+  r = nsxGet("/api/2.0/vdn/scopes", "json")
 
   r_dict = json.loads(r)
   
@@ -32,14 +26,12 @@ def getTzIdByName(name):
   for elem in allScopes:
     if name == elem['name']:
         return  elem['name'], elem['id']
-
   return None, None
 
 # Example: getTZbyId("")
-def getTzById(tzId):
-  r = nsxGet("/api/2.0/vdn/scopes/" + tzId)
+def get_tz_by_id(tzId):
+  r = nsxGet("/api/2.0/vdn/scopes/" + tzId, "json")
   return json.loads(r)
-
 
 
 # EXAMPLE:
