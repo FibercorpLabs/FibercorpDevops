@@ -52,10 +52,3 @@ def nsx_conn(config):
 			'port': config['nsx']['port'],
 			'user': config['nsx']['user'],
 			'password': config['nsx']['password'] }
-
-ConnMap = {'vcenter': vcenter_conn, 'nsx': nsx_conn}
-
-def conn_method(config, product):
-	conn_func = ConnMap[product]
-	return conn_func(config)
-

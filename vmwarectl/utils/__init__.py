@@ -1,1 +1,1 @@
-from utils.conn_method import conn_method
+from utils.conn_method import vcenter_conn, nsx_conn
