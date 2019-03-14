@@ -1,1 +1,3 @@
 *.pyc
+Network/napalm/report.txt
+Network/napalm/output.txt

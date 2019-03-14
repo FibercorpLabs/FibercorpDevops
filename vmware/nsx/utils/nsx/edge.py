@@ -1,31 +1,28 @@
-import sys
-sys.path.append("../utils/common/")
-sys.path.append("../common/")
+from .nsx_rest import *
+from ..common.jinja import render
 
-from nsx_rest import *
-from jinja import render
+# from nsx_rest import *
 
 import json
 
 from pprint import pprint
 
 # READ_NSX_EDGE
-
-def getAllNsxEdges():
-	r = nsxGet("/api/4.0/edges")
+def nsx_edge_get_all():
+	r = nsxGet("/api/4.0/edges", "json")
 
 	r_dict = json.loads(r)
 	allEdges = r_dict['edgePage']['data']
 
-	edges = []
+	edges = {"edges" : []}
 
 	for edge in allEdges:
-		edges.append({'name' : edge['name'], 'id' : edge['id']})
+		edges["edges"].append({'name' : edge['name'], 'id' : edge['id']})
 
 	return edges
 
-def getNsxEdgeIdByName(name):
-	r = nsxGet("/api/4.0/edges")
+def nsx_edge_get_id_by_name(name):
+	r = nsxGet("/api/4.0/edges", "json")
 
 	r_dict = json.loads(r)
 	
@@ -37,137 +34,131 @@ def getNsxEdgeIdByName(name):
 
 	return ""
 
-def getNsxEdgeByName(edge_name):
-	edgeId = getNsxEdgeIdByName(edge_name)
+def nsx_edge_get_by_name(edge_name):
+	edgeId = nsx_edge_get_id_by_name(edge_name)
 
-	return getNsxEdge(edgeId)
+	return nsx_edge_get_by_id(edgeId)
 
-def getNsxEdge(edgeId):
-	r = nsxGet("/api/4.0/edges/" + edgeId)
+def nsx_edge_get_by_id(edgeId):
+	r = nsxGet("/api/4.0/edges/" + edgeId, "json")
 	r_dict = json.loads(r)
 	return r_dict
 
 # NSX_EDGE_CREATION_DELETION
-def createNsxEdge(jinja_vars):
+def nsx_edge_create(jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_edge_xml = os.path.join(dir, '../../templates/edge/nsx_edge_create.j2')
 	data = render(nsx_edge_xml, jinja_vars) 
-  
-	return nsxPost("/api/4.0/edges", data)
+  	
+	result= nsxPost("/api/4.0/edges", data, "xml")
+	print (result)
+	return result
 
-def deleteNsxEdgeById(edgeId):
-	return nsxDelete("/api/4.0/edges/" + edgeId)
+def nsx_edge_delete_by_id(edgeId):
+	return nsxDelete("/api/4.0/edges/" + edgeId, "xml")
 
-def deleteNsxEdgeByName(edge_name):
-	edgeId = getNsxEdgeIdByName(edge_name)
-	return deleteNsxEdgeById(edgeId)
+def nsx_edge_delete_by_name(edge_name):
+	edgeId = nsx_edge_get_id_by_name(edge_name)
+	return nsx_edge_delete_by_id(edgeId)
 
 # NSX_EDGE_UPDATE
-def updateNsxEdge(edgeId, jinja_vars):
+def nsx_edge_update(edgeId, jinja_vars):
 	data = json.dumps(jinja_vars)
-	return nsxPutAsJson("/api/4.0/edges/" + edgeId, data)
+	return nsxPut("/api/4.0/edges/" + edgeId, data, "xml")
 
-def NsxEdgeRename(edgeId, name):
-	jinja_vars = getNsxEdge(edgeId)
+def nsx_edge_rename(edgeId, name):
+	jinja_vars = get_nsx_edge(edgeId)
 	jinja_vars['name'] = name
 
-	return updateNsxEdge(edgeId, jinja_vars)
+	return update_nsx_edge(edgeId, jinja_vars)
 
-def NsxEdgeResize(edgeId, applianceSize):
-	jinja_vars = getNsxEdge(edgeId)
+def nsx_edge_resize(edgeId, applianceSize):
+	jinja_vars = get_nsx_edge(edgeId)
 	jinja_vars['appliances']['applianceSize'] = applianceSize
 	data = json.dumps(jinja_vars)
 
-	return updateNsxEdge(edgeId, jinja_vars)
+	return update_nsx_edge(edgeId, jinja_vars)
 
 # TODO: definir que parametros se quiere tocar
-def NsxEdgeAddVnic(edgeId, index, type, portgroupId, primaryAddress, secondaryAddress, mtu, isConnected):
+def nsx_edge_add_vnic(edgeId, index, type, portgroupId, primaryAddress, secondaryAddress, mtu, isConnected):
 	jinja_vars = {}
 
-	return updateNsxEdge(edgeId, jinja_vars)
+	return nsx_edge_update(edgeId, jinja_vars)
 
 # CLI_SETTINGS
 
-def getCliSettings(edgeId):
-	r = getNsxEdge(edgeId)
+def nsx_edge_get_cli_settings(edgeId):
+	r = get_nsx_edge(edgeId)
 	return r['cliSettings']
 
-def updateCliSettings(edgeId, jinja_vars):
-	dir = os.path.dirname(__file__)
-	nsx_cli_xml = os.path.join(dir, '../../templates/edge/nsx_edge_clisettings.j2')
-	data = render(nsx_cli_xml, jinja_vars)
+def nsx_edge_update_cli_settings(edgeId, query_params):
+	data = json.dumps(query_params)
+	return nsxPut("/api/4.0/edges/" + edgeId + "/clisettings", data, "xml")
 
-	print(data)
+def nsx_edge_set_user_and_password(edgeId, new_user, new_password):
+	query_params = get_cli_settings(edgeId)
+	query_params['userName'] = new_user
+	query_params['password'] = new_password
 
-	return nsxPut("/api/4.0/edges/" + edgeId + "/clisettings", data)
+	return update_cli_settings(edgeId, query_params)
+
+def nsx_edge_set_ssh_login_banner(edgeId, banner):
+	query_params = get_cli_settings(edgeId)
+	query_params['sshLoginBannerText'] = banner
 	
-def changeUserAndPassword(edgeId, new_user, new_password):
-	jinja_vars = {'cliSettings' : {'userName' : new_user, 'password' : new_password}}
+	return nsx_edge_update_cli_settings(edgeId, query_params)
 
-	return updateCliSettings(edgeId, jinja_vars)
-
-def updateSshLoginBannerText(edgeId, banner):
-	jinja_vars = {'cliSettings' : {'userName' : 'josemaria', 'password' : 'T3stC@s3NSx!', 'sshLoginBannerText' : banner}}
-	# jinja_vars = {'cliSettings' : {'sshLoginBannerText' : banner}}
-	
-	return updateCliSettings(edgeId, jinja_vars)
-
-def getRemoteAccessStatus(edgeId):
-	clisettings = getCliSettings(edgeId)
+def get_remote_access_status(edgeId):
+	clisettings = nsx_edge_get_cli_settings(edgeId)
 		
 	return clisettings['remoteAccess']
 
 
-def enableRemoteAccess(edgeId):
-	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=True","")
+def enable_remote_access(edgeId):
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=True","", "xml")
 
 
-def disableRemoteAccess(edgeId):
-	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=False", "")
+def disable_remote_access(edgeId):
+	return nsxPost("/api/4.0/edges/" + edgeId + "/cliremoteaccess?enable=False", "", "xml")
 
 # DNS_CLIENT
-def getDnsClient(edgeId):
-	r = nsxGet("/api/4.0/edges/" + edgeId + "/dnsclient")
+def get_dns_client(edgeId):
+	r = nsxGet("/api/4.0/edges/" + edgeId + "/dnsclient", "xml")
 	return json.loads(r)
 
-def updateDnsClient(edgeId, jinja_vars):
+def update_dns_client(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_dns_xml = os.path.join(dir, '../../templates/edge/nsx_edge_dnsclient.j2')
-	data = render(nsx_dns_xml, jinja_vars)
+	data = render(nsx_dns_xml, jinja_vars) 
 
-	print(data)
+	return nsxPost("/api/4.0/edges/" + edgeId + "/dnsclient", data, "xml")
 
-	return nsxPut("/api/4.0/edges/" + edgeId + "/dnsclient", data)
-
-def updatePrimaryDns(edgeId, primaryDns):
+def update_primary_dns(edgeId, primaryDns):
 	jinja_vars = {'dnsClient' : {'primaryDns' : primaryDns}}
 
-	return updateDnsClient(edgeId, jinja_vars)
+	return update_dns_client(edgeId, jinja_vars)
 
-def updateSecondaryDns(edgeId, secondaryDns, domainName):
+def update_secondary_dns(edgeId, secondaryDns, domainName):
 	jinja_vars = {'dnsClient' : {'secondaryDns' : secondaryDns, 'domainName' : domainName}}
 
-	return updateDnsClient(edgeId, jinja_vars)
+	return update_dns_client(edgeId, jinja_vars)
 
 # NAT
-def getNsxEdgeNat(edgeId):
-	r = nsxGet("/api/4.0/edges/" + edgeId + "/nat/config")
+def get_nsx_edge_nat(edgeId):
+	r = nsxGet("/api/4.0/edges/" + edgeId + "/nat/config", "xml")
 	return json.loads(r)
 
-def updateNsxEdgeNat(edgeId, jinja_vars):
+def update_nsx_edge_nat(edgeId, jinja_vars):
 	dir = os.path.dirname(__file__)
 	nsx_nat_xml = os.path.join(dir, '../../templates/edge_routing/nsx_edge_routing_nat.j2')
 	data = render(nsx_nat_xml, jinja_vars)
 
-	return nsxPost("/api/4.0/edges/" + edgeId + "/nat/config", data)
+	return nsxPost("/api/4.0/edges/" + edgeId + "/nat/config", data, "xml")
 
-def deleteNsxEdgeNat(edgeId):
-	return nsxDelete("/api/4.0/edges/" + edgeId + "/nat/config")
+def delete_nsx_edge_nat(edgeId):
+	return nsxDelete("/api/4.0/edges/" + edgeId + "/nat/config", "xml")
 
 # TODO: 
-def createNatRule(edgeId):
+def create_nat_rule(edgeId):
 	jinja_vars = {}
-	return updateNsxEdgeNat(edgeId, jinja_vars)
-
-
-# print(getCliSettings("edge-1"))
+	return update_nsx_edge_nat(edgeId, jinja_vars)
