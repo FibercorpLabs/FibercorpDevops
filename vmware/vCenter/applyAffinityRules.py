@@ -83,20 +83,21 @@ def main():
         # Iterate all VMs
 
         # if VM matches custom attribute in dict
+        if vm matches:
+            # Find Cluster for the VM
+            cluster = get_obj(
+                content, [vim.ClusterComputeResource], args.cluster)
 
-        # Find Cluster for the VM
-        cluster = get_obj(content, [vim.ClusterComputeResource], args.cluster)
+            # Find affinity rule
+            rule = get_obj(
+                content, [vim.cluster.AffinityRuleSpec], affinityRule)
 
-        # Find affinity rule
-        rule = get_obj(
-            content, [vim.cluster.AffinityRuleSpec], affinityRule)
+            # create rule spec & config spec
+            ruleSpec = vim.cluster.RuleSpec(info=rule, operation='add')
+            configSpec = vim.cluster.ConfigSpecEx(rulesSpec=[ruleSpec])
 
-        # create rule spec & config spec
-        ruleSpec = vim.cluster.RuleSpec(info=rule, operation='add')
-        configSpec = vim.cluster.ConfigSpecEx(rulesSpec=[ruleSpec])
-
-        # apply AR
-        WaitForTask(cluster.ReconfigureEx(configSpec, modify=True))
+            # apply AR
+            WaitForTask(cluster.ReconfigureEx(configSpec, modify=True))
 
     except vmodl.MethodFault, e:
         print "Caught vmodl fault: %s" % e.msg
