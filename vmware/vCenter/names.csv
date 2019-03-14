@@ -1,0 +1,153 @@
+name,app,os
+ARTEARDEMO-001,,Linux CentOS
+ARTEARDEMO-002,,Linux CentOS
+ARTEARDEMO-006,,Linux Ubuntu
+MAXICONSUMO S A-31-002,,Linux Red Hat
+MAXICONSUMO S A-31-003,,Linux Red Hat
+OESTE FARMA ACE CENT-38-001,,Linux CentOS
+OESTE FARMA ACE CENT-38-002,,Windows Server 2008 R2
+PRE1575,,Windows Server 2012 R2
+PRE1576,,Windows Server 2012 R2
+PRE1577,,Windows Server 2012 R2
+PRE1580,,Windows Server 2012 R2
+PRE1582,,Linux Red Hat
+PRE1583,,Linux Red Hat
+PRE1585,,Windows Server 2012 R2
+PRE1590,,Linux Red Hat
+PRE1591,,Windows Server 2012 R2
+PRE1592,,Windows Server 2012 R2
+PRE1593,,Windows Server 2012 R2
+PRE1595,,Windows Server 2012 R2
+PRE1598,,Windows Server 2012 R2
+PRE1600,,Windows Server 2012 R2
+PRE1601,,Windows Server 2012 R2
+PRE1602,,Linux Red Hat
+PRE1603,,Linux Red Hat
+PRE1605,,Windows Server 2012 R2
+PRE1606,,Windows Server 2012 R2
+PRE1607,,Windows Server 2012 R2
+PRE1608,,Windows Server 2012 R2
+PRE1609,,Windows Server 2012 R2
+PRE1610,,Windows Server 2012 R2
+PRE1611,,Linux Red Hat
+PRE1612,,Windows Server 2012 R2
+PRE1613,,Windows Server 2012 R2
+PRE1614,,Windows Server 2012 R2
+PRE1615,,Windows Server 2012 R2
+PRE1616,,Linux Red Hat
+PRE1617,,Windows Server 2012 R2
+PRE1618,,Linux Red Hat
+PRE1619,,Windows Server 2012 R2
+PRE1620,,Linux Red Hat
+PRO1499,,Windows Server 2012 R2
+PRO1501,,Windows Server 2012 R2
+PRO1506,,Windows Server 2012 R2
+PRO1512,,Linux Red Hat
+PRO1513,,Linux Red Hat
+PRO1521,,Linux Red Hat
+PRO1523,,Linux Red Hat
+PRO1526,,Windows Server 2012 R2
+PRO1527,,Windows Server 2012 R2
+PRO1529,,Windows Server 2012 R2
+PRO1530,,Windows Server 2012 R2
+PRO1533,,Linux Red Hat
+PRO1534,,Windows Server 2012 R2
+PRO1535,,Windows Server 2012 R2
+PRO1537,,Windows Server 2012 R2
+PRO1538,,Linux Red Hat
+PRO1541,,Windows Server 2012 R2
+PRO1543,,Windows Server 2012 R2
+PRO1547,,Windows Server 2012 R2
+PRO1548,,Windows Server 2012 R2
+PRO1549,,Windows Server 2012 R2
+PRO1550,,Windows Server 2012 R2
+PRO1553,,Linux Red Hat
+PRO1556,,Windows Server 2012 R2
+PRO1557,,Linux Red Hat
+PRO1558,,Windows Server 2012 R2
+PROCESOS FIBER CORP-27-055,,Linux Red Hat
+PROCESOS FIBER CORP-27-096,,Windows Server 2012 R2
+PROCESOS FIBER CORP-27-100,,Linux CentOS
+PROCESOS FIBER CORP-27-101,,Linux Ubuntu
+PROCESOS FIBER CORP-27-108,,Windows Server 2008 R2
+PROCESOS FIBER CORP-27-109,,Linux CentOS
+PROCESOS FIBER CORP-27-127,,Windows Server 2012 R2
+PROCESOS FIBER CORP-27-128,,Windows Server 2008 R2
+PROCESOS FIBER CORP-27-129,5;Terminal Services,Windows Server 2012 R2
+PROCESOS FIBER CORP-28-005,,Linux Ubuntu
+PROCESOS FIBER CORP-28-011,,Windows Server 2012 R2
+SA ROWING-41-001,Red Hat for SAP Hana,Linux Red Hat
+SA ROWING-41-002,,Windows Server 2012 R2
+SA ROWING-41-003,,Windows Server 2012 R2
+svp-062,,Linux Red Hat
+svp-065,,Windows Server 2012 R2
+svp-071,,Linux Ubuntu
+svp-095,,Linux CentOS
+svp-096,,Windows Server 2008 R2
+svp-097,,Windows Server 2012 R2
+svp-098,,Windows Server 2008 R2
+svp-106,,Linux Ubuntu
+svp-107,,Windows Server 2012 R2
+svp-109,,Linux Ubuntu
+svp-110,,Windows Server 2012 R2
+svp-111,,Linux CentOS
+svp-112,,Linux Ubuntu
+svp-113,,Windows Server 2008 R2
+svp-115,,Windows Server 2012 R2
+svp-118,,Linux Red Hat
+svp-126,,Windows Server 2012 R2
+svp-127,,Linux Ubuntu
+svp-128,,Windows Server 2012 R2
+svp-129,,Linux Ubuntu
+svp-130,,Linux Red Hat
+svp-133,,Linux Ubuntu
+svp-134,,Windows Server 2012 R2
+svp-135,,Windows Server 2012 R2
+svp-136,,Linux CentOS
+svp-137,,Windows Server 2012 R2
+svp-138,,Linux CentOS
+svp-139,,Linux CentOS
+svp-142,,Windows Server 2012 R2
+svp-143,,Linux CentOS
+svp-144,,Linux CentOS
+svp-145,,Windows Server 2008 R2
+svp-146,,Windows Server 2012 R2
+svp-147,,Linux CentOS
+svp-148,,Windows Server 2008 R2
+svp-149,,Windows Server 2008 R2
+svp-150,,Windows Server 2008 R2
+svp-151,,Linux CentOS
+svp-152,,Linux CentOS
+svp-153,,Linux CentOS
+svp-154,,Windows Server 2012 R2
+svp-155,,Windows Server 2012 R2
+svp-156,,Windows Server 2012 R2
+svp-157,,Windows Server 2012 R2
+svp-158,,Windows Server 2012 R2
+svp-159,,Linux CentOS
+svp-160,,Linux CentOS
+svp-161,,Windows Server 2008 R2
+svp-162,,Windows Server 2012 R2
+svp-163,,Linux Red Hat
+svp-164,,Windows Server 2012 R2
+svp-165,,Linux CentOS
+svp-166,,Linux CentOS
+svp-167,,Linux Red Hat
+svp-170,,Linux Red Hat
+svp-171,,Linux CentOS
+svp-172,,Windows Server 2008 R2
+svp-173,,Linux Red Hat
+svp-174,,Linux Red Hat
+svp-175,,Linux Red Hat
+svp-176,,Windows Server 2008 R2
+TELE RED IMAGEN S A-1-006,,Linux Ubuntu
+TELE RED IMAGEN S A-1-013,,Linux Ubuntu
+TELE RED IMAGEN S A-1-014,,Linux Ubuntu
+TELE RED IMAGEN S A-1-015,,Linux Ubuntu
+TELE RED IMAGEN S A-1-016,,Linux Ubuntu
+TELE RED IMAGEN S A-1-017,,Linux Ubuntu
+TELE RED IMAGEN S A-1-018,,Linux Ubuntu
+VALORES SA MAX-40-001,,Windows Server 2012 R2
+VALORES SA MAX-40-002,SQL Server 2014 Web,Windows Server 2012 R2
+VALORES SA MAX-40-003,,Linux CentOS
+VALORES SA MAX-40-004,,Linux CentOS
