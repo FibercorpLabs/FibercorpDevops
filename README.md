@@ -1,3 +1,3 @@
-# FibercorpDevops
+# Devops
 
-Fibercorp DevOps engineering team.
+DevOps engineering team.
