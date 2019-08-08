@@ -1,4 +1,0 @@
-set bridge-domains vcpe-{{ id }} description {{ description }}
-set bridge-domains vcpe-{{ id }} domain-type bridge
-set bridge-domains vcpe-{{ id }} interface ae1.{{ XXX }}
-set bridge-domains vcpe-{{ id }} interface ae2.{{ YYY }}

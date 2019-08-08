@@ -153,4 +153,3 @@ for tenantObj in objList[1:]:
 ### Logout from APIC
 moDir.logout()
 print('All done!')
-
