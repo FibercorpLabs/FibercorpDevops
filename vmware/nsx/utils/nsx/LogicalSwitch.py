@@ -1,4 +1,4 @@
-from .nsx_rest import *
+from .NsxRest import *
 import json
 import sys
 
@@ -6,7 +6,7 @@ import sys
 # from jinja import render
 # from commonfunctions import removeEmptyParams
 
-from .transportzone import *
+from .TransportZone import *
 
 # Example: createLS("GLOBAL-TZ-LAB", "EDGE-NAME-01")
 def createLogicalSwitch(tzone, name, tenantId=None, description=None, controlPlaneMode=None, guestVlanAllowed=None):

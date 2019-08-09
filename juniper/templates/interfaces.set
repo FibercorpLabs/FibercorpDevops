@@ -1,9 +1,0 @@
-set interfaces ae1 unit {{ XXX }} description {{ ae1-description }}
-set interfaces ae1 unit {{ XXX }} vlan-tags outer {{ vxrail-id }}
-set interfaces ae1 unit {{ XXX }} vlan-tags inner {{ XXX }}
-set interfaces ae1 unit {{ XXX }} encapsulation vlan-bridge
- 
-set interfaces ae2 unit {{ YYY }} description {{ ae2-description }}
-set interfaces ae2 unit {{ YYY }} vlan-tags outer {{ sco-id }}
-set interfaces ae2 unit {{ YYY }} vlan-tags inner {{ YYY }}
-set interfaces ae2 unit {{ YYY }} encapsulation vlan-bridge

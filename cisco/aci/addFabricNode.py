@@ -4,7 +4,7 @@ from createMo import *
 
 
 def input_key_args(msg='\nPlease Specify the Fabric Node:', delete_function=False):
-    print msg
+    print(msg)
     args = [input_raw_input('Serial Number', required=True)]
     if not delete_function:
         args.append(input_raw_input('Node ID', required=True))

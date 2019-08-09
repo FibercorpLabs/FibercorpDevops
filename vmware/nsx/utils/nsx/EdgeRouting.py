@@ -9,8 +9,8 @@ import json
 
 
 from pprint import pprint
-from .nsx_rest import *
-from ..common.jinja import render
+from .NsxRest import *
+from ..common.Jinja import render
 
 # BGP_ROUTING
 # TODO: definir que parametros de bgp se quieren tocar
