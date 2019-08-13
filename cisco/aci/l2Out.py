@@ -17,11 +17,11 @@ from cobra.model.fv import Tenant, Ctx, BD, RsCtx, Ap, AEPg, RsBd, RsDomAtt, RsP
 import requests.packages.urllib3
 requests.packages.urllib3.disable_warnings()
 
-apicUrl = 'https://10.120.1.32'
+apicUrl = 'https://X.X.X.X'
 apicUsername = 'admin'
-apicPassword = 'F1b3rc0rp'
-csvfile  = "/Users/arielik/OneDrive - lsia.fi.uba.ar/Laboral/ACI/data.csv"
-vrfName = "VRF_HOUSING"
+apicPassword = 'YourPassword'
+csvfile  = "/YOUR_PATH/data.csv"
+vrfName = "VRF_NAME"
 
 
 loginSession = LoginSession(apicUrl, apicUsername, apicPassword)
