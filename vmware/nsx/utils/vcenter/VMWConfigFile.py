@@ -17,10 +17,10 @@ deploy_settings["port"]             = 443
 VCenter settings
 """
 vc_settings = dict()
-vc_settings["vcenter"] = "10.120.80.10"
-vc_settings["datacenter"] = "DC Hornos"
+vc_settings["vcenter"] = "IP.A.D.D.R.E.S.S."
+vc_settings["datacenter"] = "DC x"
 vc_settings["user"] = "administrator@vsphere.local"
-vc_settings["password"] = "F1b3rc0rp!"
+vc_settings["password"] = "YOURADMINPASSW"
 #vc_settings["resource_pool"] = ""
 #vc_settings["dvs"] = "vdSwitch-SLO-HUB-01"
 #vc_settings["cluster"] = "Cloud-DCHornos-Interno-01"
